@@ -1,3 +1,65 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse, resolve
+from courses import views
 
-# Create your tests here.
+
+class CoursesViewsTestCase(TestCase):
+    """Комплексные тесты для представлений приложения courses"""
+    
+    def setUp(self):
+        self.client = Client()
+    
+    def test_students_list_view(self):
+        """Тест представления students_list"""
+        # students_list возвращает None, что вызывает ошибку Django
+        with self.assertRaises(ValueError):
+            self.client.get('/courses/list/')
+    
+    def test_students_list_function_directly(self):
+        """Прямой тест функции students_list"""
+        from django.http import HttpRequest
+        
+        request = HttpRequest()
+        result = views.students_list(request)
+        self.assertIsNone(result)
+
+
+class CoursesUrlsTestCase(TestCase):
+    """Тесты для URL-маршрутов приложения courses"""
+    
+    def test_students_list_url_resolves(self):
+        """Тест резолва URL list"""
+        url = reverse('courses:list')
+        self.assertEqual(url, '/courses/list/')
+        resolver = resolve('/courses/list/')
+        self.assertEqual(resolver.func, views.students_list)
+        self.assertEqual(resolver.namespace, 'courses')
+        self.assertEqual(resolver.url_name, 'list')
+
+
+class CoursesModelsTestCase(TestCase):
+    """Тесты для моделей приложения courses"""
+    
+    def test_models_import(self):
+        """Тест импорта модулей models"""
+        from courses import models
+        self.assertTrue(hasattr(models, 'models'))
+
+
+class CoursesAppsTestCase(TestCase):
+    """Тесты для конфигурации приложения courses"""
+    
+    def test_apps_config(self):
+        """Тест конфигурации приложения"""
+        from courses.apps import CoursesConfig
+        self.assertEqual(CoursesConfig.default_auto_field, 'django.db.models.BigAutoField')
+        self.assertEqual(CoursesConfig.name, 'courses')
+
+
+class CoursesAdminTestCase(TestCase):
+    """Тесты для админ-панели приложения courses"""
+    
+    def test_admin_import(self):
+        """Тест импорта admin модуля"""
+        from courses import admin
+        self.assertTrue(hasattr(admin, 'admin'))
