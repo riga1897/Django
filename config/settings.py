@@ -25,8 +25,7 @@ SECRET_KEY = "django-insecure-pi2t^^#mqm*mi$9xum!g6h4_fk@-a1^q1ns4@6&$62s(mk*)ma
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["fe341faf-8df2-4f58-be65-b111eee68219-00-rhk6gud1msl4.pike.repl.co"]
-
+ALLOWED_HOSTS = ["*"]
 # Add this line to fix the CSRF error
 CSRF_TRUSTED_ORIGINS = ["https://fe341faf-8df2-4f58-be65-b111eee68219-00-rhk6gud1msl4.pike.repl.co"]
 
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "students",
+    "courses",
 ]
 
 MIDDLEWARE = [
@@ -76,7 +76,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}  # Только в памяти, никаких файлов
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:" # Только в памяти, никаких файлов
+#        "NAME": BASE_DIR / "db.sqlite3"
+    }
 }
 
 
@@ -116,7 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static", "/home/runner/workspace/static"]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -125,9 +129,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MIGRATION_MODULES = {
-    'admin': None,
-    'auth': None,
-    'contenttypes': None,
-    'sessions': None,
-}
+# MIGRATION_MODULES = {
+#     'admin': None,
+#     'auth': None,
+#     'contenttypes': None,
+#     'sessions': None,
+# }
