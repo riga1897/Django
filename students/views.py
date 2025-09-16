@@ -26,9 +26,8 @@ def about(request):
 
 def contact(request):
     if request.method == "POST":
-        return render(request, "students/contact.html")
         name = request.POST.get("name")
         message = request.POST.get("message")
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено: {message}")
+        return HttpResponse(f"Спасибо, {name}! Ваше сообщение: {message} получено.")
 
     return render(request, "students/contact.html")

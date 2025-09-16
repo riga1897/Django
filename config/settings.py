@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["fe341faf-8df2-4f58-be65-b111eee68219-00-rhk6gud1msl4.pike.repl.co"]
 
+# Add this line to fix the CSRF error
+CSRF_TRUSTED_ORIGINS = ["https://fe341faf-8df2-4f58-be65-b111eee68219-00-rhk6gud1msl4.pike.repl.co"]
 
 # Application definition
 

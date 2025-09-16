@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Свяжитесь с нами</h1>
-    <form method="post" action=""
+    <form method="post" action="">
         {% csrf_token %}
         <div>
             <label for="name">Имя:</label>
@@ -18,5 +18,6 @@
             <textarea type="text" id="message" name="message" rows="5" placeholder="Ваше сообщение" required></textarea>
         </div>
         <button type="submit">Отправить</button>
+    </form>
 </body>
 </html>
