@@ -1,16 +1,16 @@
-from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def show_data(request):
-    if request.method != 'GET':
+    if request.method != "GET":
         return None
-    return render(request, 'app/data.html')
+    return render(request, "app/data.html")
 
 
 def submit_data(request):
     # Обработка данных формы
-    if request.method != 'POST':
+    if request.method != "POST":
         return None
     return HttpResponse("Данные отправлены!")
 
