@@ -23,3 +23,12 @@ def students_list(request):
 
 def about(request):
     return render(request, "students/about.html")
+
+def contact(request):
+    if request.method == "POST":
+        return render(request, "students/contact.html")
+        name = request.POST.get("name")
+        message = request.POST.get("message")
+        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено: {message}")
+
+    return render(request, "students/contact.html")

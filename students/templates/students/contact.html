@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контактная форма</title>
+</head>
+<body>
+    <h1>Свяжитесь с нами</h1>
+    <form method="post" action=""
+        {% csrf_token %}
+        <div>
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" placeholder="Ваше имя" required>
+        </div>
+        <div>
+            <label for="message">Сообщение:</label>
+            <textarea type="text" id="message" name="message" rows="5" placeholder="Ваше сообщение" required></textarea>
+        </div>
+        <button type="submit">Отправить</button>
+</body>
+</html>
