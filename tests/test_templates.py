@@ -73,7 +73,3 @@ class TemplatesTestCase(TestCase):
 
         with self.assertRaises(TemplateDoesNotExist):
             get_template("app/item.html")  # Шаблон которого нет в show_item
-
-    # Удален лишний тест - не нужен для coverage
-
-    # Удален лишний тест - не нужен для coverage
