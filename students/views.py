@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+
 def show_data(request):
     if request.method != 'GET':
         return None
@@ -13,6 +14,7 @@ def submit_data(request):
         return None
     return HttpResponse("Данные отправлены!")
 
+
 def show_item(request, item_id):
     return render(request, "app/item.html", {"item_id": item_id})
 
@@ -23,6 +25,7 @@ def students_list(request):
 
 def about(request):
     return render(request, "students/about.html")
+
 
 def contact(request):
     if request.method == "POST":

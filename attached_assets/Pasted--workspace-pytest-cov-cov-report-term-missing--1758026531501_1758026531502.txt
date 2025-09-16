@@ -1,0 +1,76 @@
+~/workspace$ pytest --cov --cov-report=term-missing
+================================================================== test session starts ===================================================================
+platform linux -- Python 3.11.13, pytest-8.4.2, pluggy-1.6.0
+django: version: 5.2.6, settings: config.settings (from ini)
+rootdir: /home/runner/workspace
+configfile: pyproject.toml
+plugins: mock-3.15.0, cov-7.0.0, django-4.11.1
+collected 15 items                                                                                                                                       
+
+tests/test_config_urls.py ........                                                                                                                 [ 53%]
+tests/test_templates.py .......                                                                                                                    [100%]
+
+===================================================================== tests coverage =====================================================================
+____________________________________________________ coverage: platform linux, python 3.11.13-final-0 ____________________________________________________
+
+Name                        Stmts   Miss  Cover   Missing
+---------------------------------------------------------
+config/__init__.py              0      0   100%
+config/urls.py                  3      0   100%
+courses/__init__.py             0      0   100%
+courses/admin.py                1      1     0%   1
+courses/apps.py                 4      4     0%   1-6
+courses/models.py               1      1     0%   1
+courses/tests.py               35     35     0%   1-65
+courses/urls.py                 4      0   100%
+courses/views.py                4      0   100%
+src/__init__.py                 0      0   100%
+students/__init__.py            0      0   100%
+students/admin.py               1      0   100%
+students/apps.py                4      0   100%
+students/models.py              1      0   100%
+students/tests.py             136    136     0%   1-225
+students/urls.py                4      0   100%
+students/views.py              22     11    50%   5-7, 12-14, 17, 21, 29-31
+tests/__init__.py               0      0   100%
+tests/test_config_urls.py      39      0   100%
+tests/test_templates.py        49      0   100%
+---------------------------------------------------------
+TOTAL                         308    188    39%
+=================================================================== 15 passed in 0.41s ===================================================================
+~/workspace$ coverage run --source='.' manage.py test
+Found 44 test(s).
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+............................................
+----------------------------------------------------------------------
+Ran 44 tests in 0.082s
+
+OK
+Destroying test database for alias 'default'...
+~/workspace$ coverage report
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+config/__init__.py              0      0   100%
+config/urls.py                  3      0   100%
+courses/__init__.py             0      0   100%
+courses/admin.py                1      0   100%
+courses/apps.py                 4      0   100%
+courses/models.py               1      0   100%
+courses/tests.py               35      0   100%
+courses/urls.py                 4      0   100%
+courses/views.py                4      0   100%
+src/__init__.py                 0      0   100%
+students/__init__.py            0      0   100%
+students/admin.py               1      0   100%
+students/apps.py                4      0   100%
+students/models.py              1      0   100%
+students/tests.py             136      0   100%
+students/urls.py                4      0   100%
+students/views.py              22      0   100%
+tests/__init__.py               0      0   100%
+tests/test_config_urls.py      39      0   100%
+tests/test_templates.py        49      0   100%
+-----------------------------------------------
+TOTAL                         308      0   100%
+~/workspace$ 

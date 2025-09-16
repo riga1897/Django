@@ -1,0 +1,640 @@
+~/workspace$ pytest --cov=src --cov-report=term-missing
+================================================================== test session starts ===================================================================
+platform linux -- Python 3.13.5, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/runner/workspace
+configfile: pyproject.toml
+plugins: mock-3.15.0, cov-7.0.0
+collected 15 items                                                                                                                                       
+
+tests/test_config_urls.py EEEEEEEE                                                                                                                 [ 53%]
+tests/test_templates.py EEEEEEE/home/runner/workspace/.pythonlibs/lib/python3.13/site-packages/coverage/control.py:945: CoverageWarning: No data was collected. (no-data-collected)
+  self._warn("No data was collected.", slug="no-data-collected")
+                                                                                                                    [100%]
+
+========================================================================= ERRORS =========================================================================
+______________________________________________ ERROR at setup of ConfigUrlsTestCase.test_admin_url_resolves ______________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+______________________________________________ ERROR at setup of ConfigUrlsTestCase.test_admin_url_response ______________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+__________________________________________ ERROR at setup of ConfigUrlsTestCase.test_courses_namespace_resolves __________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+____________________________________________ ERROR at setup of ConfigUrlsTestCase.test_courses_urls_included _____________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+_______________________________________________ ERROR at setup of ConfigUrlsTestCase.test_nonexistent_url ________________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+___________________________________________ ERROR at setup of ConfigUrlsTestCase.test_root_url_not_configured ____________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+_________________________________________ ERROR at setup of ConfigUrlsTestCase.test_students_namespace_resolves __________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+____________________________________________ ERROR at setup of ConfigUrlsTestCase.test_students_urls_included ____________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+____________________________________________ ERROR at setup of TemplatesTestCase.test_about_template_content _____________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+_____________________________________________ ERROR at setup of TemplatesTestCase.test_about_template_exists _____________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+_______________________________________ ERROR at setup of TemplatesTestCase.test_about_template_rendering_via_view _______________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+___________________________________________ ERROR at setup of TemplatesTestCase.test_contact_template_content ____________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+____________________________________________ ERROR at setup of TemplatesTestCase.test_contact_template_exists ____________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+______________________________________ ERROR at setup of TemplatesTestCase.test_contact_template_rendering_via_view ______________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+__________________________________________ ERROR at setup of TemplatesTestCase.test_missing_templates_behavior ___________________________________________
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:73: in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/functional.py:47: in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:45: in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/db/utils.py:148: in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/utils/connection.py:50: in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <LazySettings [Unevaluated]>, name = 'DATABASES'
+
+    def _setup(self, name=None):
+        """
+        Load the settings module pointed to by the environment variable. This
+        is used the first time settings are needed, if the user hasn't
+        configured settings manually.
+        """
+        settings_module = os.environ.get(ENVIRONMENT_VARIABLE)
+        if not settings_module:
+            desc = ("setting %s" % name) if name else "settings"
+>           raise ImproperlyConfigured(
+                "Requested %s, but settings are not configured. "
+                "You must either define the environment variable %s "
+                "or call settings.configure() before accessing settings."
+                % (desc, ENVIRONMENT_VARIABLE)
+            )
+E           django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+
+.pythonlibs/lib/python3.13/site-packages/django/conf/__init__.py:61: ImproperlyConfigured
+===================================================================== tests coverage =====================================================================
+____________________________________________________ coverage: platform linux, python 3.13.5-final-0 _____________________________________________________
+
+Name              Stmts   Miss  Cover   Missing
+-----------------------------------------------
+src/__init__.py       0      0   100%
+-----------------------------------------------
+TOTAL                 0      0   100%
+================================================================ short test summary info =================================================================
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_admin_url_resolves - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_admin_url_response - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_courses_namespace_resolves - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_courses_urls_included - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_nonexistent_url - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_root_url_not_configured - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_students_namespace_resolves - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_config_urls.py::ConfigUrlsTestCase::test_students_urls_included - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_templates.py::TemplatesTestCase::test_about_template_content - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_templates.py::TemplatesTestCase::test_about_template_exists - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_templates.py::TemplatesTestCase::test_about_template_rendering_via_view - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_templates.py::TemplatesTestCase::test_contact_template_content - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_templates.py::TemplatesTestCase::test_contact_template_exists - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_templates.py::TemplatesTestCase::test_contact_template_rendering_via_view - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+ERROR tests/test_templates.py::TemplatesTestCase::test_missing_templates_behavior - django.core.exceptions.ImproperlyConfigured: Requested setting DATABASES, but settings are not configured. You must either define the environment var...
+=================================================================== 15 errors in 1.26s ===================================================================
+~/workspace$ 
