@@ -135,7 +135,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-lessons/.env
+students/.env
 .envrc
 .venv
 env/
