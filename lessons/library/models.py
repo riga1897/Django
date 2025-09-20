@@ -10,10 +10,10 @@ class Author(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Meta:
-    verbose_name = "автор"
-    verbose_name_plural = "авторы"
-    ordering = ["last_name"]
+    class Meta:
+        verbose_name = "автор"
+        verbose_name_plural = "авторы"
+        ordering = ["last_name"]
 
 
 class Book(models.Model):
