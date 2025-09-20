@@ -9,7 +9,7 @@ class Student(models.Model):
     is_active = models.BooleanField(default=True)
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField()
+    image = models.ImageField(upload_to="photos/", verbose_name="Фотография")
     group = models.ForeignKey(Group, on_delete=models.DO_NOTHING, related_name="students")
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
