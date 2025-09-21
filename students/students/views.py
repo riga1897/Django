@@ -19,8 +19,8 @@ def show_item(request, item_id):
     return render(request, "app/item.html", {"item_id": item_id})
 
 
-def students_list(request):
-    return None
+# def students_list(request):
+#     return None
 
 
 def about(request):
