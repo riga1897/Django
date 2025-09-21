@@ -1,6 +1,18 @@
 from django.db import models
 
 
+class Group(models.Model):
+    name = models.CharField(max_length=150, verbose_name="Группа")
+
+    def __str__(self):
+        return f"{self.name} "
+
+    class Meta:
+        verbose_name = "группа"
+        verbose_name_plural = "группы"
+        ordering = ["name"]
+
+
 class Student(models.Model):
     FIRST_YEAR = 'first'
     SECOND_YEAR = 'second'
@@ -22,6 +34,7 @@ class Student(models.Model):
         default=FIRST_YEAR,
         verbose_name='Курс'
     )
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="students")
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

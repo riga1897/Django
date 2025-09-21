@@ -1,0 +1,39 @@
+[
+{
+    "model": "students.group",
+    "pk": 1,
+    "fields": {
+        "name": "Группа 1"
+    }
+},
+{
+    "model": "students.student",
+    "pk": 1,
+    "fields": {
+        "first_name": "Иван",
+        "last_name": "Иванов",
+        "year": "first",
+        "group": 1
+    }
+},
+{
+    "model": "students.student",
+    "pk": 2,
+    "fields": {
+        "first_name": "Петр",
+        "last_name": "Петров",
+        "year": "second",
+        "group": 1
+    }
+},
+{
+    "model": "students.student",
+    "pk": 3,
+    "fields": {
+        "first_name": "Сергей",
+        "last_name": "Сергеев",
+        "year": "third",
+        "group": 1
+    }
+}
+]
