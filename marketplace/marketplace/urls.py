@@ -5,5 +5,4 @@ app_name = MarketplaceConfig.name
 
 
 urlpatterns = [
-
 ]

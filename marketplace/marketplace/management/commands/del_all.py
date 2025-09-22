@@ -1,8 +1,6 @@
-
 from django.core.management.base import BaseCommand
 from django.db import connection
-
-from students.models import Student, Group
+from marketplace.models import Category, Product
 
 
 class Command(BaseCommand):
@@ -10,10 +8,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Удаляем существующие записи
-        Student.objects.all().delete()
-        Group.objects.all().delete()
+        Product.objects.all().delete()
+        Category.objects.all().delete()
 
         # Сбрасываем счетчики инкрементов
         with connection.cursor() as cursor:
-            cursor.execute("ALTER SEQUENCE students_student_id_seq RESTART WITH 1;")
-            cursor.execute("ALTER SEQUENCE students_group_id_seq RESTART WITH 1;")
+            cursor.execute("ALTER SEQUENCE marketplace_product_id_seq RESTART WITH 1;")
+            cursor.execute("ALTER SEQUENCE marketplace_category_id_seq RESTART WITH 1;")

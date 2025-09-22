@@ -1,0 +1,18 @@
+[
+{
+    "model": "marketplace.category",
+    "pk": 1,
+    "fields": {
+        "name": "Один",
+        "description": "Первая"
+    }
+},
+{
+    "model": "marketplace.category",
+    "pk": 2,
+    "fields": {
+        "name": "Два",
+        "description": "Вторая"
+    }
+}
+]
