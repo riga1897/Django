@@ -3,6 +3,4 @@ from marketplace.apps import MarketplaceConfig
 
 app_name = MarketplaceConfig.name
 
-
-urlpatterns = [
-]
+urlpatterns = []

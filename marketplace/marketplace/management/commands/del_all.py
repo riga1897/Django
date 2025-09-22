@@ -1,10 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
+
 from marketplace.models import Category, Product
 
 
 class Command(BaseCommand):
-    help = 'Add test students to the database'
+    help = "Add test students to the database"
 
     def handle(self, *args, **kwargs):
         # Удаляем существующие записи
