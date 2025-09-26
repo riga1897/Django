@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Student
 
 
 def show_data(request):
@@ -34,3 +35,22 @@ def contact(request):
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение: {message} получено.")
 
     return render(request, "students/contact.html")
+
+
+def example_view(request):
+    return render(request, 'students/example.html')
+
+
+def index(request):
+    student: Student = Student.objects.get(id=1)
+    context = {
+        'student_name': f"{student.first_name} {student.last_name}",
+        'student_year': student.get_year_display(),
+    }
+    return render(request, 'students/index.html', context)
+
+
+def student_detail(request):
+    student = Student.objects.get(id=1)
+    context = {'student': student}
+    return render(request, 'students/student_detail.html', context)

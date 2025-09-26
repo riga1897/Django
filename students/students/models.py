@@ -36,6 +36,9 @@ class Student(models.Model):
     )
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="students")
 
+    def photo(self):
+        pass
+
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
