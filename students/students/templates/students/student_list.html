@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список студентов</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Список студентов</h1>
+    <ul class="list-group">
+        {% for student in students %}
+        <li class="list-group-item d-flex justify-content-between align-items-center {% if student.year == 'first' %}list-group-item-primary{% elif student.year == 'second' %}list-group-item-success{% elif student.year == 'third' %}list-group-item-warning{% elif student.year == 'fourth' %}list-group-item-danger{% endif %}">
+            {{ student.first_name }} {{ student.last_name }}
+            <span class="badge badge-primary badge-pill">
+                        {% if student.year == 'first' %}
+                            Первый курс
+                        {% elif student.year == 'second' %}
+                            Второй курс
+                        {% elif student.year == 'third' %}
+                            Третий курс
+                        {% elif student.year == 'fourth' %}
+                            Четвертый курс
+                        {% endif %}
+                    </span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<!-- Подключение Bootstrap JS -->
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

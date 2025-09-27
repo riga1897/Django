@@ -54,3 +54,9 @@ def student_detail(request):
     student = Student.objects.get(id=1)
     context = {'student': student}
     return render(request, 'students/student_detail.html', context)
+
+
+def student_list(request):
+    students = Student.objects.all()
+    context = {'students': students}
+    return render(request, 'students/student_list.html', context)

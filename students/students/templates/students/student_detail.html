@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Детали студента</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Детали студента</h1>
-    <p>Имя: {{ student.first_name }}</p>
-    <p>Фамилия: {{ student.last_name }}</p>
-    <p>Курс: {{ student.get_year_display }}</p>
-<!--    <p>Фотография: <img src="{{ student.photo.url }}" alt="{{ student.first_name }} {{ student.last_name }}"></p>-->
+<div class="container mt-5">
+    <h1 class="mb-4">Детали студента</h1>
+    <p>Имя: {{ student.first_name|upper }}</p>
+    <p>Фамилия: {{ student.last_name|lower }}</p>
+    <p>Дата рождения: {{ student.birth_date|date:'d M Y' }}</p>
+    <p>Комментарий: {{ student.comment|default:'Комментарий отсутствует' }}</p>
+    <p>Описание: {{ student.description|truncatechars:100 }}</p>
+    <p>Фото:</p>
+    <img src="{{ student.photo.url }}" alt="{{ student.first_name }} {{ student.last_name }}" class="img-thumbnail">
+</div>
+<!-- Подключение Bootstrap JS -->
+<script src="/static/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
