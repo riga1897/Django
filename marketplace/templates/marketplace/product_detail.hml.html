@@ -1,11 +1,15 @@
 {% extends 'students/base.html' %}
 
-{% block title %}Детали студента{% endblock %}
+{% block title %}Детали товара{% endblock %}
 
 {% block content %}
-{% include 'students/header.html' %}
-<h2>Детали студента</h2>
-<p>Имя: {{ student.first_name }}</p>
-<p>Фамилия: {{ student.last_name }}</p>
-<p>Курс: {{ student.year }}</p>
+<!--{% include 'students/header.html' %}-->
+<h2>Детали товара</h2>
+<p>Наименование: {{ product.name }}</p>
+<p>Описание: {{ product.description }}</p>
+<p>Фото: {{ product.photo }}</p>
+<p>Категория: {{ product.category }}</p>
+<p>Цена: {{ product.price }}</p>
+<p>Создан: {{ product.created_at }}</p>
+<p>Изменён: {{ product.updated_at }}</p>
 {% endblock %}

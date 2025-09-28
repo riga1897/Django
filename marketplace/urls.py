@@ -1,6 +1,10 @@
-# from django.urls import path
+from django.urls import path
 from marketplace.apps import MarketplaceConfig
+from . import views
+
 
 app_name = MarketplaceConfig.name
 
-urlpatterns = []
+urlpatterns = [
+    path("product_detail/<int:product_id>/", views.product_detail, name="product_detail"),
+]
