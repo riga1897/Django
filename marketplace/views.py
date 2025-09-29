@@ -27,6 +27,6 @@ def contacts(request):
 
         messages.success(request, f"Спасибо, {name}! Ваше сообщение получено.")
 
-        # return redirect('marketplace/contacts')
+        return redirect('marketplace:contacts')
 
     return render(request, "marketplace/contacts.html")

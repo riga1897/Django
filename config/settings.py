@@ -20,6 +20,12 @@ DEBUG = bool(os.getenv("DEBUG") == "True")
 
 ALLOWED_HOSTS = ["*"]
 
+# CSRF settings for Replit domains
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.replit.dev',
+    'https://*.pike.replit.dev',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
