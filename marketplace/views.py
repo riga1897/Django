@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from marketplace.models import Product
 
@@ -17,12 +17,14 @@ def product_detail(request, product_id):
 def contacts(request):
     if request.method == "POST":
         name = request.POST.get("name")
-        email = request.POST.get("phone")
+        email = request.POST.get("email")
         message = request.POST.get("message")
 
         # Лог обработки
         print(f"Сообщение от {name}: {message}. E-mail: {email}")
 
         messages.success(request, f"Спасибо, {name}! Ваше сообщение получено.")
+
+        return redirect('marketplace/contacts')
 
     return render(request, "marketplace/contacts.html")

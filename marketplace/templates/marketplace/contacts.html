@@ -1,10 +1,15 @@
 {% extends 'marketplace/base.html' %}
-{% block content %}
+
 {% if messages %}
 {% for message in messages %}
 <div class="alert alert-success">
     {{ message }}
-</div>{% endfor %}{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% block content %}
+
 <div class="container mt-5">
     <div class="content">
         <!-- Вкладка "Контакты" -->
