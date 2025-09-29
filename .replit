@@ -1,0 +1,4 @@
+modules = ["postgresql-16", "python-3.11", "python-3.13"]
+
+[agent]
+expertMode = true
