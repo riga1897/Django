@@ -8,8 +8,10 @@
             <div class="card">
                 <img src="{{ product.photo | media_filter }}" 
                      class="card-img-top" 
-                     style="height: 400px; object-fit: cover;" 
+                     style="height: 400px; object-fit: cover; cursor: pointer;" 
                      alt="{{ product.name }}"
+                     data-bs-toggle="modal" 
+                     data-bs-target="#imageModal"
                      onerror="this.parentElement.innerHTML='<div class=&quot;card-img-top bg-light d-flex align-items-center justify-content-center&quot; style=&quot;height: 400px;&quot;><span class=&quot;text-muted&quot;>Нет изображения</span></div>'">
             </div>
         </div>
@@ -33,6 +35,23 @@
                     <dd class="col-sm-8">{{ product.updated_at|date:"d.m.Y H:i" }}</dd>
                 </dl>
                 <a href="{% url 'marketplace:products_list' %}" class="btn btn-secondary mt-3">← Назад к каталогу</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body text-center p-2">
+                <img src="{{ product.photo | media_filter }}" 
+                     class="img-fluid rounded" 
+                     alt="{{ product.name }}"
+                     style="max-height: 80vh; object-fit: contain;">
             </div>
         </div>
     </div>
