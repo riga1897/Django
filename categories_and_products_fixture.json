@@ -40,5 +40,31 @@
         "created_at": "2025-09-22T13:27:29.770Z",
         "updated_at": "2025-09-22T13:34:03.796Z"
     }
+},
+{
+    "model": "marketplace.product",
+    "pk": 3,
+    "fields": {
+        "name": "Huawei Mate XT",
+        "description": "16GB+1TB, Dual Card, красный",
+        "photo": "products/photos/Hw_Mate_XT_red.jpg",
+        "category": 1,
+        "price": "237168.00",
+        "created_at": "2025-09-28T17:27:33.381Z",
+        "updated_at": "2025-09-28T19:59:30.570Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 4,
+    "fields": {
+        "name": "Hisense 55E7Q PRO 55\"",
+        "description": "черный",
+        "photo": "products/photos/HisenseE7QPRO_55.jpg",
+        "category": 2,
+        "price": "41636.00",
+        "created_at": "2025-09-28T17:31:29.741Z",
+        "updated_at": "2025-09-28T17:31:29.741Z"
+    }
 }
 ]
