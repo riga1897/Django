@@ -3,7 +3,7 @@
     <div class="card h-100">
         <img src="{{ product.photo | media_filter }}" 
              class="card-img-top" 
-             style="height: 250px; object-fit: cover;" 
+             style="height: 250px; object-fit: contain; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 10px;" 
              alt="{{ product.name }}">
         <div class="position-absolute top-50 start-50 translate-middle text-white">
             <p class="mb-0 fw-bold text-shadow">{{ overlay_text|default:product.name }}</p>

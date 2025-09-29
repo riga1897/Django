@@ -8,7 +8,7 @@
             <div class="card">
                 <img src="{{ product.photo | media_filter }}" 
                      class="card-img-top" 
-                     style="height: 400px; object-fit: cover; cursor: pointer;" 
+                     style="height: 400px; object-fit: contain; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; cursor: pointer;" 
                      alt="{{ product.name }}"
                      data-bs-toggle="modal" 
                      data-bs-target="#imageModal"
