@@ -11,8 +11,78 @@
             </div>
             <div class="tab-pane fade show active" id="catalog">
                 <h1 class="text-center">{{ product.name }}</h1>
-                <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
-                    {% include 'marketplace/_product_card.html' with product=product show_detail_button=False show_time=False overlay_text="Thumbnail" %}
+                
+                <div class="row mt-4">
+                    <!-- Изображение продукта -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            {% if product.photo %}
+                                <img src="{{ product.photo | media_filter }}" 
+                                     class="card-img-top" 
+                                     style="height: 400px; object-fit: cover;" 
+                                     alt="{{ product.name }}">
+                            {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                     style="height: 400px;">
+                                    <span class="text-muted">Нет изображения</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Информация о продукте -->
+                    <div class="col-md-6">
+                        <div class="card p-4">
+                            <h2 class="card-title">{{ product.name }}</h2>
+                            
+                            <div class="product-details mt-3">
+                                <div class="row mb-3">
+                                    <div class="col-sm-4"><strong>Описание:</strong></div>
+                                    <div class="col-sm-8">
+                                        {% if product.description %}
+                                            {{ product.description }}
+                                        {% else %}
+                                            <span class="text-muted">Описание не указано</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-sm-4"><strong>Категория:</strong></div>
+                                    <div class="col-sm-8">
+                                        <span class="badge bg-secondary">{{ product.category.name }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-sm-4"><strong>Цена:</strong></div>
+                                    <div class="col-sm-8">
+                                        <span class="h4 text-primary">{{ product.price }} ₽</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-sm-4"><strong>Добавлен:</strong></div>
+                                    <div class="col-sm-8">
+                                        {{ product.created_at|date:"d.m.Y H:i" }}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-sm-4"><strong>Обновлен:</strong></div>
+                                    <div class="col-sm-8">
+                                        {{ product.updated_at|date:"d.m.Y H:i" }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <a href="{% url 'marketplace:products_list' %}" class="btn btn-secondary">
+                                    ← Назад к каталогу
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
