@@ -26,6 +26,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.pike.replit.dev',
 ]
 
+# CSRF cookie settings for Replit iframe environment
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
+
 # Application definition
 
 INSTALLED_APPS = [
