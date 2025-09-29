@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
 
-from students.models import Student, Group
+from students.models import Group, Student
 
 
 class Command(BaseCommand):

@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
+
 from library.models import Author, Book
+
 
 class Command(BaseCommand):
     help = 'Add test books to the database'

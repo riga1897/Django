@@ -1,45 +1,11 @@
 {% extends 'marketplace/base.html' %}
-{% load my_tags %}
 {% block content %}
 <div class="container mt-5">
-    <div id="sidebar"></div>
-    <div class="content">
-        <!-- Вкладки -->
-        <div class="tab-content">
-            <div class="tab-pane fade" id="home">
-                <h1 class="text-center">Главная</h1>
-            </div>
-            <div class="tab-pane fade show active" id="catalog">
-                <h1 class="text-center">Каталог товаров</h1>
-                <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
-                    {% for product in products %}
-                    <div class="col-md-6 mb-2 mt-2 custom-padding-left">
-                        <div class="card h-100 position-relative" style="height: 400px; width: 400px;">
-                            <img src="{{ product.photo | media_filter }}"
-                                 class="card-img-top"
-                                 style="height: 180px; width: 100%; object-fit: cover;" alt="">
-                            <div class="text-center position-absolute top-50 start-50 translate-middle text-white">
-                                                                    <p class="mb-5">{{ product.name }}</p>
-                            </div>
-                            <div class="card-body">
-                                <ul>
-                                    <li>{{ product.name }}</li>
-                                    <li>{{ product.description|truncatechars:100 }}</li>
-                                </ul>
-                            <div class="d-flex justify-content-between mt-auto">
-                                    <div>
-                                        <button class="btn btn-outline-dark" type="button"><a href="{% url 'marketplace:product_detail' product.pk %}" >Подробно</a></button>
-<!--                                        <button class="btn btn-outline-dark" type="button">Edit</button>-->
-                                    </div>
-                                    <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                    {% endfor %}
-            </div>
-        </div>
-    </div>
+    <h1 class="text-center mb-4">Каталог товаров</h1>
+    <div class="row">
+        {% for product in products %}
+            {% include 'marketplace/product_card.html' with product=product show_detail_button=True show_time=True %}
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
