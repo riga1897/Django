@@ -40,6 +40,9 @@ SESSION_COOKIE_HTTPONLY = False
 CSRF_USE_SESSIONS = True
 CSRF_COOKIE_AGE = 31449600  # 1 year
 
+# Additional iframe settings for Replit
+X_FRAME_OPTIONS = 'ALLOWALL'
+
 # Application definition
 
 INSTALLED_APPS = [
