@@ -1,6 +1,6 @@
 {% extends 'marketplace/base.html' %}
 {% load my_tags %}
-{% block products %}
+{% block content %}
 <div class="container mt-5">
     <div id="sidebar"></div>
     <div class="content">
@@ -22,25 +22,24 @@
                                                                     <p class="mb-5">{{ product.name }}</p>
                             </div>
                             <div class="card-body">
-                                <p class="card-text">
-                                    {{ product.name }}
-                                    {{ product.id }}
-                                    {% block details %}{% endblock %}
-                                </p>
-                                <div class="d-flex justify-content-between mt-auto">
+                                <ul>
+                                    <li>{{ product.name }}</li>
+                                    <li>{{ product.description|truncatechars:100 }}</li>
+                                </ul>
+                            <div class="d-flex justify-content-between mt-auto">
                                     <div>
-                                        <button class="btn btn-outline-dark" type="button"><a href="{% url 'marketplace:product_detail' product.id %}" >Подробно</a></button>
+                                        <button class="btn btn-outline-dark" type="button"><a href="{% url 'marketplace:product_detail' product.pk %}" >Подробно</a></button>
 <!--                                        <button class="btn btn-outline-dark" type="button">Edit</button>-->
                                     </div>
                                     <small class="text-muted">9 mins</small>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
+                    {% endfor %}
             </div>
         </div>
+    </div>
     </div>
 </div>
 {% endblock %}

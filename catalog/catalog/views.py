@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def home(request):
@@ -18,6 +18,6 @@ def contacts(request):
         messages.success(request, f"Спасибо, {name}! Ваше сообщение получено.")
 
         # Стандартный редирект (код 302)
-        #return redirect("/")
+        return render(request, "contacts.html")
 
     return render(request, "contacts.html")

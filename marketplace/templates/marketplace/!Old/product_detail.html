@@ -1,6 +1,6 @@
 {% extends 'marketplace/base.html' %}
 {% load my_tags %}
-{% block content %}
+{% block products %}
 <div class="container mt-5">
     <div id="sidebar"></div>
     <div class="content">
@@ -23,11 +23,9 @@
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    <ul>
-                                        <li>{{ product.name }}</li>
-                                        <li>{{ product.description|truncatechars:100 }}</li>
-
-                                    </ul>
+                                    {{ product.name }}
+<!--                                    {% block details %}{% endblock %}-->
+                                    <!--                                        {% block content %}{% endblock %}-->
                                 </p>
                                 <div class="d-flex justify-content-between mt-auto">
                                     <!--                                        <div>-->

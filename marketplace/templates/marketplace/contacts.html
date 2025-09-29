@@ -1,0 +1,62 @@
+{% extends 'marketplace/base.html' %}
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success">
+    {{ message }}
+</div>{% endfor %}{% endif %}
+<div class="container mt-5">
+    <div class="content">
+        <!-- Вкладка "Контакты" -->
+        <div class="mt-5" id="contacts">
+            <h2 class="text-center">Контакты</h2>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <!-- Исправленная форма с action и method -->
+                        <form action="/" class="row gy-2 gx-3" method="POST">
+                            {% csrf_token %}
+                            <div class="col-12">
+                                <label for="name">Имя</label> <input class="form-control" id="name" name="name"
+                                                                     placeholder="Введите ваше имя" required
+                                                                     type="text">
+                            </div>
+                            <div class="col-12">
+                                <label for="email">Почта</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">@</div>
+                                    <input class="form-control" id="email" name="email" placeholder="Введите вашу почту"
+                                           required type="email">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="message">Сообщение</label> <textarea class="form-control" id="message"
+                                                                                 name="message"
+                                                                                 placeholder="Введите ваше сообщение"
+                                                                                 required rows="3"></textarea>
+                            </div>
+                            <div class="col-12 mt-2 d-flex justify-content-start">
+                                <button class="btn btn-primary btn-sm" type="submit">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h5 class="mt-4">Наши контакты</h5>
+                        <p class="small-text">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+                        <p class="small-text">
+                            While these feedback styles cannot be styled with CSS, you can still customize the text
+                            through JavaScript. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
