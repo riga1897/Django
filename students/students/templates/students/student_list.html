@@ -1,0 +1,15 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Список студентов{% endblock %}
+
+{% block content %}
+{% include 'students/header.html' %}
+<h2>Список студентов</h2>
+<ul class="list-group">
+    {% for student in students %}
+        <li class="list-group-item">
+            {{ student.first_name }} {{ student.last_name }} - {{ student.year }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Детали книги{% endblock %}
+
+{% block content %}
+{% include 'library/header.html' %}
+<h2>{{ book.title }}</h2>
+<p>Автор: {{ book.author.first_name }} {{ book.author.last_name }}</p>
+<p>Дата публикации: {{ book.publication_date|date:"d M Y" }}</p>
+{% endblock %}
