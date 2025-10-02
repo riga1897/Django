@@ -1,0 +1,144 @@
+# Overview
+
+This is a Django-based multi-application web platform that includes three main modules: a marketplace/e-commerce system, a blog, and supporting applications (library and students). The project demonstrates a comprehensive Django implementation with product catalog management, blog posting capabilities, and educational content management.
+
+The platform features:
+- **Marketplace**: Product and category management with image uploads, pricing, and detailed product views
+- **Blog**: Content management system with draft/publish workflow, view counting, and image previews
+- **Library**: Book and author management system
+- **Students**: Student and group management with course tracking
+
+The application uses Django's class-based views extensively, implements custom template tags, includes Bootstrap 5 for responsive UI, and manages media files for product/blog images.
+
+# User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+# System Architecture
+
+## Backend Framework
+- **Django 5.2.6** as the primary web framework
+- **Python** for all backend logic
+- Environment-based configuration using `python-dotenv` for managing secrets and settings
+- Multiple Django apps organized within a single project (`config` as the main settings module)
+
+## Application Structure
+
+### Core Applications
+1. **Marketplace App**
+   - Product and Category models with foreign key relationships
+   - Image upload handling for product photos
+   - Custom management commands for data fixtures and database seeding
+   - Template tag filters for media URL handling
+   - Class-based views (ListView, DetailView) for product display
+   - Contact form with FormView implementation
+
+2. **Blog App**
+   - BlogPost model with publishing workflow (draft/published states)
+   - View count tracking using F() expressions to prevent race conditions
+   - Access control via UserPassesTestMixin for draft visibility
+   - Image preview support with modal display
+   - CRUD operations using CreateView, UpdateView, DeleteView
+   - Admin-specific features for managing draft posts
+
+3. **Library App** (Separate Django project structure)
+   - Author and Book models with one-to-many relationships
+   - Complete CRUD interface for book management
+   - Custom management commands for test data population
+
+4. **Students App** (Separate Django project structure)
+   - Student and Group models with course year choices
+   - Generic model (MyModel) demonstrating timestamp tracking
+   - Management commands for database operations
+
+## Database Architecture
+- **PostgreSQL** (implied by database reset commands using `ALTER SEQUENCE`)
+- Models use Django ORM with:
+  - Auto-incrementing primary keys
+  - Foreign key relationships with CASCADE deletion
+  - Timestamp fields (auto_now_add, auto_now)
+  - Choice fields for constrained values (student years, publication status)
+  - Image fields for media uploads
+
+## Frontend Architecture
+- **Bootstrap 5.3.8** for responsive UI components
+- Custom CSS for sidebar navigation and card-based layouts
+- Template inheritance with base templates
+- Reusable template components (product cards, blog cards)
+- Modal dialogs for image viewing
+- Static file serving in development mode
+
+## Media & Static Files
+- Separate media upload paths for different content types:
+  - `products/photos/` for marketplace items
+  - `blogs/previews/` for blog post images
+- Static files served from `/static/` directory
+- Media files configured with MEDIA_URL and MEDIA_ROOT
+
+## URL Routing
+- Namespace-based URL patterns for app isolation
+- RESTful URL structure for CRUD operations
+- App-specific URL configuration using AppConfig
+
+## Admin Interface
+- Customized ModelAdmin classes for each model
+- List display customization with filtering and search
+- Inline editing for boolean fields (is_published)
+- Custom admin actions and field groupings
+
+## Forms & Validation
+- Django Forms for contact functionality
+- ModelForm usage in generic editing views
+- CSRF protection on all POST requests
+- Client-side Bootstrap form styling
+
+## Design Patterns
+
+### View Layer
+- Extensive use of class-based views for consistency
+- Mixin usage for access control (UserPassesTestMixin)
+- Override of get_queryset() for conditional filtering
+- Custom context data injection via get_context_data()
+
+### Data Management
+- Custom management commands for:
+  - Database seeding
+  - Fixture loading
+  - Data cleanup with sequence resets
+- Atomic operations for view count updates using F() expressions
+
+### Template Architecture
+- DRY principle with template inheritance
+- Reusable components via include tags
+- Custom template tags for media URL processing
+- Context-aware rendering (draft visibility based on user roles)
+
+### Access Control
+- Staff/superuser checks for administrative features
+- Conditional content visibility (published vs draft posts)
+- URL-based filtering for showing/hiding draft content
+
+# External Dependencies
+
+## Python Packages
+- **Django 5.2.6**: Web framework
+- **python-dotenv**: Environment variable management for configuration
+
+## Frontend Libraries
+- **Bootstrap 5.3.8**: CSS framework for responsive design (locally hosted)
+- Bootstrap Bundle JS for interactive components
+
+## Database
+- **PostgreSQL**: Primary database (inferred from SQL commands using PostgreSQL-specific syntax)
+- Database connection configured via environment variables
+
+## File Storage
+- Local filesystem for media uploads
+- Organized upload directories by content type
+- Development-mode static/media file serving
+
+## Environment Configuration
+- SECRET_KEY via environment variable
+- DEBUG mode controlled by environment variable
+- Database credentials managed through environment variables
+- UTF-8 encoding specification for proper character handling
