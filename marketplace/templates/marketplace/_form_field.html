@@ -38,7 +38,7 @@
                   style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
                   rows="4"
                   {% if field.field.required %}required{% endif %}
-                  onfocus="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 0 0 0.25rem rgba(13,110,253,.25)'"
+                  onfocus="this.style.borderColor='#10b981'; this.style.boxShadow='0 0 0 0.25rem rgba(16,185,129,.25)'"
                   onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">{{ field.value|default:'' }}</textarea>
     {% elif 'CheckboxInput' in widget_name %}
         <div class="form-check form-switch">

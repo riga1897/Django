@@ -3,19 +3,39 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Магазин - Bootstrap Sidebar</title>
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <style>
+        :root {
+            --green-light: #34d399;
+            --green-main: #10b981;
+            --green-dark: #059669;
+        }
+        
         .sidebar { width: 250px; min-height: 100vh; background-color: #212529; }
         .sidebar-icon { width: 18px; height: 18px; margin-right: 12px; }
         .user-dropdown { position: absolute; bottom: 100%; left: 0; right: 0; z-index: 1000; background-color: #495057; border: 1px solid #6c757d; border-radius: 0.375rem; }
         .main-content { margin-left: 250px; padding: 20px; }
         .text-shadow { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); }
         .card { transition: all 0.3s ease; }
-        .card:hover { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+        .card:hover { box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2); }
         .card:hover .card-img-top { transform: scale(1.05); }
         .card-img-top[data-bs-toggle="modal"] { position: relative; }
         .card-img-top[data-bs-toggle="modal"]:hover::after { content: "🔍 Нажмите для увеличения"; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; white-space: nowrap; }
+        
+        /* Активная ссылка в навигации */
+        .nav-link-active {
+            background: linear-gradient(135deg, var(--green-light) 0%, var(--green-main) 100%) !important;
+            border: none !important;
+        }
+        
+        .nav-link-inactive {
+            background: transparent !important;
+            border: none !important;
+        }
+        
+        .nav-link-inactive:hover {
+            background: rgba(52, 211, 153, 0.1) !important;
+        }
     </style>
 </head>
 <body>
@@ -25,9 +45,9 @@
         <!-- Header -->
         <div class="p-3 border-bottom border-secondary">
             <div class="d-flex align-items-center">
-                <div class="bg-white text-dark rounded-circle d-flex align-items-center justify-content-center"
-                     style="width: 32px; height: 32px;">
-                    <span class="fw-bold">B</span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width: 32px; height: 32px; background: linear-gradient(135deg, #34d399 0%, #10b981 100%);">
+                    <span class="fw-bold text-white">B</span>
                 </div>
                 <span class="ms-2 fs-5">Меню</span>
             </div>
@@ -37,30 +57,27 @@
         <nav class="flex-grow-1 p-2">
             <ul class="list-unstyled mb-0">
                 <li class="mb-1">
-                    <button class="btn btn-primary w-100 text-start d-flex align-items-center">
-                        <svg class="sidebar-icon" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <a href="{% url 'marketplace:products_list' %}" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none {% if request.resolver_match.url_name == 'products_list' %}nav-link-active{% else %}nav-link-inactive{% endif %}">
+                        <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9,22 9,12 15,12 15,22"></polyline>
                         </svg>
-                    <a href="{% url 'marketplace:products_list' %}" class="text-white"><span>Главная</span></a>
-
-                    </button>
+                        <span>Главная</span>
+                    </a>
                 </li>
                 <li class="mb-1">
-                    <button class="btn btn-link text-white w-100 text-start d-flex align-items-center">
-                        <svg class="sidebar-icon" stroke="currentColor" stroke-width="2"
-                             viewBox="0 0 24 24">
+                    <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive">
+                        <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
                             <polyline points="2,17 12,22 22,17"></polyline>
                             <polyline points="2,12 12,17 22,12"></polyline>
                         </svg>
-                            <span>Категории</span>
+                        <span>Категории</span>
                     </button>
                 </li>
                 <li class="mb-1">
-                    <button class="btn btn-link text-white w-100 text-start d-flex align-items-center">
-                        <svg class="sidebar-icon" stroke="currentColor" stroke-width="2"
-                             viewBox="0 0 24 24">
+                    <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive">
+                        <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" x2="21" y1="6" y2="6"></line>
                             <path d="m16 10a4 4 0 0 1-8 0"></path>
@@ -69,31 +86,30 @@
                     </button>
                 </li>
                 <li class="mb-1">
-                    <button class="btn btn-link text-white w-100 text-start d-flex align-items-center">
-                        <svg class="sidebar-icon" stroke="currentColor" stroke-width="2"
-                             viewBox="0 0 24 24">
+                    <a href="{% url 'marketplace:contacts' %}" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none {% if request.resolver_match.url_name == 'contacts' %}nav-link-active{% else %}nav-link-inactive{% endif %}">
+                        <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                         </svg>
-                        <a href="{% url 'marketplace:contacts' %}" class="text-white"><span>Контакты</span></a>
-                    </button>
+                        <span>Контакты</span>
+                    </a>
                 </li>
                 <li class="mb-1">
-    <button class="btn btn-link text-white w-100 text-start d-flex align-items-center">
-        <svg class="sidebar-icon" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-        </svg>
-        <a href="{% url 'blog:post_list' %}" class="text-white"><span>Блог</span></a>
-    </button>
-</li>
+                    <a href="{% url 'blog:post_list' %}" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none {% if 'blog' in request.path %}nav-link-active{% else %}nav-link-inactive{% endif %}">
+                        <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span>Блог</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 
         <!-- Bottom Section -->
         <div class="p-2 border-top border-secondary position-relative">
-            <button class="btn btn-link text-white w-100 text-start d-flex align-items-center"
+            <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive"
                     onclick="toggleUserMenu()">
-                <svg class="sidebar-icon" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
@@ -104,10 +120,9 @@
             <div class="user-dropdown d-none" id="userMenu">
                 <ul class="list-unstyled mb-0 py-1">
                     <li>
-                        <button class="btn btn-link text-white w-100 text-start d-flex align-items-center"
+                        <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive"
                                 onclick="hideUserMenu()">
-                            <svg class="sidebar-icon" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
+                            <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <circle cx="12" cy="12" r="3"></circle>
                                 <path d="m12 1 3 6 6 3-6 3-3 6-3-6-6-3 6-3z"></path>
                             </svg>
@@ -115,11 +130,9 @@
                         </button>
                     </li>
                     <li>
-                        <button class="btn btn-link text-white w-100 text-start d-flex align-items-center"
+                        <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive"
                                 onclick="hideUserMenu()">
-                            <svg class="sidebar-icon" viewBox="0 0 24 24">
-                                "currentColor"
-                                stroke-width="2">
+                            <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path d="m15 3 4 4-4 4"></path>
                                 <polyline points="19,7 9,7"></polyline>
                                 <polyline points="9,21 5,21 5,3 9,3"></polyline>
@@ -131,12 +144,11 @@
             </div>
         </div>
     </div>
-    <!-- Main Content with Product Cards -->
+    <!-- Main Content -->
     {% block content %}{% endblock %}
 </div>
 
 <!-- Bootstrap JS -->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -160,18 +172,7 @@
             userMenu.classList.add('d-none');
         }
     });
-
-    // Add to cart functionality
-    document.querySelectorAll('.btn-primary').forEach(button => {
-        if (button.textContent === 'В корзину') {
-            button.addEventListener('click', function() {
-                const productName = this.closest('.card').querySelector('.card-title').textContent;
-                alert(`Товар "${productName}" добавлен в корзину!`);
-            });
-        }
-    });
 </script>
-
 
 </body>
 </html>
