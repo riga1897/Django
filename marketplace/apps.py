@@ -6,4 +6,4 @@ class MarketplaceConfig(AppConfig):
     name = "marketplace"
 
     def ready(self):
-        import marketplace.signals
+        import marketplace.signals  # noqa: F401

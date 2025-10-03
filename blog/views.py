@@ -15,13 +15,8 @@ class BlogPostListView(ListView):
     def get_queryset(self):
         show_drafts = self.request.GET.get('show_drafts')
 
-        # Для администраторов: показываем черновики по запросу
-        if self.request.user.is_authenticated and (self.request.user.is_staff or self.request.user.is_superuser):
-            if show_drafts:
-                return BlogPost.objects.all().order_by('-created_at')
-            else:
-                return BlogPost.objects.filter(is_published=True).order_by('-created_at')
-        # Для обычных пользователей: всегда только опубликованное
+        if show_drafts:
+            return BlogPost.objects.all().order_by('-created_at')
         else:
             return BlogPost.objects.filter(is_published=True).order_by('-created_at')
 
