@@ -1,8 +1,7 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import F
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from .models import BlogPost
 
@@ -15,30 +14,19 @@ class BlogPostListView(ListView):
     def get_queryset(self):
         show_drafts = self.request.GET.get('show_drafts')
 
-        # Для администраторов: показываем черновики по запросу
-        if self.request.user.is_authenticated and (self.request.user.is_staff or self.request.user.is_superuser):
-            if show_drafts:
-                return BlogPost.objects.all().order_by('-created_at')
-            else:
-                return BlogPost.objects.filter(is_published=True).order_by('-created_at')
-        # Для обычных пользователей: всегда только опубликованное
+        if show_drafts:
+            return BlogPost.objects.all().order_by('-created_at')
         else:
             return BlogPost.objects.filter(is_published=True).order_by('-created_at')
 
 
-class BlogPostDetailView(UserPassesTestMixin, DetailView):
+class BlogPostDetailView(DetailView):
     model = BlogPost
     template_name = 'blog/blogpost_detail.html'
     context_object_name = 'post'
 
-    def test_func(self):
-        post = self.get_object()
-        return post.is_published or (self.request.user.is_authenticated and (
-                    self.request.user.is_staff or self.request.user.is_superuser))
-
     def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
-        # Явно получаем объект или 404
         obj = get_object_or_404(BlogPost, pk=pk)
         BlogPost.objects.filter(pk=obj.pk).update(views_count=F('views_count') + 1)
         return super().get(request, *args, **kwargs)

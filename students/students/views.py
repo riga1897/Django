@@ -1,10 +1,10 @@
-from django.http import HttpResponse, Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, DeleteView
+from django.views.generic import DeleteView, DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from .models import Student, MyModel
+from .models import MyModel, Student
 
 
 class MyModelCreateView(CreateView):
@@ -20,10 +20,9 @@ class MyModelCreateView(CreateView):
 
     def form_invalid(self, form):
         response = super().form_invalid(form)
-        response.context_data["error_message"] = "Пожалуйста, исправьте ошибки"
+        # response.context_data["error_message"] = "Пожалуйста, исправьте ошибки"
 
         return response
-
 
 
 class MyModelListView(ListView):
@@ -42,7 +41,8 @@ class MyModelDetailView(DetailView):
     template_name = "students/mymodel_detail.html"
     context_object_name = "mymodel"
 
-    def get_additional_data(self):
+    @staticmethod
+    def get_additional_data():
         return "Это дополнительная информация"
 
     def get_context_data(self, **kwargs):
@@ -53,8 +53,7 @@ class MyModelDetailView(DetailView):
 
         return context
 
-
-    def get_object(self, queryset = None):
+    def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         if not obj.is_active:
             raise Http404("Объект не найден")
