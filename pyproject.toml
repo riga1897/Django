@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "6. Основы Django"
 authors = ["Ri Ga <riga1897@yandex.ru>"]
 readme = "README.md"
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.13"
