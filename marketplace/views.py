@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 
 from marketplace.models import Product
@@ -62,3 +62,25 @@ class ContactsView(FormView):
 #         messages.success(request, f"Спасибо, {name}! Ваше сообщение получено.")
 #
 #     return render(request, "marketplace/contacts.html")
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    template_name = 'marketplace/product_form.html'
+    fields = ['name', 'description', 'photo', 'category', 'price']
+    success_url = reverse_lazy('marketplace:products_list')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    template_name = 'marketplace/product_form.html'
+    fields = ['name', 'description', 'photo', 'category', 'price']
+
+    def get_success_url(self):
+        return reverse_lazy('marketplace:product_detail', kwargs={'pk': self.object.pk})
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'marketplace/product_confirm_delete.html'
+    success_url = reverse_lazy('marketplace:products_list')
