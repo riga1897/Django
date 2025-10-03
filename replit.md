@@ -28,6 +28,11 @@ The application uses Django's class-based views extensively, implements custom t
   - Added gradient classes (green for forms, red for deletions)
   - Created button, card, icon, and image utility classes
   - Improved maintainability and code organization
+- ✅ **Layout Consistency**: Added responsive width constraints to all detail and form pages
+  - Added Bootstrap grid wrappers (`row justify-content-center` + `col-lg-11 col-xl-10`) to all marketplace and blog templates
+  - Ensures consistent centered layout across product/blog detail and form pages
+  - Prevents content from stretching too wide on large screens while maintaining responsiveness
+  - All forms now have uniform appearance regardless of zoom level
 
 # User Preferences
 
