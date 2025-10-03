@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 
 from .models import Product
 
-
 FORBIDDEN_WORDS = [
     'казино', 'криптовалюта', 'крипта', 'биржа', 
     'дешево', 'бесплатно', 'обман', 'полиция', 'радар'
@@ -50,11 +49,10 @@ class ProductForm(forms.ModelForm):
     
     def clean_photo(self):
         photo = self.cleaned_data.get('photo')
-        
+
         if photo:
-            if hasattr(photo, 'size'):
-                if photo.size > 5 * 1024 * 1024:
-                    raise ValidationError('Размер файла не должен превышать 5 МБ')
+            if hasattr(photo, 'size') and photo.size > 5 * 1024 * 1024:
+                raise ValidationError('Размер файла не должен превышать 5 МБ')
             
             if hasattr(photo, 'name'):
                 valid_extensions = ['.jpg', '.jpeg', '.png']
@@ -69,7 +67,7 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        for field_name, field in self.fields.items():
+        for _field_name, field in self.fields.items():
             if field.widget.__class__.__name__ not in ['CheckboxInput', 'RadioSelect']:
                 current_classes = field.widget.attrs.get('class', '')
                 if 'form-control' not in current_classes:
