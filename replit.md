@@ -33,6 +33,16 @@ The application uses Django's class-based views extensively, implements custom t
   - Ensures consistent centered layout across product/blog detail and form pages
   - Prevents content from stretching too wide on large screens while maintaining responsiveness
   - All forms now have uniform appearance regardless of zoom level
+- ✅ **Critical Layout Fix**: Fixed 500px empty space issue (removed duplicate margin-left from base template)
+  - Changed base.html `.main-content` from fixed margin to flex-based layout (flex: 1, padding: 20px 8px)
+  - Content now properly spans from sidebar (250px) to right edge with minimal side padding
+  - Forms and detail pages now have consistent width across all screens
+- ✅ **Image Display Optimization**: Eliminated white bars around images in detail pages
+  - Removed fixed height constraint (450px) from `.image-detail` class in custom.css
+  - Changed to responsive sizing (width: 100%, height: 100%) to fill card completely
+  - Removed all padding from image container to eliminate white borders
+  - Images now scale with object-fit: contain, preserving aspect ratios
+  - Grey card background visible only where image aspect ratio creates letterboxing
 
 # User Preferences
 
