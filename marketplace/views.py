@@ -4,7 +4,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, FormView, L
 
 from marketplace.models import Product
 
-from .forms import ContactForm
+from .forms import ContactForm, ProductForm
 
 
 class ProductsListView(ListView):
@@ -66,15 +66,15 @@ class ContactsView(FormView):
 
 class ProductCreateView(CreateView):
     model = Product
+    form_class = ProductForm
     template_name = 'marketplace/product_form.html'
-    fields = ['name', 'description', 'photo', 'category', 'price']
     success_url = reverse_lazy('marketplace:products_list')
 
 
 class ProductUpdateView(UpdateView):
     model = Product
+    form_class = ProductForm
     template_name = 'marketplace/product_form.html'
-    fields = ['name', 'description', 'photo', 'category', 'price']
 
     def get_success_url(self):
         return reverse_lazy('marketplace:product_detail', kwargs={'pk': self.object.pk})
