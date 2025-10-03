@@ -1,57 +1,158 @@
 {% extends 'marketplace/base.html' %}
 {% load my_tags %}
-
 {% block content %}
-<div class="container mt-5">
-    <article>
-        <div class="d-flex justify-content-between align-items-start mb-3">
-            <h1>{{ post.title }}</h1>
-            <div>
-                <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-secondary btn-sm">Изменить</a>
-                <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-danger btn-sm">Удалить</a>
-            </div>
+<div class="main-content">
+    <!-- Красивый заголовок с градиентом (фиолетовый для блога) -->
+    <div class="mb-4 p-5 rounded-4 text-white text-center position-relative overflow-hidden" 
+         style="background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);">
+        <div class="position-relative" style="z-index: 2;">
+            <svg class="mb-3" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <h1 class="display-5 fw-bold text-shadow mb-2">{{ post.title }}</h1>
+            <p class="lead text-shadow mb-0">
+                {% if post.is_published %}Опубликованная запись{% else %}Черновик{% endif %}
+            </p>
         </div>
+    </div>
 
-        <!-- Контейнер для изображения -->
-        <div class="mb-4">
-            {% if post.preview %}
-            <div class="card">
+    <div class="row g-4">
+        <!-- Изображение записи -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg h-100" style="border-radius: 1rem; overflow: hidden;">
+                {% if post.preview %}
                 <img src="{{ post.preview.url }}"
                      class="card-img-top"
-                     style="height: 400px; object-fit: contain; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; cursor: pointer;"
+                     style="height: 450px; object-fit: contain; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; cursor: pointer; transition: transform 0.3s ease;"
                      alt="{{ post.title }}"
                      data-bs-toggle="modal"
-                     data-bs-target="#imageModalDetail">
+                     data-bs-target="#imageModal"
+                     onmouseover="this.style.transform='scale(1.02)'"
+                     onmouseout="this.style.transform='scale(1)'">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 450px;">
+                    <span class="text-muted fs-5">Изображение отсутствует</span>
+                </div>
+                {% endif %}
             </div>
-            {% else %}
-            <div class="card">
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
-                    <span class="text-muted">Изображение отсутствует</span>
+        </div>
+
+        <!-- Информация о записи -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg h-100" style="border-radius: 1rem;">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-4" style="color: #8b5cf6;">{{ post.title }}</h2>
+                    
+                    <!-- Контент -->
+                    <div class="mb-4 p-3 rounded" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                        <div class="d-flex align-items-start">
+                            <svg class="me-2 flex-shrink-0" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-top: 2px; color: #8b5cf6;">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" x2="8" y1="13" y2="13"></line>
+                                <line x1="16" x2="8" y1="17" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <div>
+                                <strong class="text-muted small">СОДЕРЖАНИЕ:</strong>
+                                <div class="mt-1">{{ post.content|linebreaks }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Статус публикации -->
+                    <div class="mb-3 d-flex align-items-center">
+                        <svg class="me-2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #8b5cf6;">
+                            {% if post.is_published %}
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            {% else %}
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" x2="12" y1="8" y2="12"></line>
+                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            {% endif %}
+                        </svg>
+                        <span class="text-muted me-2">Статус:</span>
+                        <span class="badge px-3 py-2" style="background: linear-gradient(135deg, {% if post.is_published %}#10b981 0%, #059669{% else %}#a78bfa 0%, #8b5cf6{% endif %} 100%); font-size: 0.9rem;">
+                            {% if post.is_published %}Опубликовано{% else %}Черновик{% endif %}
+                        </span>
+                    </div>
+
+                    <!-- Просмотры -->
+                    <div class="mb-4 p-3 rounded d-flex align-items-center" style="background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);">
+                        <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #7c3aed;">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <div>
+                            <span class="text-muted small d-block">ПРОСМОТРОВ:</span>
+                            <span class="h3 mb-0 fw-bold" style="color: #7c3aed;">{{ post.views_count }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Даты -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <svg class="me-2" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #8b5cf6;">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" x2="16" y1="2" y2="6"></line>
+                                    <line x1="8" x2="8" y1="2" y2="6"></line>
+                                    <line x1="3" x2="21" y1="10" y2="10"></line>
+                                </svg>
+                                <div>
+                                    <span class="text-muted small d-block">Создана:</span>
+                                    <span class="small">{{ post.created_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <svg class="me-2" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #8b5cf6;">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <div>
+                                    <span class="text-muted small d-block">Обновлена:</span>
+                                    <span class="small">{{ post.updated_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кнопки действий -->
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <a href="{% url 'blog:post_list' %}" 
+                           class="btn px-4 py-2 text-white" 
+                           style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); border: none; border-radius: 0.5rem; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"
+                           onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.15)'"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)'">
+                            ← Назад ко всем записям
+                        </a>
+                        <a href="{% url 'blog:post_update' post.pk %}" 
+                           class="btn px-4 py-2 text-white" 
+                           style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border: none; border-radius: 0.5rem; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);"
+                           onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(59, 130, 246, 0.4)'"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(59, 130, 246, 0.3)'">
+                            Изменить
+                        </a>
+                        <a href="{% url 'blog:post_delete' post.pk %}" 
+                           class="btn px-4 py-2 text-white" 
+                           style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border: none; border-radius: 0.5rem; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);"
+                           onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(239, 68, 68, 0.4)'"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(239, 68, 68, 0.3)'">
+                            Удалить
+                        </a>
+                    </div>
                 </div>
             </div>
-            {% endif %}
         </div>
-
-        <div class="mb-4">
-            {{ post.content|linebreaks }}
-        </div>
-
-        <div class="text-muted border-top pt-3">
-            <small>
-                <strong>Дата создания:</strong> {{ post.created_at|date:"d.m.Y H:i" }} |
-                <strong>Просмотров:</strong> {{ post.views_count }} |
-                <strong>Статус:</strong> {% if post.is_published %}Опубликовано{% else %}Черновик{% endif %}
-            </small>
-        </div>
-    </article>
-
-    <div class="mt-4">
-        <a href="{% url 'blog:post_list' %}" class="btn btn-outline-primary">← Назад ко всем записям</a>
     </div>
 </div>
 
-<!-- Модальное окно для детальной страницы -->
-<div class="modal fade" id="imageModalDetail" tabindex="-1" aria-labelledby="imageModalDetailLabel" aria-hidden="true">
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
             <div class="modal-header border-0 pb-0">
