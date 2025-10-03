@@ -1,9 +1,9 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import FormView, CreateView, UpdateView, DeleteView
-from django.views.generic import ListView, DetailView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
 from marketplace.models import Product
+
 from .forms import ContactForm
 
 

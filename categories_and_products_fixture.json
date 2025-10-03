@@ -16,6 +16,14 @@
     }
 },
 {
+    "model": "marketplace.category",
+    "pk": 3,
+    "fields": {
+        "name": "Наушники",
+        "description": "Наушники, устройство для персонального прослушивания аудио."
+    }
+},
+{
     "model": "marketplace.product",
     "pk": 1,
     "fields": {

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from marketplace.apps import MarketplaceConfig
+
 from . import views
 
 app_name = MarketplaceConfig.name
