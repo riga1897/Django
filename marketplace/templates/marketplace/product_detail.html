@@ -2,8 +2,6 @@
 {% load my_tags %}
 {% block content %}
 <div class="main-content">
-    <div class="row justify-content-center">
-        <div class="col-lg-11 col-xl-10">
     <!-- Красивый заголовок с градиентом -->
     <div class="mb-4 p-5 rounded-4 text-white text-center position-relative overflow-hidden gradient-green-contrast page-header-contrast">
         <div class="position-relative z-index-2">
@@ -17,10 +15,10 @@
         </div>
     </div>
 
-    <div class="row g-4">
+    <div class="row g-4 align-items-stretch">
         <!-- Изображение товара -->
-        <div class="col-md-6">
-            <div class="card border-0 shadow-lg h-100 card-rounded">
+        <div class="col-12 col-lg-5">
+            <div class="card border-0 shadow-lg h-100 card-rounded d-flex align-items-center justify-content-center">
                 <img src="{{ product.photo | media_filter }}"
                      class="card-img-top gradient-light hover-lift image-detail"
                      alt="{{ product.name }}"
@@ -31,7 +29,7 @@
         </div>
 
         <!-- Информация о товаре -->
-        <div class="col-md-6">
+        <div class="col-12 col-lg-7">
             <div class="card border-0 shadow-lg h-100 card-rounded">
                 <div class="card-body p-4">
                     <h2 class="card-title mb-4 text-green-dark">{{ product.name }}</h2>
@@ -121,8 +119,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
         </div>
     </div>
 </div>
