@@ -25,12 +25,9 @@ class BlogPostDetailView(DetailView):
     template_name = 'blog/blogpost_detail.html'
     context_object_name = 'post'
 
-    def get_queryset(self):
-        return BlogPost.objects.filter(is_published=True)
-
     def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
-        obj = get_object_or_404(BlogPost, pk=pk, is_published=True)
+        obj = get_object_or_404(BlogPost, pk=pk)
         BlogPost.objects.filter(pk=obj.pk).update(views_count=F('views_count') + 1)
         return super().get(request, *args, **kwargs)
 
