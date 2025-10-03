@@ -3,7 +3,46 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .models import Book
+from .forms import AuthorForm, BookForm
+from .models import Book, Author
+
+
+class AuthorListView(ListView):
+    model = Author
+    form_class = AuthorForm
+    template_name = 'library/authors_list.html'
+    context_object_name = 'authors'
+
+
+class AuthorDetailView(DetailView):
+    model = Author
+    template_name = 'library/author_detail.html'
+    context_object_name = 'author'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['books_count'] = self.object.books.count()
+        return context
+
+
+class AuthorCreateView(CreateView):
+    model = Author
+    fields = ['first_name', 'last_name', 'birth_date']
+    template_name = 'library/author_form.html'
+    success_url = reverse_lazy('library:authors_list')
+
+
+class AuthorUpdateView(UpdateView):
+    model = Author
+    fields = ['first_name', 'last_name', 'birth_date']
+    template_name = 'library/author_form.html'
+    success_url = reverse_lazy('library:authors_list')
+
+
+class AuthorDeleteView(DeleteView):
+    model = Author
+    template_name = 'library/author_confirm_delete.html'
+    success_url = reverse_lazy('library:authors_list')
 
 
 class BooksListView(ListView):
@@ -29,14 +68,16 @@ class BookDetailView(DetailView):
 
 class BookCreateView(CreateView):
     model = Book
-    fields = ['title', 'publication_date', 'author']
+    # fields = ['title', 'publication_date', 'author']
+    form_class = BookForm
     template_name = 'library/book_form.html'
     success_url = reverse_lazy('library:books_list')
 
 
 class BookUpdateView(UpdateView):
     model = Book
-    fields = ['title', 'publication_date', 'author']
+    # fields = ['title', 'publication_date', 'author']
+    form_class = BookForm
     template_name = 'library/book_form.html'
     success_url = reverse_lazy('library:books_list')
 
