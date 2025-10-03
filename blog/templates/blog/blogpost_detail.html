@@ -16,10 +16,10 @@
         </div>
     </div>
 
-    <div class="row g-4">
+    <div class="row g-4 align-items-stretch">
         <!-- Изображение записи -->
-        <div class="col-md-6">
-            <div class="card border-0 shadow-lg h-100 card-rounded">
+        <div class="col-12 col-lg-5">
+            <div class="card border-0 shadow-lg h-100 card-rounded d-flex align-items-center justify-content-center">
                 {% if post.preview %}
                 <img src="{{ post.preview.url }}"
                      class="card-img-top gradient-light hover-lift image-detail"
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Информация о записи -->
-        <div class="col-md-6">
+        <div class="col-12 col-lg-7">
             <div class="card border-0 shadow-lg h-100 card-rounded">
                 <div class="card-body p-4">
                     <h2 class="card-title mb-4 text-green-dark">{{ post.title }}</h2>
