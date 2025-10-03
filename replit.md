@@ -19,6 +19,10 @@ The application uses Django's class-based views extensively, implements custom t
 - ✅ Unified form design across Blog and Marketplace with consistent Bootstrap styling, gradients, icons, and animations
 - ✅ Fixed PostgreSQL database connection using `dj_database_url` for Replit environment
 - ✅ Standardized URL patterns: all product URLs use `product/<int:pk>/...` convention
+- ✅ Removed authentication requirements (user login/registration not needed)
+- ✅ Removed user menu ("Пользователь") from sidebar navigation
+- ✅ Fixed blog post visibility: detail pages now accessible for all posts (published/unpublished) via direct URL
+- ✅ List views continue to filter by publication status (show only published, or all with ?show_drafts=1)
 
 # User Preferences
 
@@ -48,10 +52,11 @@ Preferred communication style: Simple, everyday language.
 2. **Blog App**
    - BlogPost model with publishing workflow (draft/published states)
    - View count tracking using F() expressions to prevent race conditions
-   - Access control via UserPassesTestMixin for draft visibility
+   - List views filter posts by publication status (published only by default, all with ?show_drafts=1)
+   - Detail views accessible for any post via direct URL (no authentication required)
    - Image preview support with modal display
    - CRUD operations using CreateView, UpdateView, DeleteView
-   - Admin-specific features for managing draft posts
+   - Post editing returns to detail page after save (allows toggling publish status without errors)
 
 3. **Library App** (Separate Django project structure)
    - Author and Book models with one-to-many relationships
