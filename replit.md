@@ -23,6 +23,12 @@ The application uses Django's class-based views extensively, implements custom t
 - ✅ Removed user menu ("Пользователь") from sidebar navigation
 - ✅ Fixed blog post visibility: detail pages now accessible for all posts (published/unpublished) via direct URL
 - ✅ List views continue to filter by publication status (show only published, or all with ?show_drafts=1)
+- ✅ Unified detail page styling: Both marketplace products and blog posts use same design approach
+  - Product detail pages: Green gradient headers with shopping cart icon
+  - Blog detail pages: Purple gradient headers with book icon
+  - Both use same layout structure: hero section, image card, info card with gradients, icons, and animations
+  - Single template for all blog posts (published and drafts) with conditional status badges
+  - Responsive Bootstrap grid, shadow effects, hover animations on buttons
 
 # User Preferences
 

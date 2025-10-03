@@ -19,25 +19,25 @@ args = "Django Server"
 name = "Django Server"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "poetry run python manage.py runserver 0.0.0.0:5000"
-waitForPort = 5000
-
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python manage.py runserver 0.0.0.0:5000"
+waitForPort = 5000
 
 [[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 33071
-externalPort = 3001
-
-[[ports]]
 localPort = 33399
 externalPort = 3000
+
+[[ports]]
+localPort = 35847
+externalPort = 3001
 
 [nix]
 channel = "stable-25_05"
