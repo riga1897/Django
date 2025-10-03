@@ -23,6 +23,11 @@ The application uses Django's class-based views extensively, implements custom t
 - ✅ Removed user menu ("Пользователь") from sidebar navigation
 - ✅ Fixed blog post visibility: detail pages now accessible for all posts (published/unpublished) via direct URL
 - ✅ List views continue to filter by publication status (show only published, or all with ?show_drafts=1)
+- ✅ **CSS Optimization**: Created `static/css/custom.css` with reusable classes, replacing all inline styles in forms and detail pages
+  - Extracted inline styles to CSS variables and utility classes
+  - Added gradient classes (green for forms, red for deletions)
+  - Created button, card, icon, and image utility classes
+  - Improved maintainability and code organization
 
 # User Preferences
 
