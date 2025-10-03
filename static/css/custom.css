@@ -1,0 +1,321 @@
+/* Переменные цветов */
+:root {
+    /* Зеленые тона - списки и контакты */
+    --green-light: #34d399;
+    --green-main: #10b981;
+    
+    /* Контрастные зеленые - формы */
+    --green-contrast-light: #22c55e;
+    --green-contrast-dark: #16a34a;
+    --green-dark: #15803d;
+    
+    /* Красные тона - удаление */
+    --red-light: #ef4444;
+    --red-main: #dc2626;
+    
+    /* Желтые тона - черновики */
+    --yellow-light: #fbbf24;
+    --yellow-main: #f59e0b;
+    
+    /* Серые тона */
+    --gray-light: #6b7280;
+    --gray-dark: #4b5563;
+}
+
+/* ===== ГРАДИЕНТНЫЕ ФОНЫ ===== */
+
+/* Зеленые градиенты */
+.gradient-green {
+    background: linear-gradient(135deg, var(--green-light) 0%, var(--green-main) 100%);
+}
+
+.gradient-green-contrast {
+    background: linear-gradient(135deg, var(--green-contrast-light) 0%, var(--green-contrast-dark) 100%);
+}
+
+.gradient-green-subtle {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+}
+
+/* Красные градиенты */
+.gradient-red {
+    background: linear-gradient(135deg, var(--red-light) 0%, var(--red-main) 100%);
+}
+
+.gradient-red-subtle {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+}
+
+/* Желтые градиенты */
+.gradient-yellow {
+    background: linear-gradient(135deg, var(--yellow-light) 0%, var(--yellow-main) 100%);
+}
+
+/* Серые градиенты */
+.gradient-gray {
+    background: linear-gradient(135deg, var(--gray-light) 0%, var(--gray-dark) 100%);
+}
+
+.gradient-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* ===== КНОПКИ ===== */
+
+.btn-green {
+    background: linear-gradient(135deg, var(--green-light) 0%, var(--green-main) 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-green:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 211, 153, 0.4);
+    color: white;
+}
+
+.btn-green-contrast {
+    background: linear-gradient(135deg, var(--green-contrast-light) 0%, var(--green-contrast-dark) 100%);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(34, 197, 94, 0.3);
+}
+
+.btn-green-contrast:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(34, 197, 94, 0.4);
+    color: white;
+}
+
+.btn-red {
+    background: linear-gradient(135deg, var(--red-light) 0%, var(--red-main) 100%);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+}
+
+.btn-red:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(239, 68, 68, 0.4);
+    color: white;
+}
+
+.btn-gray {
+    background: linear-gradient(135deg, var(--gray-light) 0%, var(--gray-dark) 100%);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-gray:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+.btn-yellow {
+    background: linear-gradient(135deg, var(--yellow-light) 0%, var(--yellow-main) 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-yellow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+    color: white;
+}
+
+/* ===== КАРТОЧКИ ===== */
+
+.card-header-green {
+    background: linear-gradient(135deg, var(--green-light) 0%, var(--green-main) 100%);
+    border-radius: 16px 16px 0 0;
+    border: none;
+}
+
+.card-header-green-contrast {
+    background: linear-gradient(135deg, var(--green-contrast-light) 0%, var(--green-contrast-dark) 100%);
+    border-radius: 16px 16px 0 0;
+    border: none;
+}
+
+.card-header-red {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: none;
+}
+
+.card-danger-border {
+    border-left: 6px solid var(--red-main);
+}
+
+.card-rounded {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.card-rounded-large {
+    border-radius: 16px;
+}
+
+/* ===== ЗАГОЛОВКИ С ГРАДИЕНТОМ ===== */
+
+.page-header {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(52, 211, 153, 0.3);
+}
+
+.page-header-contrast {
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+}
+
+/* ===== БЕЙДЖИ ===== */
+
+.badge-green {
+    background: linear-gradient(135deg, var(--green-contrast-light) 0%, var(--green-contrast-dark) 100%);
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.badge-yellow {
+    background: linear-gradient(135deg, var(--yellow-light) 0%, var(--yellow-main) 100%);
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* ===== ИКОНКИ ===== */
+
+.icon-green {
+    color: var(--green-contrast-dark);
+}
+
+.icon-green-light {
+    color: var(--green-main);
+}
+
+.icon-green-dark {
+    color: var(--green-dark);
+}
+
+.icon-red {
+    color: var(--red-main);
+}
+
+.icon-gray {
+    color: var(--gray-light);
+}
+
+/* ===== АЛЕРТЫ ===== */
+
+.alert-danger-custom {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 4px solid var(--red-main);
+    border-radius: 0.375rem;
+}
+
+.alert-success-custom {
+    border-left: 4px solid var(--green-main);
+}
+
+/* ===== УТИЛИТЫ ===== */
+
+.text-green {
+    color: var(--green-contrast-dark);
+}
+
+.text-green-light {
+    color: var(--green-main);
+}
+
+.text-green-dark {
+    color: var(--green-dark);
+}
+
+.text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.word-break {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Flex утилиты */
+.flex-1-min-0 {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ===== АНИМАЦИИ ===== */
+
+.hover-lift {
+    transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+/* ===== СПЕЦИФИЧНЫЕ КОМПОНЕНТЫ ===== */
+
+/* Круг для иконок */
+.icon-circle-red {
+    padding: 0.75rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red-light) 0%, var(--red-main) 100%);
+}
+
+/* Информационные блоки */
+.info-box-green {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+}
+
+.info-box-light {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* ===== УТИЛИТЫ ДЛЯ Z-INDEX ===== */
+
+.z-index-2 {
+    z-index: 2;
+}
+
+/* ===== УТИЛИТЫ ДЛЯ ИЗОБРАЖЕНИЙ ===== */
+
+.image-detail {
+    height: 450px;
+    object-fit: contain;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.image-placeholder {
+    height: 450px;
+}
+
+.image-modal {
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+/* ===== УТИЛИТЫ ДЛЯ SVG ===== */
+
+.icon-mt-2 {
+    margin-top: 2px;
+}
