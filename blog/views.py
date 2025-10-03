@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import F
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -21,20 +20,17 @@ class BlogPostListView(ListView):
             return BlogPost.objects.filter(is_published=True).order_by('-created_at')
 
 
-class BlogPostDetailView(UserPassesTestMixin, DetailView):
+class BlogPostDetailView(DetailView):
     model = BlogPost
     template_name = 'blog/blogpost_detail.html'
     context_object_name = 'post'
 
-    def test_func(self):
-        post = self.get_object()
-        return post.is_published or (self.request.user.is_authenticated and (
-                    self.request.user.is_staff or self.request.user.is_superuser))
+    def get_queryset(self):
+        return BlogPost.objects.filter(is_published=True)
 
     def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
-        # Явно получаем объект или 404
-        obj = get_object_or_404(BlogPost, pk=pk)
+        obj = get_object_or_404(BlogPost, pk=pk, is_published=True)
         BlogPost.objects.filter(pk=obj.pk).update(views_count=F('views_count') + 1)
         return super().get(request, *args, **kwargs)
 

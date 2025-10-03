@@ -13,7 +13,6 @@
         
         .sidebar { width: 250px; min-height: 100vh; background-color: #212529; }
         .sidebar-icon { width: 18px; height: 18px; margin-right: 12px; }
-        .user-dropdown { position: absolute; bottom: 100%; left: 0; right: 0; z-index: 1000; background-color: #495057; border: 1px solid #6c757d; border-radius: 0.375rem; }
         .main-content { margin-left: 250px; padding: 20px; }
         .text-shadow { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); }
         .card { transition: all 0.3s ease; }
@@ -104,45 +103,6 @@
                 </li>
             </ul>
         </nav>
-
-        <!-- Bottom Section -->
-        <div class="p-2 border-top border-secondary position-relative">
-            <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive"
-                    onclick="toggleUserMenu()">
-                <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span>Пользователь</span>
-            </button>
-
-            <!-- User Dropdown Menu -->
-            <div class="user-dropdown d-none" id="userMenu">
-                <ul class="list-unstyled mb-0 py-1">
-                    <li>
-                        <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive"
-                                onclick="hideUserMenu()">
-                            <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="m12 1 3 6 6 3-6 3-3 6-3-6-6-3 6-3z"></path>
-                            </svg>
-                            <span>Профиль</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive"
-                                onclick="hideUserMenu()">
-                            <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="m15 3 4 4-4 4"></path>
-                                <polyline points="19,7 9,7"></polyline>
-                                <polyline points="9,21 5,21 5,3 9,3"></polyline>
-                            </svg>
-                            <span>Вход</span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
     </div>
     <!-- Main Content -->
     {% block content %}{% endblock %}
@@ -150,29 +110,6 @@
 
 <!-- Bootstrap JS -->
 <script src="/static/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    function toggleUserMenu() {
-        const userMenu = document.getElementById('userMenu');
-        userMenu.classList.toggle('d-none');
-    }
-
-    function hideUserMenu() {
-        document.getElementById('userMenu').classList.add('d-none');
-    }
-
-    // Close menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const userMenu = document.getElementById('userMenu');
-        const userButton = document.querySelector('[onclick="toggleUserMenu()"]');
-
-        if (!userMenu.classList.contains('d-none') &&
-            !userMenu.contains(event.target) &&
-            !userButton.contains(event.target)) {
-            userMenu.classList.add('d-none');
-        }
-    });
-</script>
 
 </body>
 </html>
