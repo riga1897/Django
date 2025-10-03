@@ -1,0 +1,72 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <h2 class="text-center mb-4">Контакты</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <!-- ЗАМЕНА старой формы на эту -->
+                <form class="row gy-2 gx-3" method="POST">
+                    {% csrf_token %}
+
+                    <!-- Поле имени -->
+                    <div class="col-12">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <div class="text-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Поле email -->
+                    <div class="col-12">
+                        {{ form.email.label_tag }}
+                        <div class="input-group">
+                            <div class="input-group-text">@</div>
+                            {{ form.email }}
+                        </div>
+                        {% if form.email.errors %}
+                        <div class="text-danger">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Поле сообщения -->
+                    <div class="col-12">
+                        {{ form.message.label_tag }}
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                        <div class="text-danger">{{ form.message.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12 mt-2 d-flex justify-content-start">
+                        <button class="btn btn-primary btn-sm" type="submit">Отправить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5>Наши контакты</h5>
+                <p><strong>Адрес:</strong> г. Москва, ул. Примерная, д. 123</p>
+                <p><strong>Телефон:</strong> +7 (999) 123-45-67</p>
+                <p><strong>Email:</strong> info@marketplace.com</p>
+                <p><strong>Режим работы:</strong> Пн-Пт 9:00-18:00</p>
+                <hr>
+                <p class="text-muted">Мы рады ответить на все ваши вопросы и готовы помочь с выбором товаров.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

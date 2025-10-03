@@ -1,0 +1,127 @@
+{% load my_tags %}
+{% with widget_name=field|widget_type %}
+<div class="mb-4">
+    <label class="form-label fw-bold text-secondary">
+        {% if 'Textarea' in widget_name %}
+            <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2V7h-.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 4.5 5H5V3z"/>
+                <path d="M6 3h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H6z"/>
+            </svg>
+        {% elif 'Select' in widget_name %}
+            <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+            </svg>
+        {% elif 'FileInput' in widget_name or 'ClearableFileInput' in widget_name %}
+            <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
+            </svg>
+        {% elif 'CheckboxInput' in widget_name %}
+            <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+            </svg>
+        {% elif field.field.widget.input_type == 'number' %}
+            <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+            </svg>
+        {% else %}
+            <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+            </svg>
+        {% endif %}
+        {{ field.label }}
+    </label>
+    
+    {% if 'Textarea' in widget_name %}
+        <textarea name="{{ field.name }}" 
+                  id="{{ field.id_for_label }}"
+                  class="form-control shadow-sm"
+                  style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
+                  rows="4"
+                  {% if field.field.required %}required{% endif %}
+                  onfocus="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 0 0 0.25rem rgba(13,110,253,.25)'"
+                  onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">{{ field.value|default:'' }}</textarea>
+    {% elif 'CheckboxInput' in widget_name %}
+        <div class="form-check form-switch">
+            <input type="checkbox" 
+                   name="{{ field.name }}"
+                   id="{{ field.id_for_label }}"
+                   class="form-check-input shadow-sm"
+                   style="cursor: pointer; width: 3em; height: 1.5em;"
+                   {% if field.value %}checked{% endif %}>
+        </div>
+    {% elif 'Select' in widget_name %}
+        <select name="{{ field.name }}"
+                id="{{ field.id_for_label }}"
+                class="form-select shadow-sm"
+                style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
+                {% if field.field.required %}required{% endif %}
+                onfocus="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 0 0 0.25rem rgba(13,110,253,.25)'"
+                onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">
+            {% for value, label in field.field.choices %}
+                <option value="{{ value }}" {% if field.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    {% elif 'FileInput' in widget_name or 'ClearableFileInput' in widget_name %}
+        <div class="card shadow-sm" style="border: 2px dashed #e9ecef; border-radius: 8px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+            <div class="card-body text-center p-4">
+                <input type="file" 
+                       name="{{ field.name }}"
+                       id="{{ field.id_for_label }}"
+                       class="form-control"
+                       accept="image/*"
+                       onchange="previewImage(this, '{{ field.id_for_label }}_preview')"
+                       {% if field.field.required %}required{% endif %}>
+                <div id="{{ field.id_for_label }}_preview" class="mt-3">
+                    {% if field.value %}
+                        <img src="{{ field.value.url }}" class="img-thumbnail" style="max-height: 200px; object-fit: contain;" alt="Preview">
+                    {% endif %}
+                </div>
+                <small class="text-muted d-block mt-2">Загрузите изображение (JPG, PNG)</small>
+            </div>
+        </div>
+    {% else %}
+        <input type="{{ field.field.widget.input_type }}" 
+               name="{{ field.name }}"
+               id="{{ field.id_for_label }}"
+               class="form-control shadow-sm"
+               style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
+               value="{{ field.value|default:'' }}"
+               {% if field.field.required %}required{% endif %}
+               onfocus="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 0 0 0.25rem rgba(13,110,253,.25)'"
+               onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">
+    {% endif %}
+    
+    {% if field.help_text %}
+        <div class="form-text text-muted small">
+            <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16" class="me-1">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+            </svg>
+            {{ field.help_text }}
+        </div>
+    {% endif %}
+    
+    {% if field.errors %}
+        <div class="alert alert-danger mt-2 py-2 px-3" style="border-radius: 8px;">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="me-1">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+            </svg>
+            {{ field.errors }}
+        </div>
+    {% endif %}
+</div>
+{% endwith %}
+
+<script>
+function previewImage(input, previewId) {
+    const preview = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = '<img src="' + e.target.result + '" class="img-thumbnail shadow" style="max-height: 200px; object-fit: contain; border-radius: 8px;" alt="Preview">';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>

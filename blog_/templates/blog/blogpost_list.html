@@ -1,0 +1,30 @@
+{% extends 'marketplace/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-center mb-0">Блог</h1>
+        <div>
+            {% if request.GET.show_drafts %}
+                <a href="?" class="btn btn-warning">Скрыть черновики</a>
+            {% else %}
+                <a href="?show_drafts=1" class="btn btn-outline-warning">Показать черновики</a>
+            {% endif %}
+            <a href="{% url 'blog:post_create' %}" class="btn btn-primary">Новая запись</a>
+        </div>
+    </div>
+
+    {% if posts %}
+    <div class="row">
+        {% for post in posts %}
+            {% include 'blog/blogpost_card.html' with post=post %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        <h4 class="alert-heading">Пока нет записей</h4>
+        <p class="mb-0">Будьте первым, кто поделится интересными мыслями!</p>
+        <a href="{% url 'blog:post_create' %}" class="btn btn-primary mt-3">Создать первую запись</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

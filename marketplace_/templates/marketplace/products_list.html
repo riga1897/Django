@@ -1,10 +1,7 @@
 {% extends 'marketplace/base.html' %}
 {% block content %}
 <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Каталог товаров</h1>
-        <a href="{% url 'marketplace:product_create' %}" class="btn btn-primary">Добавить товар</a>
-    </div>
+    <h1 class="text-center mb-4">Каталог товаров</h1>
     <div class="row">
         {% for product in products %}
             {% include 'marketplace/product_card.html' with product=product show_detail_button=True show_time=True %}
