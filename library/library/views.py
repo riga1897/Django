@@ -25,14 +25,14 @@ class AuthorDetailView(DetailView):
         return context
 
 
-class AuthorCreateView(CreateView):
+class AuthorCreateView(LoginRequiredMixin, CreateView):
     model = Author
     fields = ['first_name', 'last_name', 'birth_date']
     template_name = 'library/author_form.html'
     success_url = reverse_lazy('library:authors_list')
 
 
-class AuthorUpdateView(UpdateView):
+class AuthorUpdateView(LoginRequiredMixin, UpdateView):
     model = Author
     fields = ['first_name', 'last_name', 'birth_date']
     template_name = 'library/author_form.html'
