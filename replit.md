@@ -1,0 +1,165 @@
+# Overview
+
+This repository contains a Django-based web application with multiple components: a marketplace for managing products and categories, a blog system for creating and publishing posts, and a library management system for books and authors. The application features a custom user authentication system, image upload capabilities, and a modern Bootstrap-based UI with gradient designs.
+
+# User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+# System Architecture
+
+## Framework & Technology Stack
+
+**Problem**: Need a robust web framework for building database-driven applications with admin interface
+**Solution**: Django 5.2+ web framework with PostgreSQL-compatible database
+**Rationale**: Django provides built-in admin interface, ORM, authentication, and follows MTV (Model-Template-View) pattern
+
+## Application Structure
+
+The system consists of three main Django applications:
+
+### 1. Marketplace Application
+- **Purpose**: E-commerce product catalog management
+- **Models**: 
+  - `Category`: Product categorization with name and description
+  - `Product`: Product entries with name, description, photo, category (foreign key), price, and timestamps
+- **Features**: CRUD operations for products, image upload with automatic cleanup via signals, form validation with forbidden words filter, price validation
+
+### 2. Blog Application  
+- **Purpose**: Content management system for blog posts
+- **Models**:
+  - `BlogPost`: Posts with title, content, preview image, publication status, view counter, and timestamps
+- **Features**: Draft/published status toggle, view counting with atomic F() expressions, image preview with automatic cleanup, list filtering (show/hide drafts)
+
+### 3. Library Application (Separate Django Project)
+- **Purpose**: Book and author management system
+- **Models**:
+  - `Author`: Author information with first name, last name, birth date
+  - `Book`: Book entries with title, publication date, author (foreign key)
+- **Features**: Full CRUD operations, custom user model with email-based authentication, user registration with welcome emails
+
+## Database Design
+
+**Choice**: Django ORM with relational database (PostgreSQL-ready)
+**Design Patterns**:
+- Foreign key relationships (Product→Category, Book→Author)
+- Automatic timestamp tracking with `auto_now_add` and `auto_now`
+- Cascade deletion for related records
+- Ordering specifications at model level
+
+## File Storage & Media Management
+
+**Problem**: Need to manage uploaded images efficiently and prevent orphaned files
+**Solution**: Django's file storage system with signal-based cleanup
+**Implementation**:
+- Images stored in `media/` directory with organized subdirectories
+- `post_delete` signals: Remove files when model instances are deleted
+- `pre_save` signals: Remove old files when images are updated
+- Graceful handling of missing images in templates
+
+## Authentication System
+
+**Custom User Model** (`library/users/CustomUser`):
+- Email-based authentication (USERNAME_FIELD = "email")
+- Extended fields: phone, avatar
+- Integration with Django's built-in auth system
+- Custom registration form with phone validation
+
+## Form Validation
+
+**Marketplace Forms**:
+- Forbidden words filter for product names and descriptions
+- Price validation (prevent negative values)
+- Custom error messages
+- Widget customization with Bootstrap classes
+
+## Template Architecture
+
+**Design Pattern**: Template inheritance with base layouts
+- **Base Template**: `marketplace/base.html` with sidebar navigation
+- **Reusable Components**: Card templates for products and blog posts
+- **Form Fields**: Generic form field template with icon detection based on widget type
+- **Styling**: Bootstrap 5.3.8 with custom gradient CSS
+- **Color Scheme**: Green gradients for marketplace, contextual colors for actions (red for delete, yellow for drafts)
+
+## View Layer Architecture
+
+**Pattern**: Class-Based Views (CBVs) for consistency
+- `ListView`: Display collections with filtering support
+- `DetailView`: Show individual items with view counting
+- `CreateView`/`UpdateView`: Form handling with validation
+- `DeleteView`: Confirmation before deletion
+- `FormView`: Contact form processing
+
+**Custom Behavior**:
+- Query filtering in `get_queryset()` (e.g., published posts only)
+- Atomic view counting with `F()` expressions
+- Success URL configuration with `reverse_lazy`
+
+## Static Asset Management
+
+**Structure**:
+- Bootstrap 5.3.8 (minified CSS and JS bundles)
+- Custom CSS with CSS variables for theming
+- Template tags for media URL generation
+- Widget type detection for dynamic form rendering
+
+## Management Commands
+
+**Purpose**: Data seeding and administrative tasks
+**Commands**:
+- `add_products`: Populate marketplace with test data
+- `add_books`: Populate library with test books
+- `createadmin`: Create superuser programmatically
+- `del_all`: Clean database tables
+- `load_from_fixture`: Load data from JSON fixtures
+
+## Configuration Management
+
+**Environment Variables** (via python-dotenv):
+- `SECRET_KEY`: Django secret key
+- `DEBUG`: Debug mode toggle
+- Database configuration (implicit, uses Django defaults)
+
+**Settings Structure**:
+- Separated settings in `config/settings.py`
+- Media and static files configuration
+- Template directories auto-discovery
+- App registration with signal initialization
+
+## URL Routing
+
+**Pattern**: Namespaced URL configurations
+- App-level URL configs with `app_name`
+- Namespace usage in templates: `{% url 'marketplace:product_detail' pk %}`
+- Clean URL patterns with descriptive names
+
+# External Dependencies
+
+## Core Framework
+- **Django 5.2+**: Web framework
+- **python-dotenv**: Environment variable management
+
+## Frontend
+- **Bootstrap 5.3.8**: UI framework (bundled locally)
+- Custom CSS with gradient designs and responsive layouts
+
+## Database
+- **Django ORM**: Database abstraction layer (PostgreSQL-compatible schema)
+- Note: Currently using Django defaults, can be configured for PostgreSQL
+
+## File Storage
+- **Django Storage API**: File and image management
+- Media files stored in local filesystem (configurable for cloud storage)
+
+## Email (Library App)
+- **Django Email Backend**: SMTP email sending for user registration
+- Configured sender: `usr.some@yandex.ru`
+
+## Template System
+- **Django Template Language**: Template rendering
+- Custom template tags for media filtering and widget detection
+
+## Admin Interface
+- **Django Admin**: Built-in administration interface
+- Customized with list displays, filters, and search capabilities
