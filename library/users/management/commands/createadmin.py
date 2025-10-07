@@ -8,7 +8,7 @@ class Command(BaseCommand):
         User: type[AbstractBaseUser] = get_user_model()
         user = User.objects.create(
             username="test_admin",
-            email="testadmin@localhost",
+            email="testadmin@test.ru",
             first_name="Admin",
             last_name="Admin",
         )
