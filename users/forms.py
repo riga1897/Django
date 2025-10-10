@@ -7,7 +7,7 @@ User = get_user_model()
 
 class CustomAuthenticationForm(AuthenticationForm):
     """Форма для входа в систему"""
-    
+
     username = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(
@@ -31,7 +31,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 class CustomUserCreationForm(UserCreationForm):
     """Форма для регистрации нового пользователя"""
-    
+
     email = forms.EmailField(
         label="Email",
         required=True,
@@ -60,24 +60,24 @@ class CustomUserCreationForm(UserCreationForm):
             }
         ),
     )
-    
+
     class Meta:
         model = User
         fields = ("email", "password1", "password2")
-    
+
     def clean_email(self):
         """Валидация email"""
         email = self.cleaned_data.get("email")
         if email:
             email = email.lower().strip()
-            
+
             if User.objects.filter(email=email).exists():
                 raise forms.ValidationError(
                     "Пользователь с таким email уже зарегистрирован."
                 )
-        
+
         return email
-    
+
     def save(self, commit=True):
         user = super().save(commit=False)
         email = self.cleaned_data["email"]
@@ -90,7 +90,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 class UserProfileForm(forms.ModelForm):
     """Форма для редактирования профиля пользователя"""
-    
+
     class Meta:
         model = User
         fields = ["email", "first_name", "last_name", "avatar", "phone", "country"]

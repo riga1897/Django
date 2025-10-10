@@ -4,8 +4,9 @@
 
 {% block content %}
 <div class="card card-rounded">
-    <div class="card-header card-header-green text-white text-center">
+    <div class="card-header card-header-green text-white text-center position-relative">
         <h3>Регистрация</h3>
+        <a href="{% url 'marketplace:products_list' %}" class="btn-close btn-close-white position-absolute top-50 end-0 translate-middle-y me-3" aria-label="Закрыть"></a>
     </div>
     <div class="card-body p-4">
         <form method="post">
