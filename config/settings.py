@@ -134,7 +134,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 # Authentication URLs
-LOGIN_URL = "users:login"
+LOGIN_URL = "/?show_login_modal=1"
 LOGIN_REDIRECT_URL = "marketplace:products_list"
 LOGOUT_REDIRECT_URL = "marketplace:products_list"
 

@@ -1,11 +1,36 @@
+from urllib.parse import urlencode
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
 from marketplace.models import Product
 
 from .forms import ContactForm, ProductForm
+
+
+class ModalLoginRequiredMixin(LoginRequiredMixin):
+    """Mixin для редиректа на модалку логина вместо отдельной страницы"""
+
+    def handle_no_permission(self):
+        """Редирект на главную с открытием модалки логина"""
+        next_url = self.request.get_full_path()
+        
+        if not url_has_allowed_host_and_scheme(
+            url=next_url,
+            allowed_hosts={self.request.get_host()},
+            require_https=self.request.is_secure(),
+        ):
+            next_url = "/"
+        
+        query_params = {
+            "next": next_url,
+            "show_login_modal": "1"
+        }
+        return redirect(f"/?{urlencode(query_params)}")
 
 
 class ProductsListView(ListView):
@@ -65,14 +90,14 @@ class ContactsView(FormView):
 #     return render(request, "marketplace/contacts.html")
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(ModalLoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'marketplace/product_form.html'
     success_url = reverse_lazy('marketplace:products_list')
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'marketplace/product_form.html'
@@ -81,7 +106,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('marketplace:product_detail', kwargs={'pk': self.object.pk})
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'marketplace/product_confirm_delete.html'
     success_url = reverse_lazy('marketplace:products_list')

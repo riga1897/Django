@@ -130,17 +130,17 @@
             {% else %}
             <ul class="list-unstyled mb-0">
                 <li class="mb-1">
-                    <a href="{% url 'users:login' %}" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none nav-link-inactive">
+                    <button type="button" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none nav-link-inactive" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                             <polyline points="10 17 15 12 10 7"></polyline>
                             <line x1="15" x2="3" y1="12" y2="12"></line>
                         </svg>
                         <span>Вход</span>
-                    </a>
+                    </button>
                 </li>
                 <li class="mb-1">
-                    <a href="{% url 'users:register' %}" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none nav-link-inactive">
+                    <button type="button" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none nav-link-inactive" data-bs-toggle="modal" data-bs-target="#registerModal">
                         <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                             <circle cx="8.5" cy="7" r="4"></circle>
@@ -148,7 +148,7 @@
                             <line x1="23" x2="17" y1="11" y2="11"></line>
                         </svg>
                         <span>Регистрация</span>
-                    </a>
+                    </button>
                 </li>
             </ul>
             {% endif %}
@@ -158,8 +158,121 @@
     {% block content %}{% endblock %}
 </div>
 
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #34d399 0%, #10b981 100%);">
+                <h5 class="modal-title text-white" id="loginModalLabel">Вход в систему</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if messages %}
+                <div id="loginMessages">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form method="post" action="{% url 'users:login' %}" id="loginForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.GET.next|default:'/' }}">
+                    
+                    <div class="mb-3">
+                        <label for="login_email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="login_email" name="username" placeholder="email@example.com" required autofocus>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="login_password" class="form-label">Пароль</label>
+                        <input type="password" class="form-control" id="login_password" name="password" placeholder="********" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">Войти</button>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <p class="text-muted">Нет аккаунта? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Зарегистрироваться</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #34d399 0%, #10b981 100%);">
+                <h5 class="modal-title text-white" id="registerModalLabel">Регистрация</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if messages %}
+                <div id="registerMessages">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form method="post" action="{% url 'users:register' %}" id="registerForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.GET.next|default:'/' }}">
+                    
+                    <div class="mb-3">
+                        <label for="register_email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="register_email" name="email" placeholder="email@example.com" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="register_password1" class="form-label">Пароль *</label>
+                        <input type="password" class="form-control" id="register_password1" name="password1" placeholder="********" required>
+                        <small class="form-text text-muted">Минимум 8 символов</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="register_password2" class="form-label">Подтверждение пароля *</label>
+                        <input type="password" class="form-control" id="register_password2" name="password2" placeholder="********" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">Зарегистрироваться</button>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <p class="text-muted">Уже есть аккаунт? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Войти</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap JS -->
 <script src="/static/js/bootstrap.bundle.min.js"></script>
+
+<!-- Auto-open modal on error -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('show_login_modal')) {
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.show();
+    }
+    if (urlParams.get('show_register_modal')) {
+        const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+        registerModal.show();
+    }
+});
+</script>
 
 </body>
 </html>
