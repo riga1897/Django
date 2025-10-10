@@ -23,6 +23,7 @@ class UserLoginView(LoginView):
     def get(self, request, *args, **kwargs):
         """Редирект на главную при попытке GET запроса"""
         from django.shortcuts import redirect
+
         return redirect("marketplace:products_list")
 
     def get_redirect_url(self):
@@ -39,24 +40,22 @@ class UserLoginView(LoginView):
     def form_invalid(self, form):
         """При ошибке редирект обратно с параметром для открытия модалки"""
         from django.shortcuts import redirect
+
         next_url = self.request.POST.get("next", "/")
-        
+
         if not url_has_allowed_host_and_scheme(
             url=next_url,
             allowed_hosts={self.request.get_host()},
             require_https=self.request.is_secure(),
         ):
             next_url = "/"
-        
-        messages.error(
-            self.request,
-            "Неверный email или пароль. Попробуйте еще раз."
-        )
-        
+
+        messages.error(self.request, "Неверный email или пароль. Попробуйте еще раз.")
+
         query_params = {"show_login_modal": "1"}
         if next_url and next_url != "/":
             query_params["next"] = next_url
-        
+
         return redirect(f"/?{urlencode(query_params)}")
 
 
@@ -64,7 +63,7 @@ class UserLogoutView(LogoutView):
     """Выход пользователя"""
 
     def get_default_redirect_url(self):
-        return str(reverse_lazy("marketplace:product_list"))
+        return str(reverse_lazy("marketplace:products_list"))
 
 
 class UserRegisterView(CreateView):
@@ -76,6 +75,7 @@ class UserRegisterView(CreateView):
     def get(self, request, *args, **kwargs):
         """Редирект на главную при попытке GET запроса"""
         from django.shortcuts import redirect
+
         return redirect("marketplace:products_list")
 
     def get_success_url(self):
@@ -92,40 +92,39 @@ class UserRegisterView(CreateView):
     def form_valid(self, form):
         """Успешная регистрация - автоматический вход"""
         from django.contrib.auth import login
+
         user = form.save()
         self.send_welcome_email(user.email)
         login(self.request, user)
-        messages.success(
-            self.request,
-            "Добро пожаловать! Регистрация прошла успешно."
-        )
+        messages.success(self.request, "Добро пожаловать! Регистрация прошла успешно.")
         return super().form_valid(form)
 
     def form_invalid(self, form):
         """При ошибке редирект обратно с параметром для открытия модалки"""
         from django.shortcuts import redirect
+
         next_url = self.request.POST.get("next", "/")
-        
+
         if not url_has_allowed_host_and_scheme(
             url=next_url,
             allowed_hosts={self.request.get_host()},
             require_https=self.request.is_secure(),
         ):
             next_url = "/"
-        
+
         error_messages = []
         for field, errors in form.errors.items():
             for error in errors:
                 error_messages.append(error)
         messages.error(
             self.request,
-            " ".join(error_messages) if error_messages else "Ошибка регистрации. Проверьте введенные данные."
+            " ".join(error_messages) if error_messages else "Ошибка регистрации. Проверьте введенные данные.",
         )
-        
+
         query_params = {"show_register_modal": "1"}
         if next_url and next_url != "/":
             query_params["next"] = next_url
-        
+
         return redirect(f"/?{urlencode(query_params)}")
 
     @staticmethod

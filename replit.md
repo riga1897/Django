@@ -7,6 +7,14 @@ This repository contains a Django-based multi-application web platform featuring
 
 The platform implements role-based access control where authenticated users can manage products, while product listings remain publicly accessible. Built with Django 5.2+, Bootstrap 5, and PostgreSQL support for both Replit and Windows environments.
 
+# Recent Changes
+
+**October 10, 2025:**
+- Implemented modal-based authentication (login/register via Bootstrap modals instead of separate pages)
+- Added `ModalLoginRequiredMixin` with secure redirect handling (validates next parameter, prevents open redirect attacks)
+- Fixed code quality: replaced `is not True` with pythonic `not` checks in UserManager
+- Applied code formatters: isort (import sorting) and black (code formatting) for consistent code style
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
