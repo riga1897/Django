@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, ClassVar
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
@@ -67,15 +67,15 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    objects = UserManager()  # type: ignore[assignment,misc]
+    objects: ClassVar[UserManager] = UserManager()
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
         ordering = ["-date_joined"]
 
     def __str__(self) -> str:
-        return self.email
+        return str(self.email)
 
     def get_full_name(self) -> str:
         """Возвращает полное имя пользователя."""

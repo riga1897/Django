@@ -40,7 +40,7 @@ class UserLoginView(LoginView):
         return str(reverse_lazy("marketplace:products_list"))
 
     def form_invalid(self, form):
-        """При ошибке редирект обратно с параметром для открытия модалки"""
+        """При ошибке редирект обратно с параметром для открытия модального окна"""
         from django.shortcuts import redirect
 
         next_url = self.request.POST.get("next", "/")
@@ -102,7 +102,7 @@ class UserRegisterView(CreateView):  # type: ignore[type-arg]
         return super().form_valid(form)
 
     def form_invalid(self, form: Any) -> HttpResponse:
-        """При ошибке редирект обратно с параметром для открытия модалки"""
+        """При ошибке редирект обратно с параметром для открытия модального окна"""
         from django.shortcuts import redirect
 
         next_url = self.request.POST.get("next", "/")

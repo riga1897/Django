@@ -7,7 +7,7 @@ from .models import BlogPost
 
 
 @receiver(post_delete, sender=BlogPost)
-def delete_blogpost_preview_on_delete(sender: type[BlogPost], instance: BlogPost, **kwargs: Any) -> None:
+def delete_blogpost_preview_on_delete(_sender: type[BlogPost], instance: BlogPost, **_kwargs: Any) -> None:
     """
     Удаляет файл изображения через Django storage API при удалении поста блога
     """
@@ -16,7 +16,7 @@ def delete_blogpost_preview_on_delete(sender: type[BlogPost], instance: BlogPost
 
 
 @receiver(pre_save, sender=BlogPost)
-def delete_old_preview_on_update(sender: type[BlogPost], instance: BlogPost, **kwargs: Any) -> None:
+def delete_old_preview_on_update(_sender: type[BlogPost], instance: BlogPost, **_kwargs: Any) -> None:
     """
     Удаляет старое изображение при замене на новое
     """
