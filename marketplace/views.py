@@ -4,9 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
 from marketplace.models import Product
@@ -35,7 +33,6 @@ class ModalLoginRequiredMixin(LoginRequiredMixin):
         return redirect(f"/?{urlencode(query_params)}")
 
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
 class ProductsListView(ListView):
     model = Product
     # app_name/<model_name>_<action>

@@ -1,4 +1,3 @@
-import os
 from urllib.parse import urlencode
 
 from django.contrib import messages
@@ -8,20 +7,13 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, UpdateView
 
 from users.forms import CustomAuthenticationForm, CustomUserCreationForm, UserProfileForm
 from users.models import User
 
 
-# В Replit dev окружении отключаем CSRF (браузеры блокируют cookies в iframe)
-csrf_decorator = csrf_exempt if os.getenv("REPLIT_DEV_DOMAIN") else lambda x: x
-
-
-@method_decorator(csrf_decorator, name="dispatch")
 class UserLoginView(LoginView):
     """Вход пользователя через модальное окно"""
 
@@ -75,7 +67,6 @@ class UserLogoutView(LogoutView):
         return str(reverse_lazy("marketplace:product_list"))
 
 
-@method_decorator(csrf_decorator, name="dispatch")
 class UserRegisterView(CreateView):
     """Регистрация нового пользователя через модальное окно"""
 
