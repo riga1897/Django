@@ -1,3 +1,5 @@
+from typing import Any
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -39,7 +41,7 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ("email", "password1", "password2")
 
-    def clean_email(self):
+    def clean_email(self) -> str:
         """Валидация email"""
         email = self.cleaned_data.get("email")
         if email:
@@ -48,9 +50,9 @@ class CustomUserCreationForm(UserCreationForm):
             if User.objects.filter(email=email).exists():
                 raise forms.ValidationError("Пользователь с таким email уже зарегистрирован.")
 
-        return email
+        return email or ""
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> Any:
         user = super().save(commit=False)
         email = self.cleaned_data["email"]
         user.email = email

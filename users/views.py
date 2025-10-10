@@ -64,23 +64,23 @@ class UserLoginView(LoginView):
 class UserLogoutView(LogoutView):
     """Выход пользователя"""
 
-    def get_default_redirect_url(self):
+    def get_default_redirect_url(self) -> str:
         return str(reverse_lazy("marketplace:products_list"))
 
 
-class UserRegisterView(CreateView):
+class UserRegisterView(CreateView):  # type: ignore[type-arg]
     """Регистрация нового пользователя через модальное окно"""
 
     model = User
     form_class = CustomUserCreationForm
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """Редирект на главную при попытке GET запроса"""
         from django.shortcuts import redirect
 
         return redirect("marketplace:products_list")
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         """Безопасный редирект после успешной регистрации"""
         next_url = self.request.POST.get("next") or self.request.GET.get("next")
         if next_url and url_has_allowed_host_and_scheme(
@@ -91,7 +91,7 @@ class UserRegisterView(CreateView):
             return next_url
         return str(reverse_lazy("marketplace:products_list"))
 
-    def form_valid(self, form):
+    def form_valid(self, form: Any) -> HttpResponse:
         """Успешная регистрация - автоматический вход"""
         from django.contrib.auth import login
 
@@ -101,7 +101,7 @@ class UserRegisterView(CreateView):
         messages.success(self.request, "Добро пожаловать! Регистрация прошла успешно.")
         return super().form_valid(form)
 
-    def form_invalid(self, form):
+    def form_invalid(self, form: Any) -> HttpResponse:
         """При ошибке редирект обратно с параметром для открытия модалки"""
         from django.shortcuts import redirect
 
@@ -130,7 +130,7 @@ class UserRegisterView(CreateView):
         return redirect(f"/?{urlencode(query_params)}")
 
     @staticmethod
-    def send_welcome_email(user_email):
+    def send_welcome_email(user_email: str) -> None:
         subject = "Добро пожаловать в наш интернет-магазин!"
         message = "Спасибо, что зарегистрировались в нашем магазине!"
         from_email = "noreply@example.com"
@@ -143,12 +143,12 @@ class UserRegisterView(CreateView):
 
 
 @login_required
-def profile(request):
+def profile(request: HttpRequest) -> HttpResponse:
     """Просмотр профиля пользователя"""
     return render(request, "users/profile.html", {"user": request.user})
 
 
-class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):  # type: ignore[type-arg]
     """Редактирование профиля"""
 
     model = User
@@ -156,9 +156,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UserProfileForm
     success_url = reverse_lazy("users:profile")
 
-    def get_object(self, queryset=None):
-        return self.request.user
+    def get_object(self, queryset: Any = None) -> User:
+        return self.request.user  # type: ignore[return-value]
 
-    def form_valid(self, form):
+    def form_valid(self, form: Any) -> HttpResponse:
         messages.success(self.request, "Профиль успешно обновлен!")
         return super().form_valid(form)

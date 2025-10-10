@@ -1,3 +1,5 @@
+from typing import Any
+
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -11,7 +13,7 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ["name", "description", "photo", "category", "price"]
 
-    def clean_name(self):
+    def clean_name(self) -> str:
         name = self.cleaned_data.get("name", "")
         name_lower = name.lower()
 
@@ -21,7 +23,7 @@ class ProductForm(forms.ModelForm):
 
         return name
 
-    def clean_description(self):
+    def clean_description(self) -> str:
         description = self.cleaned_data.get("description", "")
         if description:
             description_lower = description.lower()
@@ -32,7 +34,7 @@ class ProductForm(forms.ModelForm):
 
         return description
 
-    def clean_price(self):
+    def clean_price(self) -> Any:
         price = self.cleaned_data.get("price")
 
         if price is not None and price < 0:
@@ -40,7 +42,7 @@ class ProductForm(forms.ModelForm):
 
         return price
 
-    def clean_photo(self):
+    def clean_photo(self) -> Any:
         photo = self.cleaned_data.get("photo")
 
         if photo:
@@ -55,7 +57,7 @@ class ProductForm(forms.ModelForm):
 
         return photo
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
         for _field_name, field in self.fields.items():

@@ -1,18 +1,22 @@
-from django.db.models import F
+from typing import Any
+
+from django.db.models import F, QuerySet
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from marketplace.views import ModalLoginRequiredMixin
+
 from .models import BlogPost
 
 
-class BlogPostListView(ListView):
+class BlogPostListView(ListView):  # type: ignore[type-arg]
     model = BlogPost
     template_name = "blog/blogpost_list.html"
     context_object_name = "posts"
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[BlogPost]:
         show_drafts = self.request.GET.get("show_drafts")
 
         if show_drafts:
@@ -26,31 +30,30 @@ class BlogPostDetailView(DetailView):
     template_name = "blog/blogpost_detail.html"
     context_object_name = "post"
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         pk = kwargs["pk"]
         obj = get_object_or_404(BlogPost, pk=pk)
         BlogPost.objects.filter(pk=obj.pk).update(views_count=F("views_count") + 1)
         return super().get(request, *args, **kwargs)
 
 
-class BlogPostCreateView(ModalLoginRequiredMixin, CreateView):
+class BlogPostCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[type-arg]
     model = BlogPost
     template_name = "blog/blogpost_form.html"
     fields = ["title", "content", "preview", "is_published"]
     success_url = reverse_lazy("blog:post_list")
 
 
-class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):
+class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[type-arg]
     model = BlogPost
     template_name = "blog/blogpost_form.html"
     fields = ["title", "content", "preview", "is_published"]
 
-    def get_success_url(self):
-        return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
+    def get_success_url(self) -> str:
+        return str(reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk}))
 
 
-class BlogPostDeleteView(
-    ModalLoginRequiredMixin, DeleteView):
+class BlogPostDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[type-arg]
     model = BlogPost
     template_name = "blog/blogpost_confirm_delete.html"
     success_url = reverse_lazy("blog:post_list")

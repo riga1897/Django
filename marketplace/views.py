@@ -1,7 +1,9 @@
+from typing import Any
 from urllib.parse import urlencode
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -15,14 +17,14 @@ from .forms import ContactForm, ProductForm
 class ModalLoginRequiredMixin(LoginRequiredMixin):
     """Mixin для редиректа на модалку логина вместо отдельной страницы"""
 
-    def handle_no_permission(self):
+    def handle_no_permission(self) -> HttpResponse:  # type: ignore[override]
         """Редирект на главную с открытием модалки логина"""
-        next_url = self.request.get_full_path()
+        next_url = self.request.get_full_path()  # type: ignore[attr-defined]
 
         if not url_has_allowed_host_and_scheme(
             url=next_url,
-            allowed_hosts={self.request.get_host()},
-            require_https=self.request.is_secure(),
+            allowed_hosts={self.request.get_host()},  # type: ignore[attr-defined]
+            require_https=self.request.is_secure(),  # type: ignore[attr-defined]
         ):
             next_url = "/"
 
@@ -56,12 +58,12 @@ class ProductDetailView(DetailView):
 #     return render(request, "marketplace/product_detail.html", context)
 
 
-class ContactsView(FormView):
+class ContactsView(FormView):  # type: ignore[type-arg]
     template_name = "marketplace/contacts.html"
     form_class = ContactForm
     success_url = reverse_lazy("marketplace:contacts")
 
-    def form_valid(self, form):
+    def form_valid(self, form: Any) -> HttpResponse:
         # Данные из формы
         name = form.cleaned_data["name"]
         email = form.cleaned_data["email"]
@@ -75,23 +77,23 @@ class ContactsView(FormView):
         return super().form_valid(form)
 
 
-class ProductCreateView(ModalLoginRequiredMixin, CreateView):
+class ProductCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[type-arg]
     model = Product
     form_class = ProductForm
     template_name = "marketplace/product_form.html"
     success_url = reverse_lazy("marketplace:products_list")
 
 
-class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):
+class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[type-arg]
     model = Product
     form_class = ProductForm
     template_name = "marketplace/product_form.html"
 
-    def get_success_url(self):
-        return reverse_lazy("marketplace:product_detail", kwargs={"pk": self.object.pk})
+    def get_success_url(self) -> str:
+        return str(reverse_lazy("marketplace:product_detail", kwargs={"pk": self.object.pk}))
 
 
-class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):
+class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[type-arg]
     model = Product
     template_name = "marketplace/product_confirm_delete.html"
     success_url = reverse_lazy("marketplace:products_list")
