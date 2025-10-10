@@ -163,6 +163,26 @@ The system consists of three main Django applications:
 - Namespace usage in templates: `{% url 'marketplace:product_detail' pk %}`
 - Clean URL patterns with descriptive names
 
+## Code Quality & Linting
+
+**Configuration Files**:
+- `.flake8`: Python linter configuration (max line length: 119, complexity: 10)
+- `.pydocstyle`: Docstring style checker configuration
+- `.editorconfig`: Editor settings for consistent code style
+- `.pre-commit-config.yaml`: Pre-commit hooks for automated checks
+
+**Linting Tools**:
+- **flake8**: Code style and error checking with docstring validation
+- **isort**: Import sorting and organization (black-compatible profile)
+- **black**: Code formatter (line length: 119)
+
+**Standards**:
+- Maximum line length: 119 characters
+- Import order: Django imports, third-party, local imports (enforced by isort)
+- No trailing whitespace or whitespace in blank lines
+- Newline at end of all files
+- Google-style docstrings
+
 # External Dependencies
 
 ## Core Framework
