@@ -1,7 +1,7 @@
 modules = ["postgresql-16", "python-3.11"]
 
 [nix]
-packages = ["freetype", "gitFull", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zlib", "python312Packages.ruff", "mypy"]
+packages = ["freetype", "gitFull", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zlib", "python312Packages.ruff", "mypy", "python312Packages.flake8"]
 channel = "stable-25_05"
 
 [agent]
@@ -38,3 +38,7 @@ externalPort = 80
 [[ports]]
 localPort = 36441
 externalPort = 3000
+
+[[ports]]
+localPort = 42765
+externalPort = 3001
