@@ -1,6 +1,11 @@
 # Overview
 
-This repository contains a Django-based web application with multiple components: a marketplace for managing products and categories, a blog system for creating and publishing posts, and a library management system for books and authors. The application features a custom user authentication system, image upload capabilities, and a modern Bootstrap-based UI with gradient designs.
+This repository contains a Django-based multi-application web platform featuring:
+- **Marketplace**: E-commerce product catalog with category management
+- **Blog**: Content management system for publishing posts
+- **Users**: Email-based authentication system with user profiles
+
+The platform implements role-based access control where authenticated users can manage products, while product listings remain publicly accessible. Built with Django 5.2+, Bootstrap 5, and PostgreSQL support for both Replit and Windows environments.
 
 # User Preferences
 
@@ -23,7 +28,13 @@ The system consists of three main Django applications:
 - **Models**: 
   - `Category`: Product categorization with name and description
   - `Product`: Product entries with name, description, photo, category (foreign key), price, and timestamps
-- **Features**: CRUD operations for products, image upload with automatic cleanup via signals, form validation with forbidden words filter, price validation
+- **Features**: 
+  - CRUD operations (Create/Update/Delete require authentication via LoginRequiredMixin)
+  - Public product listings and detail pages (no login required)
+  - Image upload with automatic cleanup via signals
+  - Form validation with forbidden words filter (казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар)
+  - Price validation (prevent negative values)
+  - Image format/size restrictions (max 5MB)
 
 ### 2. Blog Application  
 - **Purpose**: Content management system for blog posts
@@ -31,12 +42,18 @@ The system consists of three main Django applications:
   - `BlogPost`: Posts with title, content, preview image, publication status, view counter, and timestamps
 - **Features**: Draft/published status toggle, view counting with atomic F() expressions, image preview with automatic cleanup, list filtering (show/hide drafts)
 
-### 3. Library Application (Separate Django Project)
-- **Purpose**: Book and author management system
+### 3. Users Application
+- **Purpose**: Email-based user authentication and profile management
 - **Models**:
-  - `Author`: Author information with first name, last name, birth date
-  - `Book`: Book entries with title, publication date, author (foreign key)
-- **Features**: Full CRUD operations, custom user model with email-based authentication, user registration with welcome emails
+  - `User` (extends AbstractUser): Custom user model with email as USERNAME_FIELD
+    - Fields: email (unique), avatar, phone, country, username (inherited, optional)
+    - Custom UserManager for email-based authentication
+- **Features**:
+  - User registration with CustomUserCreationForm
+  - Email-based login with CustomAuthenticationForm
+  - User profile viewing and editing
+  - Avatar upload support
+  - Welcome email on registration (console backend for development)
 
 ## Database Design
 
@@ -61,9 +78,17 @@ The system consists of three main Django applications:
 
 **Custom User Model** (`library/users/CustomUser`):
 - Email-based authentication (USERNAME_FIELD = "email")
-- Extended fields: phone, avatar
+- Extended fields: email (unique), avatar, phone, country
+- Custom UserManager with overridden create_user() and create_superuser() methods
 - Integration with Django's built-in auth system
-- Custom registration form with phone validation
+- REQUIRED_FIELDS = [] (only email and password required)
+
+**Authentication Flow**:
+- Registration: CustomUserCreationForm with email, password, phone validation
+- Login: CustomAuthenticationForm with email/password fields
+- Profile management: UserProfileForm for editing user details
+- Protected routes: LoginRequiredMixin on product Create/Update/Delete views
+- Public access: Product listings and detail pages accessible without login
 
 ## Form Validation
 
