@@ -85,11 +85,19 @@ The system consists of three main Django applications:
 - REQUIRED_FIELDS = [] (only email and password required)
 
 **Authentication Flow**:
-- Registration: CustomUserCreationForm with email, password, phone validation
+- **Modal-Based UI**: Login and registration via Bootstrap modals in base template (no separate auth pages)
+- Registration: CustomUserCreationForm with automatic login after successful registration
 - Login: CustomAuthenticationForm with email/password fields
+- Protected routes: Custom `ModalLoginRequiredMixin` redirects to modal instead of separate page
 - Profile management: UserProfileForm for editing user details
-- Protected routes: LoginRequiredMixin on product Create/Update/Delete views
 - Public access: Product listings and detail pages accessible without login
+
+**Security Features**:
+- Safe redirect validation with `url_has_allowed_host_and_scheme()`
+- Query parameter encoding via `urlencode()` to prevent URL corruption
+- Next parameter preservation through entire login flow
+- Protection against open redirect vulnerabilities
+- CSRF protection for all forms
 
 ## Form Validation
 
@@ -103,13 +111,17 @@ The system consists of three main Django applications:
 
 **Design Pattern**: Template inheritance with base layouts
 - **Base Templates**: 
-  - `marketplace/base.html`: Main layout with sidebar navigation for marketplace/blog pages
-  - `users/auth_base.html`: Dedicated full-width layout for authentication pages (login/register) without sidebar
+  - `marketplace/base.html`: Main layout with sidebar navigation and embedded auth modals
+- **Authentication Modals**: 
+  - Login and register modals built into base template using Bootstrap 5
+  - Auto-open via URL parameters (`?show_login_modal=1`, `?show_register_modal=1`)
+  - JavaScript-based modal management for error handling
+  - Next parameter preservation for post-login redirects
 - **Reusable Components**: Card templates for products and blog posts
 - **Form Fields**: Generic form field template with icon detection based on widget type
 - **Styling**: Bootstrap 5.3.8 with custom gradient CSS
-- **Color Scheme**: Green gradients for marketplace, dark gradients for auth pages, contextual colors for actions (red for delete, yellow for drafts)
-- **Responsive Design**: Auth forms use max-width 900px on desktop, 100% width on mobile
+- **Color Scheme**: Green gradients for marketplace, contextual colors for actions (red for delete, yellow for drafts)
+- **Responsive Design**: Mobile-first approach with responsive modals and layouts
 
 ## View Layer Architecture
 
@@ -120,10 +132,18 @@ The system consists of three main Django applications:
 - `DeleteView`: Confirmation before deletion
 - `FormView`: Contact form processing
 
+**Custom Mixins**:
+- `ModalLoginRequiredMixin`: Custom authentication mixin for modal-based login
+  - Redirects unauthorized users to main page with modal parameter
+  - Preserves original destination URL via `next` parameter
+  - Validates redirect URLs to prevent open redirect vulnerabilities
+  - Uses `urlencode()` for safe query parameter handling
+
 **Custom Behavior**:
 - Query filtering in `get_queryset()` (e.g., published posts only)
 - Atomic view counting with `F()` expressions
 - Success URL configuration with `reverse_lazy`
+- Safe redirect validation in authentication views
 
 ## Static Asset Management
 
