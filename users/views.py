@@ -1,3 +1,4 @@
+from typing import Any
 from urllib.parse import urlencode
 
 from django.contrib import messages
@@ -5,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -20,13 +22,13 @@ class UserLoginView(LoginView):
     form_class = CustomAuthenticationForm
     redirect_authenticated_user = True
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """Редирект на главную при попытке GET запроса"""
         from django.shortcuts import redirect
 
         return redirect("marketplace:products_list")
 
-    def get_redirect_url(self):
+    def get_redirect_url(self) -> str:
         """Безопасный редирект после успешного входа"""
         next_url = self.request.POST.get("next") or self.request.GET.get("next")
         if next_url and url_has_allowed_host_and_scheme(

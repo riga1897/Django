@@ -1,11 +1,13 @@
+from typing import Any
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
 
-class UserManager(BaseUserManager):
+class UserManager(BaseUserManager["User"]):
     """Кастомный менеджер для модели User с email в качестве логина."""
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email: str, password: str | None = None, **extra_fields: Any) -> "User":
         """Создать и сохранить обычного пользователя."""
         if not email:
             raise ValueError("Email обязателен для заполнения")
@@ -17,7 +19,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, email: str, password: str | None = None, **extra_fields: Any) -> "User":
         """Создать и сохранить суперпользователя."""
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -52,25 +54,25 @@ class User(AbstractUser):
         help_text="Фото профиля пользователя",
     )
 
-    phone = models.CharField(
+    phone: str = models.CharField(
         max_length=20, verbose_name="Телефон", blank=True, null=True, help_text="Контактный телефон"
     )
 
-    country = models.CharField(
+    country: str = models.CharField(
         max_length=100, verbose_name="Страна", blank=True, null=True, help_text="Страна проживания"
     )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS: list[str] = []
 
-    objects = UserManager()
+    objects: UserManager = UserManager()
 
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
         ordering = ["-date_joined"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.email
 
     def get_full_name(self) -> str:
