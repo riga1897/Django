@@ -122,13 +122,13 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Authentication settings
 LOGIN_URL = "users:login"
-LOGIN_REDIRECT_URL = "library:book_list"
+LOGIN_REDIRECT_URL = "library:books_list"
 LOGOUT_REDIRECT_URL = "/"
 
 # Email settings (консоль для разработки, SMTP для production)
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_PORT = os.getenv("EMAIL_PORT", "587")
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_TLS", "True") == "True"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
