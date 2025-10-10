@@ -1,7 +1,7 @@
 modules = ["postgresql-16", "python-3.11"]
 
 [nix]
-packages = ["freetype", "gitFull", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zlib", "python312Packages.ruff"]
+packages = ["freetype", "gitFull", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zlib", "python312Packages.ruff", "mypy"]
 channel = "stable-25_05"
 
 [agent]

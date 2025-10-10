@@ -84,6 +84,15 @@ line_length = 119
 [tool.ruff]
 line-length = 119
 preview = true
+exclude = [
+    ".venv",
+    "venv",
+    ".local",
+    "migrations",
+    "__pycache__",
+    ".git",
+    "*.egg-info",
+]
 
 # Linter-specific settings are now grouped here
 [tool.ruff.lint]

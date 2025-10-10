@@ -115,7 +115,7 @@ class UserRegisterView(CreateView):  # type: ignore[type-arg]
             next_url = "/"
 
         error_messages = []
-        for field, errors in form.errors.items():
+        for _field, errors in form.errors.items():
             for error in errors:
                 error_messages.append(error)
         messages.error(
@@ -131,15 +131,15 @@ class UserRegisterView(CreateView):  # type: ignore[type-arg]
 
     @staticmethod
     def send_welcome_email(user_email: str) -> None:
+        import contextlib
+
         subject = "Добро пожаловать в наш интернет-магазин!"
         message = "Спасибо, что зарегистрировались в нашем магазине!"
         from_email = "noreply@example.com"
         recipient_list = [user_email]
 
-        try:
+        with contextlib.suppress(Exception):
             send_mail(subject, message, from_email, recipient_list)
-        except Exception:
-            pass
 
 
 @login_required
