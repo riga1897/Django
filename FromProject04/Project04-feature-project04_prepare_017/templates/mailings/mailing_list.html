@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load tz %}
+
+{% block title %}Рассылки - Сервис email-рассылок{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Рассылки</h2>
+    <a href="{% url 'mailing_create' %}" class="btn btn-green">Создать рассылку</a>
+</div>
+
+{% if mailings %}
+<div class="row">
+    {% for mailing in mailings %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card card-rounded h-100 {% if not mailing.is_active %}mailing-card-disabled{% endif %}">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{ mailing.message.subject }}
+                    <small class="text-muted">(id:{{ mailing.id }})</small>
+                </h5>
+                <p class="card-text">
+                    <span class="badge 
+                        {% if mailing.status == 'created' %}bg-secondary{% endif %}
+                        {% if mailing.status == 'running' %}badge-green{% endif %}
+                        {% if mailing.status == 'completed' %}bg-success{% endif %}
+                    ">
+                        {{ mailing.get_status_display }}
+                    </span>
+                    {% if not mailing.is_active %}
+                    <span class="badge bg-warning text-dark">Отключена</span>
+                    {% endif %}
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        Старт: {{ mailing.start_datetime|timezone:"Europe/Moscow"|date:"d.m.Y H:i" }}<br>
+                        Окончание: {{ mailing.end_datetime|timezone:"Europe/Moscow"|date:"d.m.Y H:i" }}<br>
+                        Получателей: {{ mailing.recipients.count }}<br>
+                        Владелец: {{ mailing.owner.email }}
+                    </small>
+                </p>
+            </div>
+            <div class="card-footer">
+                {% if mailing.owner == request.user %}
+                    <a href="{% url 'mailing_edit' mailing.pk %}" class="btn btn-sm btn-warning">Изменить</a>
+                    <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                    {% if not mailing.successfully_sent and mailing.status != 'completed' %}
+                    <form method="post" action="{% url 'mailing_send' mailing.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-green" 
+                                onclick="return confirm('Отправить рассылку сейчас?')"
+                                {% if not mailing.is_active %}disabled title="Рассылка отключена"{% endif %}>
+                            Отправить
+                        </button>
+                    </form>
+                    {% endif %}
+                {% endif %}
+                
+                {% if user.is_manager %}
+                    {% if mailing.owner.is_manager and not user.is_superuser %}
+                        <small class="text-muted">Только admin</small>
+                    {% elif not mailing.owner.is_active %}
+                        <small class="text-muted">Владелец заблокирован</small>
+                    {% else %}
+                    <div class="d-inline-block">
+                        <label class="toggle-switch">
+                            <input type="checkbox" 
+                                   class="mailing-toggle" 
+                                   data-mailing-id="{{ mailing.pk }}"
+                                   data-mailing-name="{{ mailing.message.subject }}"
+                                   {% if mailing.is_active %}checked{% endif %}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label">Активна</span>
+                    </div>
+                    {% endif %}
+                {% endif %}
+                
+                {% if mailing.owner == request.user %}
+                    {% if error_mailing_id == mailing.pk and error_text %}
+                    <div class="alert alert-danger mt-2 mb-0" role="alert">
+                        <strong>Ошибка отправки:</strong> {{ error_text }}
+                        {% if error_details %}
+                        <hr class="my-2">
+                        <small>
+                            {% for detail in error_details %}
+                            <div>{{ detail }}</div>
+                            {% endfor %}
+                        </small>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% include 'includes/pagination.html' %}
+
+{% else %}
+<div class="alert alert-info">
+    У вас пока нет рассылок. <a href="{% url 'mailing_create' %}">Создайте первую</a>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработчик для toggle-переключателей
+    document.querySelectorAll('.mailing-toggle').forEach(function(toggle) {
+        toggle.addEventListener('change', function() {
+            const mailingId = this.dataset.mailingId;
+            const mailingName = this.dataset.mailingName;
+            const isChecked = this.checked;
+            const toggleElement = this;
+            const card = this.closest('.card');
+            
+            // Отключаем переключатель на время запроса
+            toggleElement.disabled = true;
+            
+            // Получаем CSRF токен
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            // Отправляем AJAX запрос
+            fetch(`/mailings/${mailingId}/toggle-active/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Обновляем визуальное состояние карточки
+                    if (data.is_active) {
+                        card.classList.remove('mailing-card-disabled');
+                    } else {
+                        card.classList.add('mailing-card-disabled');
+                    }
+                    
+                    // Обновляем состояние кнопки "Отправить"
+                    const sendButton = card.querySelector('button[type="submit"]');
+                    if (sendButton) {
+                        if (data.is_active) {
+                            sendButton.disabled = false;
+                            sendButton.removeAttribute('title');
+                        } else {
+                            sendButton.disabled = true;
+                            sendButton.setAttribute('title', 'Рассылка отключена');
+                        }
+                    }
+                    
+                    // Показываем уведомление
+                    showNotification(data.message, 'success');
+                } else {
+                    // Возвращаем переключатель в предыдущее состояние
+                    toggleElement.checked = !isChecked;
+                    showNotification(data.error || 'Ошибка при изменении статуса', 'error');
+                }
+            })
+            .catch(error => {
+                // Возвращаем переключатель в предыдущее состояние
+                toggleElement.checked = !isChecked;
+                showNotification('Ошибка соединения с сервером', 'error');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // Включаем переключатель обратно
+                toggleElement.disabled = false;
+            });
+        });
+    });
+    
+    // Функция для показа уведомлений
+    function showNotification(message, type) {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const alertHtml = `
+            <div class="alert ${alertClass} alert-dismissible fade show position-fixed" 
+                 style="top: 20px; right: 20px; z-index: 9999; min-width: 300px;" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', alertHtml);
+        
+        // Автоматически скрываем через 3 секунды
+        setTimeout(function() {
+            const alert = document.querySelector('.position-fixed.alert');
+            if (alert) {
+                alert.remove();
+            }
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

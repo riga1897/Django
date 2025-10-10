@@ -1,0 +1,27 @@
+modules = ["python-3.13", "postgresql-16"]
+run = "poetry run python manage.py runserver 0.0.0.0:5000"
+entrypoint = "manage.py"
+
+[nix]
+channel = "stable-25_05"
+packages = ["freetype", "gitFull", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "poetry", "python312Packages.django_5", "tcl", "tk", "zlib", "python312Packages.ruff", "systemd", "python312Packages.coverage", "python312Packages.pytest", "black", "isort", "mypy", "python312Packages.pydocstyle"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 42327
+externalPort = 3000
+
+[workflows]
+runButton = "Run Django Server"
+
+[[workflows.workflow]]
+name = "Run Django Server"
+author = 45171279
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "poetry run python manage.py runserver 0.0.0.0:5000"

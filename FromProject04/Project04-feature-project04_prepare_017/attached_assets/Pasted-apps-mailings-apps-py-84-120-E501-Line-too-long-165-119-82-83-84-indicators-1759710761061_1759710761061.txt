@@ -1,0 +1,51 @@
+apps/mailings/apps.py:84:120: E501 Line too long (165 > 119)
+   |
+82 | …
+83 | …
+84 | …indicators) or os.environ.get('SERVER_SOFTWARE') or os.environ.get('WSGI_APPLICATION'):
+   |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+85 | …
+   |
+
+apps/mailings/forms.py:15:120: E501 Line too long (126 > 119)
+   |
+13 | …         'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@example.com'}),
+14 | …         'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Иван Иванов'}),
+15 | …         'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Дополнительная информация'}),
+   |                                                                                                                      ^^^^^^^ E501
+16 | …     }
+17 | …     labels = {
+   |
+
+apps/mailings/views.py:356:9: C901 `post` is too complex (12 > 10)
+    |
+354 |         return list_view(request)
+355 |
+356 |     def post(self, request, pk):
+    |         ^^^^ C901
+357 |         """Отправка рассылки"""
+358 |         # Получаем рассылку и проверяем права
+    |
+
+tests/core/test_models.py:123:14: B017 Do not assert blind exception: `Exception`
+    |
+121 |         """Проверка: owner обязателен при создании"""
+122 |         # Попытка создать без owner должна вызвать ошибку
+123 |         with pytest.raises(Exception):  # IntegrityError или ValidationError
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^ B017
+124 |             OwnedItem.objects.create(title="Test")
+    |
+
+tests/mailings/test_scheduler.py:222:13: B007 Loop control variable `i` not used within loop body
+    |
+220 |         # Создаем 3 рассылки готовые к отправке
+221 |         mailings = []
+222 |         for i in range(3):
+    |             ^ B007
+223 |             mailing = Mailing.objects.create(
+224 |                 start_datetime=timezone.now() - timedelta(minutes=10),
+    |
+    = help: Rename unused `i` to `_i`
+
+Found 5 errors.
+No fixes available (1 hidden fix can be enabled with the `--unsafe-fixes` option).

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Редактирование получателя{% else %}Новый получатель{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-rounded">
+            <div class="card-header card-header-green text-white">
+                <h3>
+                    {% if read_only_mode %}
+                        Просмотр получателя
+                    {% elif object %}
+                        Редактировать получателя
+                    {% else %}
+                        Добавить получателя
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="card-body">
+                {% if read_only_mode %}
+                <div class="alert alert-info mb-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Вы просматриваете данные другого пользователя. Редактирование недоступно.
+                </div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <fieldset {% if read_only_mode %}disabled{% endif %}>
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email *</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_full_name" class="form-label">Полное имя *</label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}
+                            <div class="text-danger">{{ form.full_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_comment" class="form-label">Комментарий</label>
+                            {{ form.comment }}
+                            {% if form.comment.errors %}
+                            <div class="text-danger">{{ form.comment.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+                    
+                    <div class="d-flex gap-2">
+                        {% if not read_only_mode %}
+                        <button type="submit" class="btn btn-green">Сохранить</button>
+                        {% endif %}
+                        <a href="{% url 'recipient_list' %}" class="btn btn-gray">{% if read_only_mode %}Назад{% else %}Отмена{% endif %}</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        width: 100%;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,102 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Попытки рассылок{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>История отправки рассылок</h2>
+    </div>
+
+    {% if attempts %}
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Запуск</th>
+                            <th>Дата и время</th>
+                            <th>Тип</th>
+                            <th>Рассылка</th>
+                            <th>Получатель</th>
+                            <th>Владелец</th>
+                            <th>Статус</th>
+                            <th>Ответ сервера</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attempt in attempts %}
+                        <tr>
+                            <td><small class="text-muted">{{ attempt.mailing.id }}</small></td>
+                            <td><span class="badge bg-secondary">#{{ attempt.run_number }}</span></td>
+                            <td>{{ attempt.attempted_at|date:"d.m.Y H:i:s" }}</td>
+                            <td>
+                                {% if attempt.trigger_type == 'manual' %}
+                                    <span class="badge bg-primary">Вручную</span>
+                                {% elif attempt.trigger_type == 'scheduled' %}
+                                    <span class="badge bg-info">Планировщик</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Команда</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if request.user.is_manager or attempt.mailing.owner == request.user %}
+                                    <a href="{% url 'mailing_edit' attempt.mailing.pk %}">
+                                        {{ attempt.mailing.message.subject }}
+                                    </a>
+                                {% else %}
+                                    {{ attempt.mailing.message.subject }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if request.user.is_manager or attempt.recipient.owner == request.user %}
+                                    <a href="{% url 'recipient_edit' attempt.recipient.pk %}">
+                                        {{ attempt.recipient.full_name }}
+                                    </a>
+                                {% else %}
+                                    {{ attempt.recipient.full_name }}
+                                {% endif %}
+                                <br>
+                                <small class="text-muted">{{ attempt.recipient.email }}</small>
+                            </td>
+                            <td>
+                                {% if request.user.is_manager %}
+                                    <a href="{% url 'user_management_list' %}#user-{{ attempt.mailing.owner.pk }}">
+                                        <small class="text-muted">{{ attempt.mailing.owner.email }}</small>
+                                    </a>
+                                {% else %}
+                                    <small class="text-muted">{{ attempt.mailing.owner.email }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if attempt.status == 'success' %}
+                                    <span class="badge bg-success">Успешно</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Ошибка</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small>{{ attempt.server_response|truncatewords:15 }}</small>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% include 'includes/pagination.html' %}
+    {% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        Пока нет попыток отправки рассылок.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
