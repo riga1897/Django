@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
@@ -64,14 +65,14 @@ class ContactsView(FormView):
 #     return render(request, "marketplace/contacts.html")
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'marketplace/product_form.html'
     success_url = reverse_lazy('marketplace:products_list')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'marketplace/product_form.html'
@@ -80,7 +81,7 @@ class ProductUpdateView(UpdateView):
         return reverse_lazy('marketplace:product_detail', kwargs={'pk': self.object.pk})
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'marketplace/product_confirm_delete.html'
     success_url = reverse_lazy('marketplace:products_list')

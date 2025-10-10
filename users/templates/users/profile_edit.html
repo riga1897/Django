@@ -1,0 +1,89 @@
+{% extends 'marketplace/base.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="page-header gradient-green text-white p-4 mb-4">Редактирование профиля</h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card card-rounded">
+                <div class="card-header card-header-green text-white">
+                    <h5 class="mb-0">Обновить информацию</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_first_name" class="form-label">Имя</label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                <div class="text-danger">{{ form.first_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="id_last_name" class="form-label">Фамилия</label>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                <div class="text-danger">{{ form.last_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_phone" class="form-label">Телефон</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                            <div class="text-danger">{{ form.phone.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_country" class="form-label">Страна</label>
+                            {{ form.country }}
+                            {% if form.country.errors %}
+                            <div class="text-danger">{{ form.country.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_avatar" class="form-label">Аватар</label>
+                            {{ form.avatar }}
+                            {% if form.avatar.errors %}
+                            <div class="text-danger">{{ form.avatar.errors }}</div>
+                            {% endif %}
+                            {% if user.avatar %}
+                            <div class="mt-2">
+                                <small class="text-muted">Текущий аватар:</small><br>
+                                <img src="{{ user.avatar.url }}" alt="Текущий аватар" style="max-width: 100px; max-height: 100px; object-fit: cover;" class="rounded mt-1">
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-green">Сохранить изменения</button>
+                            <a href="{% url 'users:profile' %}" class="btn btn-secondary">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

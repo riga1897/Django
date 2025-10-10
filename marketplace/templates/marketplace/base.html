@@ -104,6 +104,55 @@
                 </li>
             </ul>
         </nav>
+        
+        <!-- User Section -->
+        <div class="p-2 border-top border-secondary">
+            {% if user.is_authenticated %}
+            <div class="dropdown">
+                <button class="btn w-100 text-start d-flex align-items-center text-white nav-link-inactive dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span class="text-truncate">{{ user.email|truncatewords:2 }}</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark w-100" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="{% url 'users:profile' %}">Мой профиль</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="post" action="{% url 'users:logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item">Выход</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            {% else %}
+            <ul class="list-unstyled mb-0">
+                <li class="mb-1">
+                    <a href="{% url 'users:login' %}" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none nav-link-inactive">
+                        <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" x2="3" y1="12" y2="12"></line>
+                        </svg>
+                        <span>Вход</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{% url 'users:register' %}" class="btn w-100 text-start d-flex align-items-center text-white text-decoration-none nav-link-inactive">
+                        <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" x2="20" y1="8" y2="14"></line>
+                            <line x1="23" x2="17" y1="11" y2="11"></line>
+                        </svg>
+                        <span>Регистрация</span>
+                    </a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
     </div>
     <!-- Main Content -->
     {% block content %}{% endblock %}
