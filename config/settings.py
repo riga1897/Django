@@ -25,6 +25,15 @@ CSRF_TRUSTED_ORIGINS = []
 if replit_dev_domain := os.getenv("REPLIT_DEV_DOMAIN"):
     CSRF_TRUSTED_ORIGINS.append(f"https://{replit_dev_domain}")
 
+# CSRF и Session настройки для Replit окружения (работает в iframe)
+CSRF_COOKIE_SECURE = True  # Replit использует HTTPS
+CSRF_COOKIE_SAMESITE = "None"  # Для работы в iframe нужно None
+SESSION_COOKIE_SECURE = True  # Replit использует HTTPS
+SESSION_COOKIE_SAMESITE = "None"  # Для работы в iframe нужно None
+
+# Разрешить загрузку в iframe (для Replit preview)
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
 # Application definition
 
 INSTALLED_APPS = [
