@@ -40,6 +40,14 @@ class User(AbstractUser):
     - Добавлены поля: avatar, phone, country
     """
 
+    username = models.CharField(
+        max_length=150,
+        unique=False,
+        blank=True,
+        null=True,
+        verbose_name="Имя пользователя"
+    )
+    
     email = models.EmailField(
         verbose_name="Email адрес",
         unique=True,
