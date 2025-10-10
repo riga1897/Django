@@ -65,15 +65,23 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Сначала пробуем DATABASE_URL (для Replit)
+DATABASE_URL = os.getenv("DATABASE_URL")
+# Если нет DATABASE_URL - собираем из параметров .env (для Windows)
+if not DATABASE_URL:
+    db_user = os.getenv("USER", "marketplace_user")
+    db_password = os.getenv("PASSWORD", "marketplace_password")
+    db_host = os.getenv("HOST", "localhost")
+    db_port = os.getenv("PORT", "5432")
+    db_name = os.getenv("NAME", "marketplace")
+
+    DATABASE_URL = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv(
-            "DATABASE_URL",
-            f"postgresql://{os.getenv('USER')}:{os.getenv('PASSWORD')}@{os.getenv('HOST')}:{os.getenv('PORT')}/{os.getenv('NAME')}"
-        ),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    "default": {
+        **dj_database_url.parse(DATABASE_URL),
+        "CONN_MAX_AGE": 600,
+        "CONN_HEALTH_CHECKS": True,
+    }
 }
 
 # print(DATABASES)

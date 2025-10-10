@@ -122,7 +122,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Authentication settings
 LOGIN_URL = "users:login"
-LOGIN_REDIRECT_URL = "library:book_list"
+LOGIN_REDIRECT_URL = "library:books_list"
 LOGOUT_REDIRECT_URL = "/"
 
 # Email settings (консоль для разработки, SMTP для production)
