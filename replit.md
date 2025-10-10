@@ -102,11 +102,14 @@ The system consists of three main Django applications:
 ## Template Architecture
 
 **Design Pattern**: Template inheritance with base layouts
-- **Base Template**: `marketplace/base.html` with sidebar navigation
+- **Base Templates**: 
+  - `marketplace/base.html`: Main layout with sidebar navigation for marketplace/blog pages
+  - `users/auth_base.html`: Dedicated full-width layout for authentication pages (login/register) without sidebar
 - **Reusable Components**: Card templates for products and blog posts
 - **Form Fields**: Generic form field template with icon detection based on widget type
 - **Styling**: Bootstrap 5.3.8 with custom gradient CSS
-- **Color Scheme**: Green gradients for marketplace, contextual colors for actions (red for delete, yellow for drafts)
+- **Color Scheme**: Green gradients for marketplace, dark gradients for auth pages, contextual colors for actions (red for delete, yellow for drafts)
+- **Responsive Design**: Auth forms use max-width 900px on desktop, 100% width on mobile
 
 ## View Layer Architecture
 
