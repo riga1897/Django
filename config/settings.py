@@ -31,7 +31,7 @@ CSRF_TRUSTED_ORIGINS = [
 # CSRF и Session настройки для Replit окружения (работает в iframe)
 CSRF_COOKIE_SECURE = True  # Replit использует HTTPS
 CSRF_COOKIE_SAMESITE = "None"  # Для работы в iframe
-CSRF_USE_SESSIONS = True  # Храним CSRF токен в сессии, а не в отдельной cookie
+CSRF_COOKIE_HTTPONLY = False  # JavaScript должен иметь доступ к CSRF токену
 SESSION_COOKIE_SECURE = True  # Replit использует HTTPS
 SESSION_COOKIE_SAMESITE = "None"  # Для работы в iframe
 
