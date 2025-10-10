@@ -1,3 +1,0 @@
-[pydocstyle]
-ignore = D104, D200, D202, D203, D205, D212, D400, D407, D413
-match = __init__.py
