@@ -175,6 +175,7 @@ The system consists of three main Django applications:
 - **flake8**: Code style and error checking with docstring validation
 - **isort**: Import sorting and organization (black-compatible profile)
 - **black**: Code formatter (line length: 119)
+- **mypy**: Static type checking with Django stubs support
 
 **Standards**:
 - Maximum line length: 119 characters

@@ -20,6 +20,11 @@ DEBUG = bool(os.getenv("DEBUG") == "True")
 
 ALLOWED_HOSTS = ["*"]
 
+# CSRF trusted origins для работы форм на Replit
+CSRF_TRUSTED_ORIGINS = []
+if replit_dev_domain := os.getenv("REPLIT_DEV_DOMAIN"):
+    CSRF_TRUSTED_ORIGINS.append(f"https://{replit_dev_domain}")
+
 # Application definition
 
 INSTALLED_APPS = [
