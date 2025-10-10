@@ -76,9 +76,10 @@ The system consists of three main Django applications:
 
 ## Authentication System
 
-**Custom User Model** (`library/users/CustomUser`):
+**Custom User Model** (`users.User`):
 - Email-based authentication (USERNAME_FIELD = "email")
 - Extended fields: email (unique), avatar, phone, country
+- Username field automatically mirrors email (auto-filled by UserManager)
 - Custom UserManager with overridden create_user() and create_superuser() methods
 - Integration with Django's built-in auth system
 - REQUIRED_FIELDS = [] (only email and password required)

@@ -11,6 +11,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Email обязателен для заполнения')
         
         email = self.normalize_email(email)
+        extra_fields.setdefault('username', email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -82,6 +83,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
     
-    def get_full_name(self):
+    def get_full_name(self) -> str:
         """Возвращает полное имя пользователя."""
-        return f"{self.first_name} {self.last_name}".strip() or self.email
+        full_name = f"{self.first_name} {self.last_name}".strip()
+        return full_name if full_name else str(self.email)
