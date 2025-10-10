@@ -18,18 +18,15 @@ class ModalLoginRequiredMixin(LoginRequiredMixin):
     def handle_no_permission(self):
         """Редирект на главную с открытием модалки логина"""
         next_url = self.request.get_full_path()
-        
+
         if not url_has_allowed_host_and_scheme(
             url=next_url,
             allowed_hosts={self.request.get_host()},
             require_https=self.request.is_secure(),
         ):
             next_url = "/"
-        
-        query_params = {
-            "next": next_url,
-            "show_login_modal": "1"
-        }
+
+        query_params = {"next": next_url, "show_login_modal": "1"}
         return redirect(f"/?{urlencode(query_params)}")
 
 
@@ -46,6 +43,7 @@ class ProductsListView(ListView):
 #     context = {"products": products}
 #     return render(request, "marketplace/products_list.html", context)
 
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = "marketplace/product_detail.html"
@@ -61,13 +59,13 @@ class ProductDetailView(DetailView):
 class ContactsView(FormView):
     template_name = "marketplace/contacts.html"
     form_class = ContactForm
-    success_url = reverse_lazy('marketplace:contacts')
+    success_url = reverse_lazy("marketplace:contacts")
 
     def form_valid(self, form):
         # Данные из формы
-        name = form.cleaned_data['name']
-        email = form.cleaned_data['email']
-        message = form.cleaned_data['message']
+        name = form.cleaned_data["name"]
+        email = form.cleaned_data["email"]
+        message = form.cleaned_data["message"]
 
         # Логика обработки (можно добавить отправку email, сохранение в БД и т.д.)
         print(f"Сообщение от {name} ({email}): '{message}'")
@@ -76,37 +74,24 @@ class ContactsView(FormView):
         messages.success(self.request, f"Спасибо, {name}! Ваше сообщение получено.")
         return super().form_valid(form)
 
-# def contacts(request):
-#     if request.method == "POST":
-#         name = request.POST.get("name")
-#         email = request.POST.get("email")
-#         message = request.POST.get("message")
-#
-#         # Лог обработки
-#         print(f"Сообщение от {name}: '{message}'. E-mail: {email}")
-#
-#         messages.success(request, f"Спасибо, {name}! Ваше сообщение получено.")
-#
-#     return render(request, "marketplace/contacts.html")
-
 
 class ProductCreateView(ModalLoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    template_name = 'marketplace/product_form.html'
-    success_url = reverse_lazy('marketplace:products_list')
+    template_name = "marketplace/product_form.html"
+    success_url = reverse_lazy("marketplace:products_list")
 
 
 class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'marketplace/product_form.html'
+    template_name = "marketplace/product_form.html"
 
     def get_success_url(self):
-        return reverse_lazy('marketplace:product_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy("marketplace:product_detail", kwargs={"pk": self.object.pk})
 
 
 class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):
     model = Product
-    template_name = 'marketplace/product_confirm_delete.html'
-    success_url = reverse_lazy('marketplace:products_list')
+    template_name = "marketplace/product_confirm_delete.html"
+    success_url = reverse_lazy("marketplace:products_list")

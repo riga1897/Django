@@ -10,7 +10,7 @@ def media_filter(path):
     return "#"
 
 
-@register.filter(name='widget_type')
+@register.filter(name="widget_type")
 def widget_type(field):
     """Returns the widget class name for template conditionals"""
     return field.field.widget.__class__.__name__

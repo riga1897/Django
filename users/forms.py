@@ -11,21 +11,11 @@ class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "email@example.com",
-                "autofocus": True
-            }
+            attrs={"class": "form-control", "placeholder": "email@example.com", "autofocus": True}
         ),
     )
     password = forms.CharField(
-        label="Пароль",
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "********"
-            }
-        )
+        label="Пароль", widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "********"})
     )
 
 
@@ -35,30 +25,14 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
         label="Email",
         required=True,
-        widget=forms.EmailInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "email@example.com"
-            }
-        ),
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "email@example.com"}),
     )
     password1 = forms.CharField(
-        label="Пароль",
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "********"
-            }
-        )
+        label="Пароль", widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "********"})
     )
     password2 = forms.CharField(
         label="Подтверждение пароля",
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "********"
-            }
-        ),
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "********"}),
     )
 
     class Meta:
@@ -72,9 +46,7 @@ class CustomUserCreationForm(UserCreationForm):
             email = email.lower().strip()
 
             if User.objects.filter(email=email).exists():
-                raise forms.ValidationError(
-                    "Пользователь с таким email уже зарегистрирован."
-                )
+                raise forms.ValidationError("Пользователь с таким email уже зарегистрирован.")
 
         return email
 
@@ -95,41 +67,12 @@ class UserProfileForm(forms.ModelForm):
         model = User
         fields = ["email", "first_name", "last_name", "avatar", "phone", "country"]
         widgets = {
-            "email": forms.EmailInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "email@example.com"
-                }
-            ),
-            "first_name": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Имя"
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Фамилия"
-                }
-            ),
-            "avatar": forms.FileInput(
-                attrs={
-                    "class": "form-control"
-                }
-            ),
-            "phone": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "+7 (999) 123-45-67"
-                }
-            ),
-            "country": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Россия"
-                }
-            ),
+            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "email@example.com"}),
+            "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Имя"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Фамилия"}),
+            "avatar": forms.FileInput(attrs={"class": "form-control"}),
+            "phone": forms.TextInput(attrs={"class": "form-control", "placeholder": "+7 (999) 123-45-67"}),
+            "country": forms.TextInput(attrs={"class": "form-control", "placeholder": "Россия"}),
         }
         labels = {
             "email": "Email",

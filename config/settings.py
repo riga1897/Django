@@ -20,24 +20,6 @@ DEBUG = bool(os.getenv("DEBUG") == "True")
 
 ALLOWED_HOSTS = ["*"]
 
-# CSRF trusted origins для Replit
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.repl.co",
-    "https://*.repl.dev",
-    "https://*.replit.dev",
-    "https://*.replit.app",
-]
-
-# CSRF и Session настройки для Replit окружения (работает в iframe)
-CSRF_COOKIE_SECURE = True  # Replit использует HTTPS
-CSRF_COOKIE_SAMESITE = "None"  # Для работы в iframe
-CSRF_COOKIE_HTTPONLY = False  # JavaScript должен иметь доступ к CSRF токену
-SESSION_COOKIE_SECURE = True  # Replit использует HTTPS
-SESSION_COOKIE_SAMESITE = "None"  # Для работы в iframe
-
-# Разрешить загрузку в iframe (для Replit preview)
-X_FRAME_OPTIONS = "SAMEORIGIN"
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -88,7 +70,7 @@ DATABASES = {
     "default": dj_database_url.config(
         default=os.getenv(
             "DATABASE_URL",
-            f"postgresql://{os.getenv('USER')}:{os.getenv('PASSWORD')}@{os.getenv('HOST')}:{os.getenv('PORT')}/{os.getenv('NAME')}"
+            f"postgresql://{os.getenv('USER')}:{os.getenv('PASSWORD')}@{os.getenv('HOST')}:{os.getenv('PORT')}/{os.getenv('NAME')}",
         ),
         conn_max_age=600,
         conn_health_checks=True,
