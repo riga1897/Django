@@ -20,16 +20,20 @@ DEBUG = bool(os.getenv("DEBUG") == "True")
 
 ALLOWED_HOSTS = ["*"]
 
-# CSRF trusted origins для работы форм на Replit
-CSRF_TRUSTED_ORIGINS = []
-if replit_dev_domain := os.getenv("REPLIT_DEV_DOMAIN"):
-    CSRF_TRUSTED_ORIGINS.append(f"https://{replit_dev_domain}")
+# CSRF trusted origins для Replit
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.repl.co",
+    "https://*.repl.dev",
+    "https://*.replit.dev",
+    "https://*.replit.app",
+]
 
 # CSRF и Session настройки для Replit окружения (работает в iframe)
 CSRF_COOKIE_SECURE = True  # Replit использует HTTPS
-CSRF_COOKIE_SAMESITE = "None"  # Для работы в iframe нужно None
+CSRF_COOKIE_SAMESITE = "None"  # Для работы в iframe
+CSRF_USE_SESSIONS = True  # Храним CSRF токен в сессии, а не в отдельной cookie
 SESSION_COOKIE_SECURE = True  # Replit использует HTTPS
-SESSION_COOKIE_SAMESITE = "None"  # Для работы в iframe нужно None
+SESSION_COOKIE_SAMESITE = "None"  # Для работы в iframe
 
 # Разрешить загрузку в iframe (для Replit preview)
 X_FRAME_OPTIONS = "SAMEORIGIN"
