@@ -1,16 +1,22 @@
 from urllib.parse import urlencode
 
 from django.contrib import messages
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import CreateView, UpdateView
 
-from users.forms import CustomAuthenticationForm, CustomUserCreationForm, UserProfileForm
+from users.forms import (
+    CustomAuthenticationForm,
+    CustomUserCreationForm,
+    UserProfileForm,
+)
 from users.models import User
 
 
@@ -37,8 +43,28 @@ class UserLoginView(LoginView):
             return next_url
         return str(reverse_lazy("marketplace:products_list"))
 
+    def form_valid(self, form):
+        """Успешный вход - возвращаем JSON для AJAX или редирект для обычной формы"""
+        # AJAX запрос
+        if self.request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            login(self.request, form.get_user())
+            redirect_url = self.get_redirect_url()
+            return JsonResponse({"success": True, "redirect": redirect_url})
+        # Обычный запрос
+        return super().form_valid(form)
+
     def form_invalid(self, form):
-        """При ошибке редирект обратно с параметром для открытия модалки"""
+        """При ошибке возвращаем JSON для AJAX или редирект для обычной формы"""
+        # AJAX запрос
+        if self.request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return JsonResponse(
+                {
+                    "success": False,
+                    "error": "Неверный email или пароль. Попробуйте еще раз.",
+                }
+            )
+
+        # Обычный запрос (fallback)
         from django.shortcuts import redirect
 
         next_url = self.request.POST.get("next", "/")
@@ -91,16 +117,31 @@ class UserRegisterView(CreateView):
 
     def form_valid(self, form):
         """Успешная регистрация - автоматический вход"""
-        from django.contrib.auth import login
-
         user = form.save()
         self.send_welcome_email(user.email)
         login(self.request, user)
+
+        # AJAX запрос
+        if self.request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            redirect_url = self.get_success_url()
+            return JsonResponse({"success": True, "redirect": redirect_url})
+
+        # Обычный запрос
         messages.success(self.request, "Добро пожаловать! Регистрация прошла успешно.")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        """При ошибке редирект обратно с параметром для открытия модалки"""
+        """При ошибке возвращаем JSON для AJAX или редирект для обычной формы"""
+        # AJAX запрос
+        if self.request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            error_messages = []
+            for field, errors in form.errors.items():
+                for error in errors:
+                    error_messages.append(str(error))
+            error_text = " ".join(error_messages) if error_messages else "Ошибка регистрации. Проверьте введенные данные."
+            return JsonResponse({"success": False, "error": error_text})
+
+        # Обычный запрос (fallback)
         from django.shortcuts import redirect
 
         next_url = self.request.POST.get("next", "/")

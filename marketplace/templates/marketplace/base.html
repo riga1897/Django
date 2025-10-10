@@ -167,19 +167,19 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% if messages %}
                 <div id="loginMessages">
+                {% if messages %}
                     {% for message in messages %}
                     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     {% endfor %}
-                </div>
                 {% endif %}
-                <form method="post" action="{% url 'users:login' %}">
+                </div>
+                <form id="loginForm" method="post" action="{% url 'users:login' %}">
               {% csrf_token %}
-              <input type="hidden" name="next" value="{{ request.GET.next|default:'/' }}">
+              <input type="hidden" name="next" id="login_next" value="{{ request.GET.next|default:'/' }}">
 
                     <div class="mb-3">
                         <label for="login_email" class="form-label">Email</label>
@@ -213,19 +213,19 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% if messages %}
                 <div id="registerMessages">
+                {% if messages %}
                     {% for message in messages %}
                     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     {% endfor %}
-                </div>
                 {% endif %}
-                <form method="post" action="{% url 'users:register' %}">
+                </div>
+                <form id="registerForm" method="post" action="{% url 'users:register' %}">
               {% csrf_token %}
-              <input type="hidden" name="next" value="{{ request.GET.next|default:'/' }}">
+              <input type="hidden" name="next" id="register_next" value="{{ request.GET.next|default:'/' }}">
 
                     <div class="mb-3">
                         <label for="register_email" class="form-label">Email *</label>
@@ -259,9 +259,10 @@
 <!-- Bootstrap JS -->
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 
-<!-- Auto-open modal on error -->
+<!-- AJAX Authentication -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Auto-open modal on error
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('show_login_modal')) {
         const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
@@ -271,6 +272,82 @@ document.addEventListener('DOMContentLoaded', function() {
         const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
         registerModal.show();
     }
+
+    // Helper: Get CSRF token from DOM
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    // Helper: Show message in modal
+    function showMessage(containerId, message, type) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+    }
+
+    // Login Form AJAX
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(loginForm);
+        const csrfToken = getCSRFToken();
+        
+        try {
+            const response = await fetch(loginForm.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                window.location.href = data.redirect || '/';
+            } else {
+                showMessage('loginMessages', data.error || 'Ошибка входа', 'danger');
+            }
+        } catch (error) {
+            showMessage('loginMessages', 'Произошла ошибка. Попробуйте снова.', 'danger');
+        }
+    });
+
+    // Register Form AJAX
+    const registerForm = document.getElementById('registerForm');
+    registerForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(registerForm);
+        const csrfToken = getCSRFToken();
+        
+        try {
+            const response = await fetch(registerForm.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                window.location.href = data.redirect || '/';
+            } else {
+                showMessage('registerMessages', data.error || 'Ошибка регистрации', 'danger');
+            }
+        } catch (error) {
+            showMessage('registerMessages', 'Произошла ошибка. Попробуйте снова.', 'danger');
+        }
+    });
 });
 </script>
 

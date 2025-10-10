@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
+from marketplace.views import ModalLoginRequiredMixin
+
 from .models import BlogPost
 
 
@@ -32,23 +34,23 @@ class BlogPostDetailView(DetailView):
         return super().get(request, *args, **kwargs)
 
 
-class BlogPostCreateView(CreateView):
+class BlogPostCreateView(ModalLoginRequiredMixin, CreateView):
     model = BlogPost
-    template_name = 'blog/blogpost_form.html'
-    fields = ['title', 'content', 'preview', 'is_published']
-    success_url = reverse_lazy('blog:post_list')
+    template_name = "blog/blogpost_form.html"
+    fields = ["title", "content", "preview", "is_published"]
+    success_url = reverse_lazy("blog:post_list")
 
 
-class BlogPostUpdateView(UpdateView):
+class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):
     model = BlogPost
-    template_name = 'blog/blogpost_form.html'
-    fields = ['title', 'content', 'preview', 'is_published']
+    template_name = "blog/blogpost_form.html"
+    fields = ["title", "content", "preview", "is_published"]
 
     def get_success_url(self):
-        return reverse_lazy('blog:post_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
 
 
-class BlogPostDeleteView(DeleteView):
+class BlogPostDeleteView(ModalLoginRequiredMixin, DeleteView):
     model = BlogPost
-    template_name = 'blog/blogpost_confirm_delete.html'
-    success_url = reverse_lazy('blog:post_list')
+    template_name = "blog/blogpost_confirm_delete.html"
+    success_url = reverse_lazy("blog:post_list")

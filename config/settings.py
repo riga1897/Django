@@ -20,6 +20,21 @@ DEBUG = bool(os.getenv("DEBUG") == "True")
 
 ALLOWED_HOSTS = ["*"]
 
+# CSRF configuration для Replit iframe
+# Используем сессию вместо отдельной CSRF cookie (браузер блокирует cookies в iframe)
+CSRF_USE_SESSIONS = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.replit.dev",
+    "https://*.replit.app",
+    "https://*.replit.co",
+]
+if replit_dev_domain := os.getenv("REPLIT_DEV_DOMAIN"):
+    CSRF_TRUSTED_ORIGINS.append(f"https://{replit_dev_domain}")
+
+# Session cookies для работы в iframe
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+
 # Application definition
 
 INSTALLED_APPS = [
