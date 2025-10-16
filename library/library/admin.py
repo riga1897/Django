@@ -1,19 +1,9 @@
 from django.contrib import admin
 
-from users.models import CustomUser
-
 from .models import Author, Book
-
 
 # admin.site.register(Author)
 # admin.site.register(Book)
-@admin.register(CustomUser)
-class ProductAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "email",
-    )
-
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
