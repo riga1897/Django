@@ -10,7 +10,8 @@ from .models import Author, Book
 
 
 class ReviewBookView(LoginRequiredMixin, View):
-    def post(self, request, pk):
+    @staticmethod
+    def post(request, pk):
         book = get_object_or_404(Book, id=pk)
 
         if not request.user.has_perm("library.can_review_book"):
@@ -25,7 +26,8 @@ class ReviewBookView(LoginRequiredMixin, View):
 
 
 class RecommendBookView(LoginRequiredMixin, View):
-    def post(self,request, pk):
+    @staticmethod
+    def post(request, pk):
         book = get_object_or_404(Book, id=pk)
 
         if not request.user.has_perm("library.can_recommend_book"):
