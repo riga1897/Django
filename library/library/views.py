@@ -1,10 +1,42 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.http import HttpResponseForbidden
 
 from .forms import AuthorForm, BookForm
 from .models import Author, Book
+
+
+class ReviewBookView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        book = get_object_or_404(Book, id=pk)
+
+        if not request.user.has_perm("library.can_review_book"):
+            result = HttpResponseForbidden("У вас нет права для рецензирования книги")
+        else:
+            book.review = request.POST.get("library:book_review")
+            book.save()
+
+            result = redirect("library:book_detail", pk)
+
+        return result
+
+
+class RecommendBookView(LoginRequiredMixin, View):
+    def post(self,request, pk):
+        book = get_object_or_404(Book, id=pk)
+
+        if not request.user.has_perm("library.can_recommend_book"):
+            result = HttpResponseForbidden("У вас нет права для рекомендации книги")
+        else:
+            book.review = request.POST.get("library:book_review")
+            book.save()
+
+            result = redirect("library:book_detail", pk)
+
+        return result
 
 
 class AuthorListView(LoginRequiredMixin, ListView):
@@ -90,7 +122,6 @@ class BookDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = "library/book_confirm_delete.html"
     success_url = reverse_lazy("library:books_list")
     permission_required = "library.delete_book"
-
 
 # def books_list(request):
 #     books = Book.objects.all()

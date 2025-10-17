@@ -49,7 +49,6 @@ class Student(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="students", default=1,)
 
 
-
     def photo(self):
         pass
 
@@ -60,3 +59,7 @@ class Student(models.Model):
         verbose_name = 'студент'
         verbose_name_plural = 'студенты'
         ordering = ['last_name']
+        permissions = [
+            ("can_promote_student", "Can promote student"),
+            ("can_expel_student", "Can expel student")
+        ]

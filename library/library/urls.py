@@ -2,7 +2,7 @@ from django.urls import path
 
 from .apps import LibraryConfig
 from .views import (AuthorCreateView, AuthorListView, AuthorUpdateView, BookCreateView,  # , books_list, \
-                    BookDeleteView, BookDetailView, BooksListView, BookUpdateView)
+                    BookDeleteView, BookDetailView, BooksListView, BookUpdateView, ReviewBookView, RecommendBookView)
 
 # book_detail
 
@@ -19,4 +19,6 @@ urlpatterns = [
     path("books/new/", BookCreateView.as_view(), name="book_create"),
     path("books/<int:pk>/update/", BookUpdateView.as_view(), name="book_update"),
     path("books/<int:pk>/delete/", BookDeleteView.as_view(), name="book_delete"),
+    path("books/review/<int:pk>/", ReviewBookView.as_view(), name="book_review"),
+    path("books/recommend/<int:pk>/", RecommendBookView.as_view(), name="book_recommend"),
 ]
