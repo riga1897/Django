@@ -40,8 +40,8 @@
                     </div>
                     {% endif %}
                     
-                    {% if perms.blog.can_unpublish_post %}
-                    <!-- Toggle для контент-менеджеров -->
+                    {% if user == post.owner or perms.blog.can_unpublish_post %}
+                    <!-- Toggle для владельца и контент-менеджеров -->
                     <form method="post" action="{% url 'blog:post_toggle_publish' post.pk %}">
                         {% csrf_token %}
                         <div class="form-check form-switch mb-0">

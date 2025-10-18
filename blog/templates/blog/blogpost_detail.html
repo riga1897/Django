@@ -57,7 +57,7 @@
 
 
                     <!-- Просмотры -->
-                    <div class="mb-4 info-box-green d-flex align-items-center">
+                    <div class="mb-3 info-box-green d-flex align-items-center">
                         <svg class="me-2 icon-green-dark" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
@@ -66,6 +66,16 @@
                             <span class="text-muted small d-block">ПРОСМОТРОВ:</span>
                             <span class="h3 mb-0 fw-bold text-green-dark">{{ post.views_count }}</span>
                         </div>
+                    </div>
+
+                    <!-- Владелец -->
+                    <div class="mb-4 d-flex align-items-center">
+                        <svg class="me-2 icon-green-dark" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="text-muted me-2">Владелец:</span>
+                        <span class="fw-semibold">{{ post.owner.email }}</span>
                     </div>
 
                     <!-- Даты -->

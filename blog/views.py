@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import F, QuerySet
+from django.db.models import F, Q, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -17,14 +17,22 @@ class BlogPostListView(ListView):  # type: ignore[type-arg]
     template_name = "blog/blogpost_list.html"
     context_object_name = "posts"
 
-    def get_queryset(self) -> QuerySet[BlogPost]:
-        """Неавторизованные видят только опубликованные, авторизованные staff/модераторы - все"""
+    def get_queryset(self) -> QuerySet[BlogPost]:  # type: ignore[override]
+        """
+        Фильтрация постов:
+        - Неавторизованные: только опубликованные
+        - Staff/контент-менеджеры: все посты
+        - Обычные пользователи: опубликованные ИЛИ свои собственные
+        """
         user = self.request.user
         if user.is_authenticated and (user.is_staff or user.groups.filter(name="Контент-менеджер").exists()):
             # Staff или контент-менеджеры видят все посты
             return BlogPost.objects.all().order_by("-created_at")
+        elif user.is_authenticated:
+            # Авторизованные пользователи видят опубликованные ИЛИ свои собственные
+            return BlogPost.objects.filter(Q(is_published=True) | Q(owner=user)).order_by("-created_at")
         else:
-            # Неавторизованные и обычные пользователи видят только опубликованные
+            # Неавторизованные видят только опубликованные
             return BlogPost.objects.filter(is_published=True).order_by("-created_at")
 
 
@@ -56,7 +64,7 @@ class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[t
     template_name = "blog/blogpost_form.html"
     fields = ["title", "content", "preview", "is_published"]
 
-    def get_queryset(self) -> QuerySet[BlogPost]:
+    def get_queryset(self) -> QuerySet[BlogPost]:  # type: ignore[override]
         """Только владелец может редактировать пост"""
         return BlogPost.objects.filter(owner=self.request.user)
 
@@ -69,7 +77,7 @@ class BlogPostDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[t
     template_name = "blog/blogpost_confirm_delete.html"
     success_url = reverse_lazy("blog:post_list")
 
-    def get_queryset(self) -> QuerySet[BlogPost]:
+    def get_queryset(self) -> QuerySet[BlogPost]:  # type: ignore[override]
         """Владелец ИЛИ контент-менеджер с группой 'Контент-менеджер' может удалить"""
         user = self.request.user
         if user.groups.filter(name="Контент-менеджер").exists():
@@ -80,13 +88,21 @@ class BlogPostDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[t
             return BlogPost.objects.filter(owner=user)
 
 
-class BlogPostTogglePublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    """Переключение статуса публикации поста (только для контент-менеджеров)"""
-
-    permission_required = "blog.can_unpublish_post"
+class BlogPostTogglePublishView(LoginRequiredMixin, View):
+    """Переключение статуса публикации поста (для владельца или контент-менеджера)"""
 
     def post(self, request: Any, pk: int) -> HttpResponse:
         post = get_object_or_404(BlogPost, pk=pk)
+        
+        # Проверка: пользователь должен быть владельцем ИЛИ иметь разрешение контент-менеджера
+        user = request.user
+        is_owner = post.owner == user
+        is_manager = user.has_perm("blog.can_unpublish_post")
+        
+        if not (is_owner or is_manager):
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied("У вас нет прав для изменения статуса публикации этого поста")
+        
         post.is_published = not post.is_published
         post.save()
         return redirect("blog:post_list")

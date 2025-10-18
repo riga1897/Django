@@ -23,8 +23,8 @@
                     </div>
                     {% endif %}
                     
-                    {% if perms.marketplace.can_unpublish_product %}
-                    <!-- Toggle для модераторов -->
+                    {% if user == product.owner or perms.marketplace.can_unpublish_product %}
+                    <!-- Toggle для владельца и модераторов -->
                     <form method="post" action="{% url 'marketplace:product_toggle_publish' product.pk %}">
                         {% csrf_token %}
                         <div class="form-check form-switch mb-0">

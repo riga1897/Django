@@ -38,14 +38,22 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
     template_name = "marketplace/products_list.html"
     context_object_name = "products"
 
-    def get_queryset(self) -> QuerySet[Product]:
-        """Обычные пользователи видят только опубликованные, staff/модераторы - все"""
+    def get_queryset(self) -> QuerySet[Product]:  # type: ignore[override]
+        """
+        Фильтрация товаров:
+        - Неавторизованные: только опубликованные
+        - Staff/модераторы: все товары
+        - Обычные пользователи: опубликованные ИЛИ свои собственные
+        """
         user = self.request.user
         if user.is_authenticated and (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):
             # Staff или модераторы видят все продукты
             return Product.objects.all()
+        elif user.is_authenticated:
+            # Авторизованные пользователи видят опубликованные ИЛИ свои собственные
+            return Product.objects.filter(Q(is_published=True) | Q(owner=user))
         else:
-            # Обычные пользователи видят только опубликованные
+            # Неавторизованные видят только опубликованные
             return Product.objects.filter(is_published=True)
 
 
@@ -115,7 +123,7 @@ class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[ty
     template_name = "marketplace/product_confirm_delete.html"
     success_url = reverse_lazy("marketplace:products_list")
 
-    def get_queryset(self) -> QuerySet[Product]:
+    def get_queryset(self) -> QuerySet[Product]:  # type: ignore[override]
         """Владелец ИЛИ модератор с группой 'Модератор продуктов' может удалить"""
         user = self.request.user
         if user.groups.filter(name="Модератор продуктов").exists():
@@ -126,13 +134,21 @@ class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[ty
             return Product.objects.filter(owner=user)
 
 
-class ProductTogglePublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    """Переключение статуса публикации продукта (только для модераторов)"""
-
-    permission_required = "marketplace.can_unpublish_product"
+class ProductTogglePublishView(LoginRequiredMixin, View):
+    """Переключение статуса публикации продукта (для владельца или модератора)"""
 
     def post(self, request: Any, pk: int) -> HttpResponse:
         product = get_object_or_404(Product, pk=pk)
+        
+        # Проверка: пользователь должен быть владельцем ИЛИ иметь разрешение модератора
+        user = request.user
+        is_owner = product.owner == user
+        is_moderator = user.has_perm("marketplace.can_unpublish_product")
+        
+        if not (is_owner or is_moderator):
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied("У вас нет прав для изменения статуса публикации этого товара")
+        
         product.is_published = not product.is_published
         product.save()
         return redirect("marketplace:products_list")
