@@ -37,8 +37,16 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-auto">
-                <div class="d-flex gap-2 align-items-center">
+                <div>
                     <a href="{% url 'blog:post_detail' post.pk %}" class="btn btn-outline-primary btn-sm">Читать</a>
+                </div>
+                <div class="d-flex flex-column align-items-end gap-2">
+                    {% if user.is_authenticated and post.owner == user %}
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
+                        <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                    </div>
+                    {% endif %}
                     
                     {% if perms.blog.can_unpublish_post %}
                     <!-- Toggle для контент-менеджеров -->
@@ -58,12 +66,6 @@
                     </form>
                     {% endif %}
                 </div>
-                {% if user.is_authenticated and post.owner == user %}
-                <div class="btn-group" role="group">
-                    <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
-                    <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
-                </div>
-                {% endif %}
             </div>
         </div>
     </div>
