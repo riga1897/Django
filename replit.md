@@ -112,7 +112,25 @@ Preferred communication style: Simple, everyday language.
 
 ## October 18, 2025
 
-### Owner Visibility and Type Safety (Latest)
+### CSS Centralization and Code Quality (Latest)
+- **Полная централизация стилей в static/css/custom.css**:
+  - Добавлено 40+ новых CSS-классов для замены всех inline-стилей
+  - Категории классов: изображения, формы, карточки, кнопки, алерты, аватары, утилиты
+  - Все градиенты, границы, переходы теперь в CSS (нет inline styles)
+  
+- **Очистка шаблонов от inline-стилей**:
+  - **Marketplace**: Удалены все `style="..."` из product_card.html, contacts.html, form_field.html, base.html, products_list.html
+  - **Blog**: Удалены все `style="..."` из blogpost_card.html, blogpost_list.html
+  - **Users**: Удалены все `style="..."` из profile.html, profile_edit.html
+  - Удалены inline JavaScript-обработчики (onfocus, onblur) - заменены на CSS :focus
+  - Исправлено позиционирование overlay-текста в product_card.html (перемещен наверх `top-0`)
+
+- **Качество кода и линтеры**:
+  - Исправлены ошибки ruff: сокращены docstring в marketplace/views.py и blog/views.py
+  - Исправлены ошибки isort: отсортированы импорты в файлах миграций
+  - **Все линтеры проходят**: mypy ✅ (53 файла), ruff ✅, black ✅, isort ✅
+
+### Owner Visibility and Type Safety
 - **Скрыта информация о владельце для неавторизованных пользователей**:
   - В `product_detail.html` и `blogpost_detail.html` блок с владельцем обернут в `{% if user.is_authenticated %}`
   - Неавторизованные пользователи больше не видят email владельца товара/поста
