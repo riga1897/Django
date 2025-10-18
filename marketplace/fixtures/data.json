@@ -1,143 +1,961 @@
 [
 {
-  "model": "marketplace.category",
-  "pk": 1,
-  "fields": {
-    "name": "Смартфоны",
-    "description": "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
-  }
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2025-10-18T17:01:00.817Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "4",
+        "object_repr": "blog1@example.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
 },
 {
-  "model": "marketplace.category",
-  "pk": 2,
-  "fields": {
-    "name": "Телевизоры",
-    "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником"
-  }
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2025-10-18T17:01:00.817Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "3",
+        "object_repr": "blog@example.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
 },
 {
-  "model": "marketplace.category",
-  "pk": 3,
-  "fields": {
-    "name": "Наушники",
-    "description": "Наушники, устройство для персонального прослушивания аудио."
-  }
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2025-10-18T17:50:36.332Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "1",
+        "object_repr": "admin@example.com",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+    }
 },
 {
-  "model": "marketplace.product",
-  "pk": 1,
-  "fields": {
-    "name": "Iphone 15",
-    "description": "512GB, Gray space",
-    "photo": "products/photos/iphone15gray.jpg",
-    "category": 1,
-    "price": "21000.00",
-    "owner": 1,
-    "is_published": true,
-    "created_at": "2025-09-22T13:27:05.301Z",
-    "updated_at": "2025-10-18T15:56:57.791Z"
-  }
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2025-10-18T18:14:13.058Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "6",
+        "object_repr": "prod@example.com",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+    }
 },
 {
-  "model": "marketplace.product",
-  "pk": 2,
-  "fields": {
-    "name": "55\" QLED 4K",
-    "description": "Фоновая подсветка",
-    "photo": "products/photos/55QLed.jpg",
-    "category": 2,
-    "price": "123000.00",
-    "owner": 1,
-    "is_published": true,
-    "created_at": "2025-09-22T13:27:29.770Z",
-    "updated_at": "2025-10-18T15:02:20.990Z"
-  }
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2025-10-18T18:19:09.337Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "7",
+        "object_repr": "blog@example.com",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+    }
 },
 {
-  "model": "marketplace.product",
-  "pk": 3,
-  "fields": {
-    "name": "Huawei Mate XT",
-    "description": "16GB+1TB, Dual Card, красный",
-    "photo": "products/photos/Hw_Mate_XT_red.jpg",
-    "category": 1,
-    "price": "237168.00",
-    "owner": 1,
-    "is_published": true,
-    "created_at": "2025-09-28T17:27:33.381Z",
-    "updated_at": "2025-10-18T15:47:11.722Z"
-  }
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+        "action_time": "2025-10-18T19:01:28.980Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "7",
+        "object_repr": "blog@example.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
 },
 {
-  "model": "marketplace.product",
-  "pk": 4,
-  "fields": {
-    "name": "Hisense 55E7Q PRO 55\"",
-    "description": "черный",
-    "photo": "products/photos/HisenseE7QPRO_55.jpg",
-    "category": 2,
-    "price": "41636.00",
-    "owner": 1,
-    "is_published": false,
-    "created_at": "2025-09-28T17:31:29.741Z",
-    "updated_at": "2025-10-18T15:47:38.982Z"
-  }
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+        "action_time": "2025-10-18T19:01:28.980Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "6",
+        "object_repr": "prod@example.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
 },
 {
-  "model": "marketplace.product",
-  "pk": 5,
-  "fields": {
-    "name": "Смартфон Apple iPhone 17 Pro Max",
-    "description": "1 ТБ, eSIM, Синий (без RuStore)",
-    "photo": "products/photos/smartfon-apple-iphone-17-pro.jpg",
-    "category": 1,
-    "price": "194895.00",
-    "owner": 2,
-    "is_published": false,
-    "created_at": "2025-10-18T16:13:17.731Z",
-    "updated_at": "2025-10-18T16:55:32.761Z"
-  }
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
 },
 {
-  "model": "blog.blogpost",
-  "pk": 17,
-  "fields": {
-    "title": "Черновик",
-    "content": "Описание черновика",
-    "preview": "",
-    "owner": 1,
-    "created_at": "2025-10-03T01:51:54.089Z",
-    "updated_at": "2025-10-18T15:15:08.334Z",
-    "is_published": false,
-    "views_count": 10
-  }
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
 },
 {
-  "model": "blog.blogpost",
-  "pk": 18,
-  "fields": {
-    "title": "Опубликованная запись",
-    "content": "Это тестовая запись блога с интересным содержанием. Здесь можно писать длинные тексты, делиться мыслями и идеями!",
-    "preview": "blogs/previews/oklik-hs-l700g.jpg",
-    "owner": 1,
-    "created_at": "2025-10-03T02:36:27.838Z",
-    "updated_at": "2025-10-18T15:57:25.513Z",
-    "is_published": true,
-    "views_count": 29
-  }
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
 },
 {
-  "model": "blog.blogpost",
-  "pk": 19,
-  "fields": {
-    "title": "Тестовая запись",
-    "content": "Тестовая запись ...",
-    "preview": "",
-    "owner": 5,
-    "created_at": "2025-10-18T17:59:24.918Z",
-    "updated_at": "2025-10-18T17:59:24.918Z",
-    "is_published": false,
-    "views_count": 1
-  }
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 2,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 3,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 4,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 4,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 4,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 4,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 5,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 5,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 5,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 5,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add категория",
+        "content_type": 6,
+        "codename": "add_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change категория",
+        "content_type": 6,
+        "codename": "change_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete категория",
+        "content_type": 6,
+        "codename": "delete_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view категория",
+        "content_type": 6,
+        "codename": "view_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add товар",
+        "content_type": 7,
+        "codename": "add_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change товар",
+        "content_type": 7,
+        "codename": "change_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete товар",
+        "content_type": 7,
+        "codename": "delete_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view товар",
+        "content_type": 7,
+        "codename": "view_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add запись блога",
+        "content_type": 8,
+        "codename": "add_blogpost"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change запись блога",
+        "content_type": 8,
+        "codename": "change_blogpost"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete запись блога",
+        "content_type": 8,
+        "codename": "delete_blogpost"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view запись блога",
+        "content_type": 8,
+        "codename": "view_blogpost"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add Пользователь",
+        "content_type": 9,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change Пользователь",
+        "content_type": 9,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete Пользователь",
+        "content_type": 9,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view Пользователь",
+        "content_type": 9,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Может отменять публикацию продукта",
+        "content_type": 7,
+        "codename": "can_unpublish_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Может отменять публикацию записи блога",
+        "content_type": 8,
+        "codename": "can_unpublish_post"
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+        "name": "Модератор продуктов",
+        "permissions": [
+            37,
+            27
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+        "name": "Контент-менеджер",
+        "permissions": [
+            38,
+            31
+        ]
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "marketplace",
+        "model": "category"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "marketplace",
+        "model": "product"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "blog",
+        "model": "blogpost"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "users",
+        "model": "user"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "0m8u1rvo3ewdbcqembol3p9vozyc5syh",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoibUE0S1h1anpkalhzODc2QjltbXRoRXB5VFc1T29JU2wifQ:1v7Hux:7_7r92m20p5knzFoq7HlUIikRR0_bpFjHRwMhxBrfus",
+        "expire_date": "2025-10-24T18:32:39.111Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "1h3hl1986q34m6ax2l03ukb28z3vcivc",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoic3FEenFHeU40NGFuMlk4eHVvQWlKc0wyWko5dFZJOGsifQ:1v7HF3:_GcNXBox5SXYrAwm0CQkrwV0Zx2cqLEmEwkDtKcEGhk",
+        "expire_date": "2025-10-24T17:49:21.216Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "2869f77a1a7jdp1qbivldk2hy9zr138k",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiM2ZST0ZBQzZnT3YwbGNCd3BDVFZseUV2dUE3cEp1UE8ifQ:1v7HDB:aqb9-ucayCYP-_NlcgMSFJOl-qzK_CoAozsqj92ALv4",
+        "expire_date": "2025-10-24T17:47:25.955Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "2s7mctjee0yfzg8xsjv5mfyw93s0tj1y",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiS2hKUWdnb1dqUm5LYWplTjR0QmhDVExrTGJkTkdRWjEifQ:1v7HAa:arJLJvloqG-Fz9nEPo9Los0bD6F3jUgkpMQoIUqUNJ8",
+        "expire_date": "2025-10-24T17:44:44.240Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "3zosy43skdrmm14oayq3hh5le0zvvd6h",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiZEFQZ2htWVZORmxVVTc0WjF4MnRxZ0NjY3p1MlJJdkkifQ:1v7H9R:67B1M1rP1c8liNZLzoU8T566T-v2rW1i3ulzB7VA_U0",
+        "expire_date": "2025-10-24T17:43:33.610Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "4qofj3njli9t5cra0p341kg7lhrnjmud",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiVGVJc0owRDk5bEU5Q3FKVzM2QXV6RndPREVrZnNxWHgifQ:1v7HHL:tAVYFbzGc_vR3W8MGNrAbUfCO49xCrMLxKyuo9coUEQ",
+        "expire_date": "2025-10-24T17:51:43.906Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "78sa1h8q1zkfgpo8mvt94fwsudqbcrjk",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiaEFLdkJnallyaTFvZ3hzUGdRT1FPYnZlSllkWnFFY0cifQ:1v7H9s:qZyQ4UwkDRbpc4t6F0al810UtbRjcBFjVvo0rRfiStQ",
+        "expire_date": "2025-10-24T17:44:00.139Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "9h97ep19eoemd8s5022h7g71jiitymj3",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSFAebp07zeQGRikaiAp7cr479qkC93ec859sQjbWuM2aIlzZmdm2el3Q0gPajvId2i3zlNv6zIj3xV-0MGvPdPzcrh_BxVG_dbKekgmuCkACk3Ch0kE5ZPWmAyQdK5A8eQLGqOlJCSlVQGDxSeLgOz9AdvwOGw:1vABa9:oyWhRwiqMbVoVC1Or_WzZ2XTh66BPEYyKz5jUc9cB9o",
+        "expire_date": "2025-11-01T18:23:09.078Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "9j4b9xhuz9i3j1can840z4kh6spkridy",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2pAphRZcuu8ZyAwDUjWQlHZlvLtt0oVu_3vvv4XHbc1-a3HxM4urUOLyuxGGZywH4AeWe5WhlnWZSR6KPGmTU-X4up3u30HGlveaRmutSwOYqAM7BYG7wFphdClpssyAidOwM8PUg4Gxt6CR0CQE7MTnCwUuOOw:1vA9XH:lUvkuo2RYKw2p1gmK5WuKOydq-V8pKgkEA5Krgx3OKc",
+        "expire_date": "2025-11-01T16:12:03.882Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ac8xweec39bngv53grhavi0egd3uuy8p",
+    "fields": {
+        "session_data": ".eJxVjDsOwjAQBe_iGln-xR9Kes5grb0LDiBbipMKcXdkKUXSvpl5XxZhW0vcOi1xRnZlkl2OW4L8pjoAvqA-G8-trsuc-FD4Tju_N6TPbXdPBwV6GfUENhDJjIYEaBTJWaE9UCJCjS4bG5QWBix6B4G0ChIxKT9JegTp2O8PBeo4ZA:1vAC9z:CIzgjUzbjzPRydHUIegfqMUgllX7_SUCHpRTF5_qTec",
+        "expire_date": "2025-11-01T19:00:11.035Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "b9mkppsjx6h11nt13qbt4hvc4txkt1r8",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiRllod3Q4dnJiaXFuVERQazVHTnFCYllxWko3eDJPRTMifQ:1v7Hyu:zhodaNID4OVmvbvKYjqc-amlDEG1eNS4PFcD7T7fZ3s",
+        "expire_date": "2025-10-24T18:36:44.768Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "bzzl1kflabt37rogj3ev8x41ojlf8r0u",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiTHlHUzdodnVkRnd0MjBob0F4WExpNzJ0cEVJMVR3S1MifQ:1v7Hxl:i1PdppK61pk-ubap7ZDVgHjtqJpBpUZv4avWatLOUOE",
+        "expire_date": "2025-10-24T18:35:33.030Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "dvuown1vnntl5itzrqhvnywehehuyq1x",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiUnk4cndTNGFSS3pzemQ0U0RVcjJmcHR0Wmhadmo1eFUifQ:1v7HsT:5yKXYkiUebE_z3Kq31GDcuTh7qzbLc0FTGcNOeMHo4g",
+        "expire_date": "2025-10-24T18:30:05.769Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ep773axzho4xr4rututub8wav7rz7isb",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiTU9pRXRxa1RkOVlDU3lyYVBWRlhGNm9iRmYwZ1ZITGYifQ:1v7Hst:RxCEPL2a6fxcDENjOgkOQ2gYOKOoKShugiZiILB62aA",
+        "expire_date": "2025-10-24T18:30:31.543Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "epl8av66tjg6xh4khvt1kmb7nomsxhnv",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiQVRtR3ZKaGtrdXByZ0pvbkdDcmN6SW9uaEJCYnZiYm4ifQ:1v7HDz:d9Syi3yVmgwbIS-qWxlRQT38KEZBzN8MWChxrGEZTqU",
+        "expire_date": "2025-10-24T17:48:15.894Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "iu8hoafkmxa5lldoytw2o1g93s9t6bpj",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSE8CohL9_0GMsNMpWogKe3K-O_apAvd3nPOfYkE21rS1nlJM4mLCOL0uyHkB9cd0B3qrcnc6rrMKHdFHrTLsRE_r4f7d1Cgl2-NBtkQa9DORcfBea-iGQIr9F4TBHQmGtLTRENkPKMK7NkrayljtiTeH-SCODQ:1vABgu:c20awl-IoamLbQ6QmHAyGpoUqfECd1bshnk6bPA_608",
+        "expire_date": "2025-11-01T18:30:08.544Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "jtodk1gum9vzj622o4gb1s3ualgj0r6o",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiV2U2eHlTTlZjZVNZWEozR2VWdjY3NGp3UXViMmJHWUYifQ:1v7I2E:Z4GjIEWqgaM837QLuYq_q1nlIBvyaLYu7eNXFDXXA6Y",
+        "expire_date": "2025-10-24T18:40:10.181Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "jttmxfk70eba9hi1zle764dv6m4cqm7s",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiSE5BcHlOeE5JRUZDaHhvbUJ5QjA2UWtWOHpnQTVOQmoifQ:1v7Hut:C7bT_czLWVNXBScov8mT-PNKpdBKNM22hchQGmumPgE",
+        "expire_date": "2025-10-24T18:32:35.677Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "mjxufvy7zxm9gaqols4zyozo90qe2nqv",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiREtPWTBUT2lUMTg1T3liV3N3Z1JWbUNoNVg4NmRWYngifQ:1v7H9O:2OguW9v9c-dmRCVhK9TfGItmhMv6yywSU5c29x5T-zg",
+        "expire_date": "2025-10-24T17:43:30.043Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "n1yvhwvce9rfmz5qf9p285s8p2uaffug",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiWDVKZHlKbVZId1NzaGxmbTJVTkRFRWhRQzhja1hzOFgifQ:1v7HDo:mBeFCdrtAEsJz_Iasezkj6gMzf5YiuQt_NTg5UbxmEw",
+        "expire_date": "2025-10-24T17:48:04.813Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "nwhvmmgyif30xz9gnljqhgry64gjxy5s",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoib25DRWE5R1JHT3p4ZEM1cjYzZnZvaDJaSkNzWkh1VTQifQ:1v7HxQ:zevx9592rRz-hOjnkAzKLGcTo1QU2CoGzGVdQHYQIz8",
+        "expire_date": "2025-10-24T18:35:12.111Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "p1ksr71dhism1aw9ssxpdlh4tk5libj8",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoidzV3VTZqbVdiRDRtZDluTHFoSXJOREpKOENPNTFFalcifQ:1v7HHa:CtJk5w9_3uiTde_jlDrbyAtRNNvqcjvvYwv0GuHRdkk",
+        "expire_date": "2025-10-24T17:51:58.014Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ruyxve5ppbmn7hrxxgdg2ptc57n07wtl",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiaFRtWnQxN1ZsekxQckM3b0lpUmRoS3dUU1BMcFBXc3EifQ:1v7H9w:xDYvIE61kFnjAuWy2N_Q416obcYEC-qb2igtZtistE4",
+        "expire_date": "2025-10-24T17:44:04.253Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "shjo4oul2dp3e59ix1m5o7gvh2p1ccki",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiYlhJM0R5YzFaYWQ0a0IyM2d0UXl3WXNnSlBNNjIwUDAifQ:1v7H9I:1FLidc0tS0JgqHUW1jqz6cZFWO6yOwCTfd8JTapMtig",
+        "expire_date": "2025-10-24T17:43:24.604Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "tp2bf05160vk19hho4tdtbmepk96bjdm",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoic054R1pqU0YyRjBXUDVTbGFpdlJsZzBBVjhCNmI2Q2sifQ:1v7HEW:6ykXKXXdwx1yMziLkN_YbYGuqo3OFN6gJxvoxk2iznc",
+        "expire_date": "2025-10-24T17:48:48.069Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vgdq1gv0p242eq72bojlpq6b6fxak17q",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiT3VYU0xybzRPVklDNVJEWDJzQ3NvcUtuSzB0UVhkUnEifQ:1v7HDy:8Dd1Chj5pBkyCKkHHMOsiQR-JRDQca7HDMIIr_ss81g",
+        "expire_date": "2025-10-24T17:48:14.136Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vwm5vk2wn2zydj0tsm9khgstge4okzf8",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiN1RMSUpEWHkwMGRvREpYQmJ0MEpyVGxRNk0xMVg4OHoifQ:1v7HAj:GQNVNN3GsAi-3o1F9ajYMo3WENtDbeZJjItLmkP0RG8",
+        "expire_date": "2025-10-24T17:44:53.633Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "w8kxa0fnrkb4e0c2ek030teo8j8uei9p",
+    "fields": {
+        "session_data": "eyJfY3NyZnRva2VuIjoiSVZVQnVnMW05aTFOYUFQV1JHV0ZQbTY3NTcwQXRPYW8ifQ:1v7HCk:fZjvcevUXBVRDppRT2oXjOQWa6XdiGSpmtgjXJ8pxoQ",
+        "expire_date": "2025-10-24T17:46:58.358Z"
+    }
+},
+{
+    "model": "marketplace.category",
+    "pk": 1,
+    "fields": {
+        "name": "Смартфоны",
+        "description": "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
+    }
+},
+{
+    "model": "marketplace.category",
+    "pk": 2,
+    "fields": {
+        "name": "Телевизоры",
+        "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником"
+    }
+},
+{
+    "model": "marketplace.category",
+    "pk": 3,
+    "fields": {
+        "name": "Наушники",
+        "description": "Наушники, устройство для персонального прослушивания аудио."
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 1,
+    "fields": {
+        "name": "Iphone 15",
+        "description": "512GB, Gray space",
+        "photo": "products/photos/iphone15gray.jpg",
+        "category": 1,
+        "price": "21000.00",
+        "owner": 1,
+        "is_published": true,
+        "created_at": "2025-09-22T13:27:05.301Z",
+        "updated_at": "2025-10-18T15:56:57.791Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 2,
+    "fields": {
+        "name": "55\" QLED 4K",
+        "description": "Фоновая подсветка",
+        "photo": "products/photos/55QLed.jpg",
+        "category": 2,
+        "price": "123000.00",
+        "owner": 1,
+        "is_published": true,
+        "created_at": "2025-09-22T13:27:29.770Z",
+        "updated_at": "2025-10-18T15:02:20.990Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 3,
+    "fields": {
+        "name": "Huawei Mate XT",
+        "description": "16GB+1TB, Dual Card, красный",
+        "photo": "products/photos/Hw_Mate_XT_red.jpg",
+        "category": 1,
+        "price": "237168.00",
+        "owner": 1,
+        "is_published": true,
+        "created_at": "2025-09-28T17:27:33.381Z",
+        "updated_at": "2025-10-18T15:47:11.722Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 4,
+    "fields": {
+        "name": "Hisense 55E7Q PRO 55\"",
+        "description": "черный",
+        "photo": "products/photos/HisenseE7QPRO_55.jpg",
+        "category": 2,
+        "price": "41636.00",
+        "owner": 1,
+        "is_published": false,
+        "created_at": "2025-09-28T17:31:29.741Z",
+        "updated_at": "2025-10-18T15:47:38.982Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 5,
+    "fields": {
+        "name": "Смартфон Apple iPhone 17 Pro Max",
+        "description": "1 ТБ, eSIM, Синий (без RuStore)",
+        "photo": "products/photos/smartfon-apple-iphone-17-pro.jpg",
+        "category": 1,
+        "price": "194895.00",
+        "owner": 2,
+        "is_published": false,
+        "created_at": "2025-10-18T16:13:17.731Z",
+        "updated_at": "2025-10-18T16:55:32.761Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 6,
+    "fields": {
+        "name": "blog",
+        "description": "blog",
+        "photo": "",
+        "category": 3,
+        "price": "1.00",
+        "owner": 5,
+        "is_published": true,
+        "created_at": "2025-10-18T18:55:34.583Z",
+        "updated_at": "2025-10-18T18:59:04.147Z"
+    }
+},
+{
+    "model": "blog.blogpost",
+    "pk": 17,
+    "fields": {
+        "title": "Черновик",
+        "content": "Описание черновика",
+        "preview": "",
+        "owner": 5,
+        "created_at": "2025-10-03T01:51:54.089Z",
+        "updated_at": "2025-10-18T18:20:31.495Z",
+        "is_published": false,
+        "views_count": 14
+    }
+},
+{
+    "model": "blog.blogpost",
+    "pk": 18,
+    "fields": {
+        "title": "Опубликованная запись",
+        "content": "Это тестовая запись блога с интересным содержанием. Здесь можно писать длинные тексты, делиться мыслями и идеями!",
+        "preview": "blogs/previews/oklik-hs-l700g.jpg",
+        "owner": 1,
+        "created_at": "2025-10-03T02:36:27.838Z",
+        "updated_at": "2025-10-18T15:57:25.513Z",
+        "is_published": true,
+        "views_count": 31
+    }
+},
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1000000$Ua6ROxaMKtK3RzivlMfhcr$aNDktYp8JPZX7gaY4Gw5v0qcmk19n/h6rWJtd04+z6Q=",
+        "last_login": "2025-10-18T19:00:10.571Z",
+        "is_superuser": true,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-10-10T15:25:41Z",
+        "username": "admin@example.com",
+        "email": "admin@example.com",
+        "avatar": "",
+        "phone": "+1234567890",
+        "country": "US",
+        "groups": [
+            1,
+            2
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1000000$2iJz050fmf3xwPlnLmZteo$616rzP5p0m8yZaRd9jZH8m2AiTmGvWWtS+ySEDy1TWY=",
+        "last_login": "2025-10-18T18:24:20.888Z",
+        "is_superuser": false,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-10-18T10:47:30.276Z",
+        "username": "test@example.com",
+        "email": "test@example.com",
+        "avatar": "",
+        "phone": null,
+        "country": null,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+        "password": "",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "Удалённый",
+        "last_name": "Пользователь",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-10-18T17:59:08.289Z",
+        "username": "deleted@system.user",
+        "email": "deleted@system.user",
+        "avatar": "",
+        "phone": null,
+        "country": null,
+        "groups": [],
+        "user_permissions": []
+    }
 }
 ]
