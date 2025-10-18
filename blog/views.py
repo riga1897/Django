@@ -103,19 +103,19 @@ class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[t
     template_name = "blog/blogpost_form.html"
 
     def get_form(self, form_class: Any = None) -> Any:
-        """Контент-менеджер видит только owner, обычный владелец - все поля кроме owner"""
+        """Контент-менеджер редактирует чужой пост - только owner, владелец (включая менеджера) - все кроме owner"""
         form = super().get_form(form_class)
         user = self.request.user
         is_owner = self.object.owner == user
         is_manager = user.is_staff or user.groups.filter(name="Контент-менеджер").exists()  # type: ignore[attr-defined]
 
-        if is_manager:
-            # Контент-менеджер может изменять только владельца (даже если он сам владелец)
+        if is_manager and not is_owner:
+            # Контент-менеджер редактирует ЧУЖОЙ пост - видит только поле owner
             fields_to_remove = [field for field in form.fields if field != "owner"]
             for field in fields_to_remove:
                 form.fields.pop(field)
         elif is_owner:
-            # Обычный владелец (не контент-менеджер) может редактировать все поля, кроме owner
+            # Владелец (включая контент-менеджера-владельца) - видит все поля кроме owner
             form.fields.pop("owner", None)
 
         return form
