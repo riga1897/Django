@@ -157,12 +157,12 @@ Preferred communication style: Simple, everyday language.
   
 - **UI Implementation**:
   - Bootstrap Switch toggles in product/post card footers for moderators (positioned bottom-right)
-  - Publication status badges (green "Опубл." / yellow "Черн.") shown to authenticated non-moderators only
   - Conditional edit/delete buttons (owner-only, positioned top-right in card footer)
   - Detail buttons ("Подробно"/"Читать") positioned left in card footer
   - All buttons have uniform width (min-width: 85px)
   - Form-based toggle with auto-submit on change
   - Fixed sidebar navigation with scrollable content area
+  - No publication status badges - visibility of card indicates published status
   
 - **CSRF Configuration**:
   - Added CSRF_TRUSTED_ORIGINS for Replit domains
