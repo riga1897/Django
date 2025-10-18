@@ -67,7 +67,7 @@ This Django platform integrates a marketplace (e-commerce), a blog, and user man
 
 **`setup`** - Platform Initialization
 ```bash
-python manage.py setup
+poetry run python manage.py setup
 ```
 Performs complete platform initialization:
 1. Applies all database migrations
@@ -79,7 +79,7 @@ Performs complete platform initialization:
 
 **`del_all`** - Complete Data Cleanup
 ```bash
-python manage.py del_all
+poetry run python manage.py del_all
 ```
 Deletes all data from the database in the correct order:
 1. Blog posts
@@ -93,7 +93,7 @@ Deletes all data from the database in the correct order:
 
 **`load_data_from_fixture`** - Load Test Data
 ```bash
-python manage.py load_data_from_fixture
+poetry run python manage.py load_data_from_fixture
 ```
 Loads test data for development and testing from `marketplace/fixtures/data.json`:
 - 3 test users (password for all: test123):
@@ -108,7 +108,7 @@ Loads test data for development and testing from `marketplace/fixtures/data.json
 
 **`createadmin`** - Create Superuser
 ```bash
-python manage.py createadmin
+poetry run python manage.py createadmin
 ```
 Creates a superuser with email `admin@example.com` and password `admin123`.
 
@@ -116,15 +116,15 @@ Creates a superuser with email `admin@example.com` and password `admin123`.
 
 ### Clean Platform
 ```bash
-python manage.py del_all      # Clear all data
-python manage.py setup         # Initialize platform
+poetry run python manage.py del_all      # Clear all data
+poetry run python manage.py setup         # Initialize platform
 ```
 
 ### Platform with Test Data
 ```bash
-python manage.py del_all                 # Clear all data
-python manage.py setup                   # Initialize platform
-python manage.py load_data_from_fixture  # Load test data
+poetry run python manage.py del_all                 # Clear all data
+poetry run python manage.py setup                   # Initialize platform
+poetry run python manage.py load_data_from_fixture  # Load test data
 ```
 
 ## Updating Test Data
@@ -132,7 +132,7 @@ python manage.py load_data_from_fixture  # Load test data
 If you've made changes to test data manually and want to update the fixture:
 
 ```bash
-python -Xutf8 manage.py dumpdata users.User marketplace.Category marketplace.Product blog.BlogPost --indent 4 --output marketplace/fixtures/data.json
+poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category marketplace.Product blog.BlogPost --indent 4 --output marketplace/fixtures/data.json
 ```
 
 ⚠️ **Important**: After export, manually remove the system user and admin from the fixture, keeping only test users.
