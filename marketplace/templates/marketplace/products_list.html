@@ -13,6 +13,7 @@
     </div>
 
     <!-- Кнопка добавить товар -->
+    {% if user.is_authenticated %}
     <div class="d-flex justify-content-end mb-4">
         <a href="{% url 'marketplace:product_create' %}" 
            class="btn btn-lg shadow-sm" 
@@ -29,6 +30,7 @@
             Добавить товар
         </a>
     </div>
+    {% endif %}
 
     <!-- Карточки товаров -->
     <div class="row">
