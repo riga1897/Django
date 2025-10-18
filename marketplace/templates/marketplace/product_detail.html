@@ -123,6 +123,26 @@
                             {% endif %}
                         {% endif %}
                     </div>
+
+                    <!-- Переключатель публикации (только для владельца или модератора продуктов) -->
+                    {% if user.is_authenticated %}
+                        {% if user == product.owner or perms.marketplace.can_unpublish_product %}
+                        <div class="mt-3 d-flex justify-content-end">
+                            <form method="post" action="{% url 'marketplace:product_toggle_publish' product.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <div class="form-check form-switch d-flex align-items-center">
+                                    <input class="form-check-input me-2" type="checkbox" role="switch" 
+                                           id="publishSwitch{{ product.pk }}" 
+                                           {% if product.is_published %}checked{% endif %}
+                                           onchange="this.form.submit()">
+                                    <label class="form-check-label text-muted small" for="publishSwitch{{ product.pk }}">
+                                        {% if product.is_published %}Опубликовано{% else %}Черновик{% endif %}
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>
