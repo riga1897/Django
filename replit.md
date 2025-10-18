@@ -150,6 +150,8 @@ Preferred communication style: Simple, everyday language.
   - Field visible only to moderators ("Модератор продуктов" and "Контент-менеджер" groups)
   - Ordinary users don't see owner field in forms (auto-assigned to current user on create)
   - Implemented via `get_form()` override in Create/Update views with conditional field removal
+  - Extended `get_queryset()` in Update views: moderators can access ALL objects, regular users only their own
+  - Moderators can edit any product/post and reassign ownership to different users
   
 - **Display Logic for Deleted Owners**:
   - Templates check if `owner.email == "deleted@system.user"`
