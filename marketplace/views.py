@@ -46,7 +46,9 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
         - Обычные пользователи: опубликованные ИЛИ свои собственные
         """
         user = self.request.user
-        if user.is_authenticated and (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):  # type: ignore[attr-defined]
+        if user.is_authenticated and (
+            user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
+        ):  # type: ignore[attr-defined]
             # Staff или модераторы видят все продукты
             return Product.objects.all()  # type: ignore[attr-defined]
         elif user.is_authenticated:
@@ -55,6 +57,18 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
         else:
             # Неавторизованные видят только опубликованные
             return Product.objects.filter(is_published=True)  # type: ignore[attr-defined]
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_authenticated:
+            # Проверяем, является ли пользователь модератором
+            context["is_moderator"] = (
+                user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
+            )  # type: ignore[attr-defined]
+        else:
+            context["is_moderator"] = False
+        return context
 
 
 #    def products_list(request):
@@ -115,13 +129,15 @@ class ProductCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[ty
         form = super().get_form(form_class)
         user = self.request.user
         # Только модераторы могут выбирать владельца
-        if not (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):  # type: ignore[attr-defined]
+        if not (
+            user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
+        ):  # type: ignore[attr-defined]
             form.fields.pop("owner", None)
         return form
 
     def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
-        # Если owner не указан (обычный пользователь), назначаем текущего
-        if not form.instance.owner_id:
+        # Назначаем владельца перед сохранением, если он не указан
+        if not form.cleaned_data.get("owner"):
             form.instance.owner = self.request.user
         return super().form_valid(form)
 

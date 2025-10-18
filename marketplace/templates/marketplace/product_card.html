@@ -16,11 +16,15 @@
                     {% if show_detail_button %}<a href="{% url 'marketplace:product_detail' product.pk %}" class="btn btn-outline-primary btn-sm">Подробно</a>{% endif %}
                 </div>
                 <div class="d-flex flex-column align-items-end gap-2">
-                    {% if user.is_authenticated and product.owner == user %}
-                    <div class="d-flex gap-2">
-                        <a href="{% url 'marketplace:product_update' product.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
-                        <a href="{% url 'marketplace:product_delete' product.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
-                    </div>
+                    {% if user.is_authenticated %}
+                        {% if product.owner == user or is_moderator %}
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'marketplace:product_update' product.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
+                            {% if product.owner == user or perms.marketplace.delete_product %}
+                            <a href="{% url 'marketplace:product_delete' product.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     {% endif %}
                     
                     {% if user == product.owner or perms.marketplace.can_unpublish_product %}

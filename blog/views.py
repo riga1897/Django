@@ -26,15 +26,31 @@ class BlogPostListView(ListView):  # type: ignore[type-arg]
         - Обычные пользователи: опубликованные ИЛИ свои собственные
         """
         user = self.request.user
-        if user.is_authenticated and (user.is_staff or user.groups.filter(name="Контент-менеджер").exists()):  # type: ignore[attr-defined]
+        if user.is_authenticated and (
+            user.is_staff or user.groups.filter(name="Контент-менеджер").exists()
+        ):  # type: ignore[attr-defined]
             # Staff или контент-менеджеры видят все посты
             return BlogPost.objects.all().order_by("-created_at")  # type: ignore[attr-defined]
         elif user.is_authenticated:
             # Авторизованные пользователи видят опубликованные ИЛИ свои собственные
-            return BlogPost.objects.filter(Q(is_published=True) | Q(owner=user)).order_by("-created_at")  # type: ignore[attr-defined]
+            return BlogPost.objects.filter(Q(is_published=True) | Q(owner=user)).order_by(
+                "-created_at"
+            )  # type: ignore[attr-defined]
         else:
             # Неавторизованные видят только опубликованные
             return BlogPost.objects.filter(is_published=True).order_by("-created_at")  # type: ignore[attr-defined]
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_authenticated:
+            # Проверяем, является ли пользователь контент-менеджером
+            context["is_manager"] = (
+                user.is_staff or user.groups.filter(name="Контент-менеджер").exists()
+            )  # type: ignore[attr-defined]
+        else:
+            context["is_manager"] = False
+        return context
 
 
 class BlogPostDetailView(DetailView):
@@ -70,13 +86,15 @@ class BlogPostCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[t
         form = super().get_form(form_class)
         user = self.request.user
         # Только контент-менеджеры могут выбирать владельца
-        if not (user.is_staff or user.groups.filter(name="Контент-менеджер").exists()):  # type: ignore[attr-defined]
+        if not (
+            user.is_staff or user.groups.filter(name="Контент-менеджер").exists()
+        ):  # type: ignore[attr-defined]
             form.fields.pop("owner", None)
         return form
 
     def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
-        # Если owner не указан (обычный пользователь), назначаем текущего
-        if not form.instance.owner_id:
+        # Назначаем владельца перед сохранением, если он не указан
+        if not form.cleaned_data.get("owner"):
             form.instance.owner = self.request.user
         return super().form_valid(form)
 

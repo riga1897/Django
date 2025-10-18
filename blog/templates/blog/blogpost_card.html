@@ -33,11 +33,15 @@
                     <a href="{% url 'blog:post_detail' post.pk %}" class="btn btn-outline-primary btn-sm">Читать</a>
                 </div>
                 <div class="d-flex flex-column align-items-end gap-2">
-                    {% if user.is_authenticated and post.owner == user %}
-                    <div class="d-flex gap-2">
-                        <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
-                        <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
-                    </div>
+                    {% if user.is_authenticated %}
+                        {% if post.owner == user or is_manager %}
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
+                            {% if post.owner == user or perms.blog.delete_blogpost %}
+                            <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     {% endif %}
                     
                     {% if user == post.owner or perms.blog.can_unpublish_post %}

@@ -138,6 +138,15 @@ Preferred communication style: Simple, everyday language.
 
 ## October 18, 2025
 
+### Moderator Rights Separation (Latest)
+- **Limited Moderator Editing Rights**: Moderators can only change ownership, not content
+  - Implemented conditional field pruning in `ProductUpdateView.get_form()` and `BlogPostUpdateView.get_form()`
+  - Owner editing their own product/post: sees all fields except owner (cannot change ownership)
+  - Moderator editing any product/post: sees ONLY owner field (can reassign ownership but not change content)
+  - Added `is_moderator`/`is_manager` context variables in DetailView for template logic
+  - Updated templates: "Изменить" button visible to owner OR moderator
+  - Business logic: Owners manage content, moderators manage ownership assignment
+  
 ### Owner Management and User Deletion Handling
 - **System User for Deleted Owners**: Implemented automatic content preservation when users are deleted
   - Created system user `deleted@system.user` (fixture in `users/fixtures/system_user.json`)
