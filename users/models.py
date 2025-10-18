@@ -67,7 +67,7 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    objects: ClassVar[UserManager] = UserManager()
+    objects: ClassVar[UserManager] = UserManager()  # type: ignore[assignment]
 
     class Meta:  # type: ignore[misc]
         verbose_name = "Пользователь"

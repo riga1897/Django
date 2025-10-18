@@ -2,7 +2,7 @@ from typing import Any
 from urllib.parse import urlencode
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q, QuerySet
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
@@ -46,15 +46,15 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
         - Обычные пользователи: опубликованные ИЛИ свои собственные
         """
         user = self.request.user
-        if user.is_authenticated and (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):
+        if user.is_authenticated and (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):  # type: ignore[attr-defined]
             # Staff или модераторы видят все продукты
-            return Product.objects.all()
+            return Product.objects.all()  # type: ignore[attr-defined]
         elif user.is_authenticated:
             # Авторизованные пользователи видят опубликованные ИЛИ свои собственные
-            return Product.objects.filter(Q(is_published=True) | Q(owner=user))
+            return Product.objects.filter(Q(is_published=True) | Q(owner=user))  # type: ignore[attr-defined]
         else:
             # Неавторизованные видят только опубликованные
-            return Product.objects.filter(is_published=True)
+            return Product.objects.filter(is_published=True)  # type: ignore[attr-defined]
 
 
 #    def products_list(request):
@@ -112,7 +112,7 @@ class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[ty
 
     def get_queryset(self) -> Any:
         """Только владелец может редактировать продукт"""
-        return Product.objects.filter(owner=self.request.user)
+        return Product.objects.filter(owner=self.request.user)  # type: ignore[attr-defined,misc]
 
     def get_success_url(self) -> str:
         return str(reverse_lazy("marketplace:product_detail", kwargs={"pk": self.object.pk}))
@@ -126,12 +126,12 @@ class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[ty
     def get_queryset(self) -> QuerySet[Product]:  # type: ignore[override]
         """Владелец ИЛИ модератор с группой 'Модератор продуктов' может удалить"""
         user = self.request.user
-        if user.groups.filter(name="Модератор продуктов").exists():
+        if user.groups.filter(name="Модератор продуктов").exists():  # type: ignore[attr-defined]
             # Модератор видит все продукты
-            return Product.objects.all()
+            return Product.objects.all()  # type: ignore[attr-defined]
         else:
             # Обычный пользователь видит только свои
-            return Product.objects.filter(owner=user)
+            return Product.objects.filter(owner=user)  # type: ignore[attr-defined,misc]
 
 
 class ProductTogglePublishView(LoginRequiredMixin, View):
@@ -139,16 +139,17 @@ class ProductTogglePublishView(LoginRequiredMixin, View):
 
     def post(self, request: Any, pk: int) -> HttpResponse:
         product = get_object_or_404(Product, pk=pk)
-        
+
         # Проверка: пользователь должен быть владельцем ИЛИ иметь разрешение модератора
         user = request.user
         is_owner = product.owner == user
         is_moderator = user.has_perm("marketplace.can_unpublish_product")
-        
+
         if not (is_owner or is_moderator):
             from django.core.exceptions import PermissionDenied
+
             raise PermissionDenied("У вас нет прав для изменения статуса публикации этого товара")
-        
+
         product.is_published = not product.is_published
         product.save()
         return redirect("marketplace:products_list")

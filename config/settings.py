@@ -37,7 +37,7 @@ if replit_domains:
 # Дополнительные настройки CSRF для работы в iframe
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = "None" 
+SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 
 # Application definition

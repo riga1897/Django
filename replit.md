@@ -138,6 +138,32 @@ Preferred communication style: Simple, everyday language.
 
 ## October 18, 2025
 
+### Owner Visibility and Publishing Permissions
+- **Enhanced Queryset Filtering**: Owners now see published items OR their own unpublished items in lists
+  - `ProductsListView`: Uses Q objects to filter `Q(is_published=True) | Q(owner=user)` for authenticated non-moderators
+  - `BlogPostListView`: Same Q-based filtering for blog posts
+  - Moderators/staff still see all items
+  - Unauthenticated users see only published items
+  
+- **Publishing Toggle Access**: Extended to owners in addition to moderators
+  - Product cards: Owners can toggle `is_published` status for their own products
+  - Blog post cards: Owners can toggle `is_published` status for their own posts
+  - Updated `ProductTogglePublishView` and `BlogPostTogglePublishView` to check `is_owner OR is_moderator`
+  - Removed `PermissionRequiredMixin`, added manual permission checking in `post()` method
+  
+- **Owner Display in Detail Pages**:
+  - Added owner email display in `product_detail.html` with user icon
+  - Added owner email display in `blogpost_detail.html` with user icon
+  - Positioned between category/content and price/views sections
+  
+- **Code Quality**: All linters passing (mypy, ruff, black, isort)
+  - Fixed type annotation issues with `# type: ignore[override]` for `get_queryset` methods
+  - Fixed type annotation issues with `# type: ignore[attr-defined,misc]` for Django ORM queries
+  - Removed unused `PermissionRequiredMixin` imports
+  - Applied black formatting to all files
+
+## Earlier October 18, 2025
+
 ### Publication Toggles in Detail Pages
 - **UI Enhancement**: Added publication toggles to detail views
   - BlogPost detail page: Toggle positioned bottom-right under management buttons
