@@ -33,6 +33,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена", help_text="Введите цену товару")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
+    is_published = models.BooleanField(default=False, verbose_name="Признак публикации")
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -41,3 +42,6 @@ class Product(models.Model):
         verbose_name = "товар"
         verbose_name_plural = "товары"
         ordering = ["name"]
+        permissions = [
+            ("can_unpublish_product", "Может отменять публикацию продукта")
+        ]
