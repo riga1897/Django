@@ -112,7 +112,19 @@ Preferred communication style: Simple, everyday language.
 
 ## October 18, 2025
 
-### Moderator/Owner Logic Fix (Latest)
+### Owner Visibility and Type Safety (Latest)
+- **Скрыта информация о владельце для неавторизованных пользователей**:
+  - В `product_detail.html` и `blogpost_detail.html` блок с владельцем обернут в `{% if user.is_authenticated %}`
+  - Неавторизованные пользователи больше не видят email владельца товара/поста
+  - Авторизованные пользователи видят владельца как раньше (с сохранением логики для удаленных владельцев)
+
+- **Исправлена типизация в Django management командах**:
+  - Добавлены аннотации типов: `def handle(self, *args: Any, **kwargs: Any) -> None:`
+  - Использованы минимальные `# type: ignore[attr-defined]` для Django managers и style helpers
+  - Переименованы переменные в `add_products.py` для избежания конфликтов типов
+  - Все команды проходят проверку mypy без ошибок
+
+### Moderator/Owner Logic Fix
 - **Исправлена логика прав доступа для модераторов-владельцев**:
   - Проблема: модератор не мог редактировать контент своего собственного товара/поста
   - Обновлена логика в `get_form()` для `ProductUpdateView` и `BlogPostUpdateView`
