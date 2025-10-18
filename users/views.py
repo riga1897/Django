@@ -95,12 +95,18 @@ class UserRegisterView(CreateView):  # type: ignore[type-arg]
         """Успешная регистрация - автоматический вход"""
         from django.contrib.auth import login
 
-        user = form.save()
-        self.send_welcome_email(user.email)
+        # Сохраняем пользователя через CreateView
+        response = super().form_valid(form)
+        # Теперь self.object содержит созданного пользователя
+        self.send_welcome_email(self.object.email)  # type: ignore[attr-defined, union-attr]
         # Автоматический вход после регистрации
-        login(self.request, user, backend="django.contrib.auth.backends.ModelBackend")
+        login(
+            self.request,
+            self.object,  # type: ignore[arg-type]
+            backend="django.contrib.auth.backends.ModelBackend",
+        )
         messages.success(self.request, "Добро пожаловать! Регистрация прошла успешно.")
-        return super().form_valid(form)
+        return response
 
     def form_invalid(self, form: Any) -> HttpResponse:  # type: ignore[override]
         """При ошибке редирект обратно с параметром для открытия модального окна"""

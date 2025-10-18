@@ -148,20 +148,20 @@ class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[ty
     template_name = "marketplace/product_form.html"
 
     def get_form(self, form_class: Any = None) -> Any:
-        """Владелец видит все поля кроме owner, модератор - только owner"""
+        """Модератор видит только owner, обычный владелец - все поля кроме owner"""
         form = super().get_form(form_class)
         user = self.request.user
         is_owner = self.object.owner == user
         is_moderator = user.is_staff or user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
 
-        if is_owner:
-            # Владелец может редактировать все поля, кроме owner
-            form.fields.pop("owner", None)
-        elif is_moderator:
-            # Модератор может изменять только владельца
+        if is_moderator:
+            # Модератор может изменять только владельца (даже если он сам владелец)
             fields_to_remove = [field for field in form.fields if field != "owner"]
             for field in fields_to_remove:
                 form.fields.pop(field)
+        elif is_owner:
+            # Обычный владелец (не модератор) может редактировать все поля, кроме owner
+            form.fields.pop("owner", None)
 
         return form
 
