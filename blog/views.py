@@ -18,8 +18,14 @@ class BlogPostListView(ListView):  # type: ignore[type-arg]
     context_object_name = "posts"
 
     def get_queryset(self) -> QuerySet[BlogPost]:
-        """Показываем все посты (как в маркетплейсе)"""
-        return BlogPost.objects.all().order_by("-created_at")
+        """Неавторизованные видят только опубликованные, авторизованные staff/модераторы - все"""
+        user = self.request.user
+        if user.is_authenticated and (user.is_staff or user.groups.filter(name="Контент-менеджер").exists()):
+            # Staff или контент-менеджеры видят все посты
+            return BlogPost.objects.all().order_by("-created_at")
+        else:
+            # Неавторизованные и обычные пользователи видят только опубликованные
+            return BlogPost.objects.filter(is_published=True).order_by("-created_at")
 
 
 class BlogPostDetailView(DetailView):
