@@ -98,7 +98,7 @@ python manage.py del_all
 ```bash
 python manage.py load_data_from_fixture
 ```
-Загружает тестовые данные для разработки и тестирования из `marketplace/fixtures/test_data.json`:
+Загружает тестовые данные для разработки и тестирования из `marketplace/fixtures/data.json`:
 - 2 тестовых пользователя (test1@example.com, test2@example.com, пароль: test123)
 - 3 категории (Электроника, Одежда, Книги)
 - 3 товара

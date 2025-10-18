@@ -15,7 +15,7 @@ class Command(BaseCommand):
         self.stdout.write("  - 2 блог-поста")  # type: ignore[attr-defined]
         self.stdout.write("")  # type: ignore[attr-defined]
 
-        call_command("loaddata", "marketplace/fixtures/test_data.json")
+        call_command("loaddata", "marketplace/fixtures/data.json")
 
         self.stdout.write(self.style.SUCCESS("✅ Тестовые данные успешно загружены!"))  # type: ignore[attr-defined]
         self.stdout.write("")  # type: ignore[attr-defined]
