@@ -163,6 +163,8 @@ Preferred communication style: Simple, everyday language.
   - Form-based toggle with auto-submit on change
   - Fixed sidebar navigation with scrollable content area
   - No publication status badges - visibility of card indicates published status
+  - Create/add buttons ("Добавить товар", "Новая запись") hidden from unauthenticated users
+  - All action buttons use consistent sizing (btn-lg class)
   
 - **CSRF Configuration**:
   - Added CSRF_TRUSTED_ORIGINS for Replit domains
