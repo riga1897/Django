@@ -12,9 +12,23 @@
             --green-dark: #059669;
         }
 
-        .sidebar { width: 250px; min-height: 100vh; background-color: #212529; }
+        .sidebar { 
+            width: 250px; 
+            height: 100vh; 
+            background-color: #212529; 
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
         .sidebar-icon { width: 18px; height: 18px; margin-right: 12px; }
-        .main-content { flex: 1; padding: 20px 8px; }
+        .main-content { 
+            flex: 1; 
+            padding: 20px 8px; 
+            margin-left: 250px;
+            height: 100vh;
+            overflow-y: auto;
+        }
         .text-shadow { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); }
         .card { transition: all 0.3s ease; }
         .card:hover { box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2); }
@@ -35,6 +49,11 @@
 
         .nav-link-inactive:hover {
             background: rgba(52, 211, 153, 0.1) !important;
+        }
+
+        /* Одинаковая ширина кнопок в карточках */
+        .card-body .btn-sm {
+            min-width: 85px;
         }
     </style>
 </head>
