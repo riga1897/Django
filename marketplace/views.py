@@ -2,12 +2,13 @@ from typing import Any
 from urllib.parse import urlencode
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import Q, QuerySet
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView, View
 
 from marketplace.models import Product
 
@@ -32,12 +33,20 @@ class ModalLoginRequiredMixin(LoginRequiredMixin):
         return redirect(f"/?{urlencode(query_params)}")
 
 
-class ProductsListView(ListView):
+class ProductsListView(ListView):  # type: ignore[type-arg]
     model = Product
-    # app_name/<model_name>_<action>
-    # context = {"object_list": products}
     template_name = "marketplace/products_list.html"
     context_object_name = "products"
+
+    def get_queryset(self) -> QuerySet[Product]:
+        """Обычные пользователи видят только опубликованные, staff/модераторы - все"""
+        user = self.request.user
+        if user.is_authenticated and (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):
+            # Staff или модераторы видят все продукты
+            return Product.objects.all()
+        else:
+            # Обычные пользователи видят только опубликованные
+            return Product.objects.filter(is_published=True)
 
 
 #    def products_list(request):
@@ -83,11 +92,19 @@ class ProductCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[ty
     template_name = "marketplace/product_form.html"
     success_url = reverse_lazy("marketplace:products_list")
 
+    def form_valid(self, form: Any) -> HttpResponse:
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
 
 class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[type-arg]
     model = Product
     form_class = ProductForm
     template_name = "marketplace/product_form.html"
+
+    def get_queryset(self) -> Any:
+        """Только владелец может редактировать продукт"""
+        return Product.objects.filter(owner=self.request.user)
 
     def get_success_url(self) -> str:
         return str(reverse_lazy("marketplace:product_detail", kwargs={"pk": self.object.pk}))
@@ -97,3 +114,25 @@ class ProductDeleteView(ModalLoginRequiredMixin, DeleteView):  # type: ignore[ty
     model = Product
     template_name = "marketplace/product_confirm_delete.html"
     success_url = reverse_lazy("marketplace:products_list")
+
+    def get_queryset(self) -> QuerySet[Product]:
+        """Владелец ИЛИ модератор с группой 'Модератор продуктов' может удалить"""
+        user = self.request.user
+        if user.groups.filter(name="Модератор продуктов").exists():
+            # Модератор видит все продукты
+            return Product.objects.all()
+        else:
+            # Обычный пользователь видит только свои
+            return Product.objects.filter(owner=user)
+
+
+class ProductTogglePublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    """Переключение статуса публикации продукта (только для модераторов)"""
+
+    permission_required = "marketplace.can_unpublish_product"
+
+    def post(self, request: Any, pk: int) -> HttpResponse:
+        product = get_object_or_404(Product, pk=pk)
+        product.is_published = not product.is_published
+        product.save()
+        return redirect("marketplace:products_list")

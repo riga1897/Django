@@ -11,7 +11,7 @@ FORBIDDEN_WORDS = ["казино", "криптовалюта", "крипта", "
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "description", "photo", "category", "price"]
+        fields = ["name", "description", "photo", "category", "price", "is_published"]
 
     def clean_name(self) -> str:
         name = self.cleaned_data.get("name", "")

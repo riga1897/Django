@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.db.models import CASCADE
 
@@ -31,13 +32,24 @@ class Product(models.Model):
     )
     category = models.ForeignKey(Category, on_delete=CASCADE, related_name="products")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена", help_text="Введите цену товару")
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=CASCADE,
+        related_name="products",
+        verbose_name="Владелец",
+        help_text="Пользователь, создавший продукт",
+    )
+    is_published = models.BooleanField(default=False, verbose_name="Опубликован")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
 
     def __str__(self) -> str:
         return f"{self.name}"
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "товар"
         verbose_name_plural = "товары"
         ordering = ["name"]
+        permissions = [
+            ("can_unpublish_product", "Может отменять публикацию продукта"),
+        ]

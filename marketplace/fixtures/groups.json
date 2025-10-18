@@ -1,0 +1,24 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Модератор продуктов",
+      "permissions": [
+        ["can_unpublish_product", "marketplace", "product"],
+        ["delete_product", "marketplace", "product"]
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "Контент-менеджер",
+      "permissions": [
+        ["can_unpublish_post", "blog", "blogpost"],
+        ["delete_blogpost", "blog", "blogpost"]
+      ]
+    }
+  }
+]
