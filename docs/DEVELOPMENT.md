@@ -1,221 +1,250 @@
 # Руководство разработчика
 
-Документация по требованиям к коду, тестированию и workflow разработки проекта.
+Документация по требованиям к коду, тестированию и workflow разработки Django проекта с marketplace, blog и users.
 
 ## 📋 Содержание
 
-1. [TDD Workflow (Test-Driven Development)](#tdd-workflow-test-driven-development)
+1. [Структура проекта](#структура-проекта)
 2. [Требования к коду](#требования-к-коду)
-3. [Требования к тестам](#требования-к-тестам)
-4. [Инструменты качества кода](#инструменты-качества-кода)
-5. [Валидация данных](#валидация-данных)
+3. [Типизация](#типизация)
+4. [Тестирование](#тестирование)
+5. [Инструменты качества кода](#инструменты-качества-кода)
 6. [Workflow разработки](#workflow-разработки)
-7. [Примеры использования](#примеры-использования)
 
 ---
 
-## TDD Workflow (Test-Driven Development)
+## Структура проекта
 
-### ⚠️ ОБЯЗАТЕЛЬНЫЙ порядок разработки
-
-**В этом проекте мы следуем строгому TDD подходу!**
-
-#### Цикл RED-GREEN-REFACTOR
+### Текущая организация
 
 ```
-1. 🔴 RED: Пишем тест (он падает - функционала еще нет)
-         ↓
-2. 🟢 GREEN: Пишем минимальный код, чтобы тест прошел
-         ↓
-3. 🔵 REFACTOR: Улучшаем код, тесты остаются зелеными
-         ↓
-    Повторяем для следующей функции
+project_root/
+├── marketplace/           # Интернет-магазин (каталог продуктов)
+│   ├── models.py         # Category, Product
+│   ├── views.py          # ProductsListView, ProductDetailView, ProductCreateView
+│   ├── forms.py          # ProductForm, ContactForm
+│   ├── signals.py        # Удаление фото при удалении продукта
+│   ├── tests.py          # Тесты marketplace (models, views, forms, signals)
+│   ├── templates/
+│   │   └── marketplace/
+│   └── management/
+│       └── commands/     # add_products, del_all
+├── blog/                 # Блог (публикация постов)
+│   ├── models.py         # BlogPost
+│   ├── views.py          # BlogPostListView, BlogPostDetailView
+│   ├── signals.py        # Удаление preview при удалении поста
+│   ├── tests.py          # Тесты blog (models, views, signals)
+│   └── templates/
+│       └── blog/
+├── users/                # Управление пользователями
+│   ├── models.py         # User (AbstractUser с email-авторизацией)
+│   ├── views.py          # UserRegisterView, UserLoginView, ProfileUpdateView
+│   ├── forms.py          # CustomUserCreationForm, CustomAuthenticationForm
+│   ├── tests.py          # Тесты users (models, views, forms)
+│   └── templates/
+│       └── users/
+├── config/               # Настройки Django
+│   ├── settings.py       # AUTH_USER_MODEL, DATABASE, EMAIL_BACKEND
+│   ├── urls.py
+│   └── wsgi.py
+├── static/               # Статические файлы (Bootstrap 5, custom CSS)
+├── media/                # Загруженные файлы пользователей
+├── docs/                 # Документация проекта
+├── manage.py
+├── pyproject.toml        # Poetry зависимости + конфигурация линтеров
+├── mypy.ini              # Настройки mypy + django-stubs
+└── .gitignore
 ```
 
-#### Золотое правило
+**Примечание**: В будущем можно вынести тесты в отдельную директорию `tests/` для лучшей организации (см. раздел [Тестирование](#тестирование)).
 
-**НЕТ КОДА БЕЗ ТЕСТОВ!**
+### Ключевые компоненты
 
-Любой функциональный код должен быть покрыт тестами **ДО** или **ОДНОВРЕМЕННО** с его написанием.
+#### Marketplace (Интернет-магазин)
+**Назначение**: Каталог товаров с категориями, CRUD операциями, валидацией форм
 
-#### Порядок разработки модулей
+**Модели**:
+- `Category` - категории товаров (название, описание)
+- `Product` - товары (название, описание, фото, цена, категория)
 
-**1. Core (apps/core/)** - Фундамент системы
-```bash
-# Пример: Разработка BaseModel
-pytest tests/core/test_models.py::test_base_model_soft_delete  # RED
-# → Пишем метод soft_delete() в BaseModel
-pytest tests/core/test_models.py::test_base_model_soft_delete  # GREEN
-# → Рефакторим если нужно
-```
+**Особенности**:
+- Защита страниц создания/редактирования через `ModalLoginRequiredMixin`
+- Публичный доступ к списку и деталям продуктов
+- Валидация форм (запрещенные слова, проверка цены)
+- Автоматическое удаление фото через signals
 
-Порядок:
-- ✅ BaseModel → тесты → реализация
-- ✅ OwnedModel → тесты → реализация
-- ✅ BaseService → тесты → реализация
-- ✅ Mixins → тесты → реализация
-- ✅ Permissions → тесты → реализация
-- ✅ Validators → тесты → реализация
+#### Blog (Блог)
+**Назначение**: Публикация постов с draft/published статусами
 
-**2. Users (apps/users/)** - Управление пользователями
-```bash
-# Пример: Разработка User модели
-pytest tests/users/test_models.py::test_user_creation  # RED
-# → Создаем User модель
-pytest tests/users/test_models.py::test_user_creation  # GREEN
-```
+**Модели**:
+- `BlogPost` - посты (заголовок, контент, preview, статус публикации, счетчик просмотров)
 
-**3. Mailings (apps/mailings/)** - Бизнес-логика рассылок
-```bash
-# Аналогично для Recipient, Message, Mailing, Attempt
-pytest tests/mailings/test_models.py::test_recipient_creation  # RED → GREEN
-```
+**Особенности**:
+- Draft/Published статусы
+- Атомарный счетчик просмотров с `F()` expressions
+- Защита создания/редактирования через `ModalLoginRequiredMixin`
 
-#### Пример TDD сессии
+#### Users (Пользователи)
+**Назначение**: Email-based аутентификация, профили пользователей
 
-```bash
-# 1. Пишем тест
-$ cat > tests/core/test_models.py
-@pytest.mark.django_db
-def test_base_model_has_created_at():
-    obj = SomeModel.objects.create(name="Test")
-    assert obj.created_at is not None
-    assert isinstance(obj.created_at, datetime)
+**Модели**:
+- `User(AbstractUser)` - кастомная модель с email как USERNAME_FIELD
+- Дополнительные поля: avatar, phone, country
 
-# 2. Запускаем - должен упасть (RED)
-$ pytest tests/core/test_models.py::test_base_model_has_created_at
-FAILED - AttributeError: 'SomeModel' object has no attribute 'created_at'
-
-# 3. Добавляем поле в BaseModel
-class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-
-# 4. Запускаем - должен пройти (GREEN)
-$ pytest tests/core/test_models.py::test_base_model_has_created_at
-PASSED
-
-# 5. Рефакторим если нужно, тесты продолжают проходить
-```
-
-#### Проверка покрытия
-
-После каждого модуля проверяем 100% покрытие:
-
-```bash
-# Проверка покрытия core
-pytest --cov=apps/core --cov-report=term-missing tests/core/
-
-# Должно быть 100%
-apps/core/models.py      100%
-apps/core/services.py    100%
-apps/core/mixins.py      100%
-...
-```
-
-#### Что делать если тест не падает сразу?
-
-Если написали тест и он сразу зеленый - **возможно что-то не так!**
-
-- Проверьте, что тестируете новую функциональность
-- Убедитесь, что тест действительно проверяет нужное поведение
-- Попробуйте специально сломать код - тест должен упасть
+**Особенности**:
+- Модальные окна для login/register (Bootstrap 5)
+- Автоматический вход после регистрации
+- Welcome email через console backend
+- Редактирование профиля
 
 ---
 
 ## Требования к коду
 
-### 1. Структура проекта
+### 1. Принципы архитектуры
 
-```
-project_root/
-├── apps/                   # Все Django приложения
-│   ├── core/              # ЯДРО - неизменяемая основа
-│   │   ├── models.py      # BaseModel, OwnedModel
-│   │   ├── services.py    # BaseService, BaseCRUDService
-│   │   ├── mixins.py      # Переиспользуемые миксины
-│   │   ├── permissions.py # Проверка прав доступа
-│   │   └── validators.py  # Pydantic валидаторы
-│   ├── users/             # Управление пользователями
-│   └── mailings/          # Управление рассылками
-├── config/                # Настройки Django
-├── tests/                 # Все тесты
-└── static/                # Статические файлы
-```
-
-### 2. Принципы архитектуры
-
-#### ABC классы (Abstract Base Classes)
-
-**ОБЯЗАТЕЛЬНО**: Абстрактные классы НЕ должны содержать реализации!
+#### Class-Based Views (CBV)
+**ОБЯЗАТЕЛЬНО**: Используем CBV для consistency
 
 ```python
-# ✅ ПРАВИЛЬНО - чистая абстракция
-class BaseService(ABC):
-    @abstractmethod
-    def validate(self, data: dict[str, Any]) -> bool:
-        pass
-
-# ❌ НЕПРАВИЛЬНО - содержит реализацию
-class BaseService(ABC):
-    def __init__(self):
-        self.errors = []  # Это реализация!
+# ✅ ПРАВИЛЬНО - CBV с миксинами
+class ProductCreateView(ModalLoginRequiredMixin, CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "marketplace/product_form.html"
+    success_url = reverse_lazy("marketplace:products_list")
 ```
 
-**Решение**: Разделяем на абстракцию и реализацию
+#### Signals для побочных эффектов
+**Используем signals** для автоматической очистки файлов:
 
 ```python
-class BaseService(ABC):
-    """Чистая абстракция"""
-    @abstractmethod
-    def validate(self, data: dict[str, Any]) -> bool:
-        pass
+from django.db.models.signals import post_delete, pre_save
+from django.dispatch import receiver
 
-class BaseServiceWithErrors(BaseService):
-    """Реализация с обработкой ошибок"""
-    def __init__(self):
-        self.errors = []
+@receiver(post_delete, sender=Product)
+def delete_product_photo_on_delete(_sender, instance, **_kwargs):
+    """Удаляет файл фото при удалении продукта"""
+    if instance.photo:
+        instance.photo.delete(save=False)
 ```
 
-#### Композиция вместо наследования
+#### DRY (Don't Repeat Yourself)
+- Переиспользование базовых шаблонов (`marketplace/base.html`)
+- Модальные окна auth в base template
+- Миксин `ModalLoginRequiredMixin` для защиты страниц
+- Generic form field template
 
-**Используем миксины** для переиспользования кода:
+### 2. Валидация данных
+
+#### Валидация на уровне форм
 
 ```python
-class RecipientService(BaseCRUDService, OwnerFilterMixin, LoggingMixin):
-    def __init__(self):
-        super().__init__(Recipient)
+# marketplace/forms.py
+FORBIDDEN_WORDS = [
+    "казино", "криптовалюта", "крипта", "биржа", 
+    "дешево", "бесплатно", "обман", "полиция", "радар"
+]
+
+class ProductForm(forms.ModelForm):
+    def clean_name(self) -> str:
+        name = self.cleaned_data.get("name", "")
+        name_lower = name.lower()
+        
+        for word in FORBIDDEN_WORDS:
+            if word in name_lower:
+                raise ValidationError(f'Название не может содержать запрещенное слово: "{word}"')
+        return name
+    
+    def clean_price(self):
+        price = self.cleaned_data.get("price")
+        if price and price < 0:
+            raise ValidationError("Цена не может быть отрицательной")
+        return price
 ```
 
-#### Dependency Injection
-
-Сервисы получают зависимости через `__init__`:
+#### Валидация на уровне модели
 
 ```python
-class MailingService:
-    def __init__(self, email_sender: EmailSender, logger: Logger):
-        self.email_sender = email_sender
-        self.logger = logger
+class Product(models.Model):
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        verbose_name="Цена"
+    )
 ```
 
-### 3. Типизация кода
+### 3. Безопасность
 
-#### ⚠️ ОБЯЗАТЕЛЬНОЕ требование: 100% Type Coverage
+#### Защита от open redirect
+```python
+from django.utils.http import url_has_allowed_host_and_scheme
 
-**Проект ОБЯЗАН поддерживать 100% покрытие типами с нулевыми ошибками mypy!**
+if not url_has_allowed_host_and_scheme(
+    url=next_url,
+    allowed_hosts={self.request.get_host()},
+    require_https=self.request.is_secure(),
+):
+    next_url = "/"
+```
+
+#### CSRF Protection
+Все формы защищены через `{% csrf_token %}`
+
+#### Безопасные redirect параметры
+```python
+from urllib.parse import urlencode
+
+query_params = {"show_login_modal": "1"}
+if next_url:
+    query_params["next"] = next_url
+return redirect(f"/?{urlencode(query_params)}")
+```
+
+---
+
+## Типизация
+
+### ⚠️ ОБЯЗАТЕЛЬНОЕ требование: mypy 0 ошибок
+
+**Проект ОБЯЗАН проходить проверку mypy без ошибок!**
 
 ```bash
 # Проверка типизации (должна показывать 0 ошибок)
-poetry run mypy .
-# Expected output: Success: no issues found in 51 source files
+poetry run mypy . --config-file=mypy.ini
+# Expected: Success: no issues found in 47 source files
 ```
 
-#### Явная типизация всех полей моделей Django
+### Конфигурация mypy.ini
 
-**ОБЯЗАТЕЛЬНО**: Все поля Django моделей должны иметь явные type annotations:
+```ini
+[mypy]
+plugins = mypy_django_plugin.main
+
+[mypy.plugins.django-stubs]
+django_settings_module = config.settings
+
+strict_optional = True
+warn_redundant_casts = True
+warn_unused_ignores = True
+warn_return_any = False
+warn_unreachable = True
+ignore_missing_imports = True
+
+[mypy-*.migrations.*]
+ignore_errors = True
+```
+
+### Типизация моделей Django
+
+#### ⚠️ Полная типизация полей моделей
+
+**ОБЯЗАТЕЛЬНО**: Все поля моделей должны иметь type annotations:
 
 ```python
 # ✅ ПРАВИЛЬНО - явная типизация
-class User(AbstractUser, BaseModel):
+class User(AbstractUser):
     email: models.EmailField = models.EmailField(
         verbose_name="Email адрес",
         unique=True
@@ -232,735 +261,560 @@ class User(AbstractUser, BaseModel):
         blank=True,
         null=True
     )
+    
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS: list[str] = []
+    
+    objects: ClassVar[UserManager] = UserManager()
 
-# ❌ НЕПРАВИЛЬНО - нет типизации
-class User(AbstractUser, BaseModel):
-    email = models.EmailField(verbose_name="Email адрес")  # Нет аннотации!
-    avatar = models.ImageField(upload_to="...")  # Нет аннотации!
+# ❌ НЕПРАВИЛЬНО - нет аннотаций
+class User(AbstractUser):
+    email = models.EmailField(unique=True)  # Нет типа!
+    avatar = models.ImageField(...)  # Нет типа!
 ```
 
-#### Generic Service Pattern
-
-**ОБЯЗАТЕЛЬНО**: Сервисы должны использовать Generic[T] для правильного вывода типов:
+### Типизация views
 
 ```python
-from typing import Generic, TypeVar, Optional
-from django.db.models import Model, QuerySet
+from django.views.generic import ListView
 
-T = TypeVar("T", bound=Model)
-
-# ✅ ПРАВИЛЬНО - Generic pattern
-class BaseCRUDService(Generic[T]):
-    """Базовый CRUD сервис с Generic типизацией"""
-    
-    def __init__(self, model_class: type[T]) -> None:
-        self.model_class = model_class
-    
-    def get_by_id(self, pk: int) -> Optional[T]:
-        """Возвращает конкретный тип модели, не Model"""
-        return self.model_class.objects.filter(pk=pk).first()
-    
-    def get_all(self) -> QuerySet[T]:
-        """Возвращает типизированный QuerySet"""
-        return self.model_class.objects.all()
-
-# Использование в конкретных сервисах
-class RecipientService(BaseCRUDService[Recipient]):
-    def __init__(self):
-        super().__init__(Recipient)
-    
-    # Методы автоматически возвращают Recipient, не Model!
+class ProductsListView(ListView):
+    """Список всех продуктов"""
+    model = Product
+    template_name = "marketplace/products_list.html"
+    context_object_name = "products"
 ```
 
-#### Целевые type: ignore директивы
+### Типизация форм
+
+```python
+from decimal import Decimal
+from typing import Any
+from django.core.files.uploadedfile import UploadedFile
+
+class ProductForm(forms.ModelForm):
+    def clean_price(self) -> Decimal | None:
+        """Валидация цены"""
+        price = self.cleaned_data.get("price")
+        if price and price < 0:
+            raise ValidationError("Цена не может быть отрицательной")
+        return price
+    
+    def clean_photo(self) -> UploadedFile | None:
+        """Валидация фото"""
+        photo = self.cleaned_data.get("photo")
+        if photo and photo.size > 5 * 1024 * 1024:
+            raise ValidationError("Размер файла не должен превышать 5 МБ")
+        return photo
+```
+
+### Типизация signals
+
+```python
+from typing import Any
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
+@receiver(post_delete, sender=Product)
+def delete_product_photo_on_delete(
+    _sender: type[Product],  # Начинается с _ т.к. не используется
+    instance: Product,
+    **_kwargs: Any  # **_kwargs вместо **kwargs
+) -> None:
+    """Удаляет файл фото при удалении продукта"""
+    if instance.photo:
+        instance.photo.delete(save=False)
+```
+
+### Целевые type: ignore директивы
 
 **Используйте только целевые type: ignore** для реальных ограничений Django:
 
 ```python
-# ✅ ПРАВИЛЬНО - целевой ignore для Django ORM
-class RecipientForm(forms.ModelForm):
-    def __init__(self, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["recipients"].queryset = (  # type: ignore[attr-defined]
-            Recipient.objects.filter(owner=user, is_active=True)
-        )
+# ✅ ПРАВИЛЬНО - целевой ignore
+class Meta:  # type: ignore[misc]
+    verbose_name = "Пользователь"
 
-# ✅ ПРАВИЛЬНО - целевой ignore для custom user методов
-if not self.request.user.is_manager():  # type: ignore[union-attr]
-    queryset = queryset.filter(owner=self.request.user)
+# ✅ ПРАВИЛЬНО - целевой ignore для CBV generics
+class ProductsListView(ListView):  # type: ignore[type-arg]
+    model = Product
 
-# ✅ ПРАВИЛЬНО - целевой ignore для override Django методов
-class UserManager(DjangoUserManager):
-    def create_user(
-        self, 
-        email: str, 
-        password: Optional[str] = None, 
-        **extra_fields: Any
-    ) -> "User":  # type: ignore[override]
-        pass
+# ✅ ПРАВИЛЬНО - ignore для Django ORM magic
+user.set_password(password)  # type: ignore[attr-defined]
 
 # ❌ НЕПРАВИЛЬНО - слишком широкий ignore
 def some_function():  # type: ignore
-    pass  # Игнорирует ВСЕ типы ошибок!
-
-# ❌ НЕПРАВИЛЬНО - множественные ignore без необходимости
-def create_user(...) -> "User":  # type: ignore[name-defined,override]
-    # Должен быть только override, а name-defined решается через TYPE_CHECKING
-    pass
+    pass  # Игнорирует ВСЕ ошибки!
 ```
 
-#### TYPE_CHECKING для forward references
-
-**Используйте TYPE_CHECKING** для разрешения circular imports:
+### TYPE_CHECKING для forward references
 
 ```python
-from typing import TYPE_CHECKING, Any, Optional
-from django.contrib.auth.models import UserManager as DjangoUserManager
+from typing import TYPE_CHECKING, Any
 
-# ✅ ПРАВИЛЬНО - импорт только для type checking
 if TYPE_CHECKING:
-    from apps.users.models import User
+    from marketplace.models import Product
 
-class UserManager(DjangoUserManager):
-    def create_user(
-        self, 
-        email: str, 
-        password: Optional[str] = None,
-        **extra_fields: Any
-    ) -> "User":  # type: ignore[override]
-        """User в кавычках - forward reference"""
+class ProductManager(models.Manager):
+    def create_product(self, **kwargs: Any) -> "Product":
+        """Product в кавычках - forward reference"""
         pass
-
-# ❌ НЕПРАВИЛЬНО - реальный импорт вызовет circular import
-from apps.users.models import User  # Ошибка!
-```
-
-#### Категории type: ignore директив
-
-Используйте только следующие категории:
-
-| Директива | Когда использовать | Пример |
-|-----------|-------------------|---------|
-| `[override]` | Django метод с другой сигнатурой | UserManager.create_user() |
-| `[attr-defined]` | Django ORM атрибуты | queryset, owner_id, input_formats |
-| `[union-attr]` | Custom методы на request.user | is_manager(), is_active |
-| `[no-any-return]` | self.model возвращает Any | return user (в Manager) |
-| `[assignment]` | reverse_lazy() возвращает _StrPromise | next_page = str(reverse_lazy(...)) |
-
-#### Проверка типизации
-
-**Запускайте mypy регулярно:**
-
-```bash
-# Полная проверка проекта
-poetry run mypy .
-
-# Проверка конкретного модуля
-poetry run mypy apps/core/
-
-# Проверка с подробным выводом
-poetry run mypy --show-error-codes apps/
-
-# Должен быть результат:
-# Success: no issues found in 51 source files
-```
-
-#### Интеграция в CI/CD
-
-```bash
-# В pipeline добавьте проверку mypy ПЕРЕД тестами
-poetry run mypy .
-if [ $? -ne 0 ]; then
-    echo "❌ Mypy проверка провалена! Исправьте ошибки типов."
-    exit 1
-fi
-
-poetry run pytest
-```
-
-#### Важно помнить
-
-- ❌ **НЕТ ошибок mypy = НЕТ merge!**
-- ✅ Все поля моделей должны быть типизированы
-- ✅ Generic[T] pattern для всех базовых сервисов
-- ✅ Только целевые type: ignore директивы
-- ✅ TYPE_CHECKING для forward references
-- ✅ Документируйте причину каждого type: ignore
-
----
-
-### 4. Отсутствие дублирования (DRY)
-
-- Используем миксины для общего функционала
-- Создаем базовые классы для похожих сущностей
-- Функции должны делать одну вещь хорошо
-
-### 5. Качество кода
-
-#### flake8
-
-Код **ОБЯЗАТЕЛЬНО** должен проходить проверку flake8 без ошибок:
-
-```bash
-poetry run flake8 apps/ config/
-```
-
-#### Документация
-
-Все классы, методы и функции **ОБЯЗАТЕЛЬНО** должны быть задокументированы на русском языке:
-
-```python
-def create_recipient(email: str, name: str) -> Recipient:
-    """
-    Создать нового получателя рассылки.
-    
-    Args:
-        email: Email адрес получателя
-        name: Полное имя получателя
-        
-    Returns:
-        Созданный объект Recipient
-        
-    Raises:
-        ValidationError: Если email невалидный
-    """
-    pass
 ```
 
 ---
 
-## Требования к тестам
+## Тестирование
 
-### 1. Фреймворк
+### Фреймворк: pytest-django
 
-**Используем pytest-django** вместо Django unittest:
+**Используем pytest** вместо Django unittest:
 
 ```bash
+# Установка
+poetry add --group tests pytest pytest-django pytest-cov pytest-mock
+
 # Запуск тестов
-pytest
-
-# Параллельное выполнение (быстрее)
-pytest -n auto
+poetry run pytest
 
 # С покрытием кода
-pytest --cov=apps --cov-report=html
+poetry run pytest --cov=marketplace --cov=blog --cov=users --cov-report=html
 
-# С переиспользованием БД (еще быстрее)
-pytest --reuse-db -n auto
+# Быстрые тесты с переиспользованием БД
+poetry run pytest --reuse-db
 ```
 
-### 2. Стратегия тестирования
+### Структура тестов
 
-**Порядок приоритета** (от ядра к приложениям):
+**Текущая структура**: Тесты находятся внутри каждого Django приложения
 
-1. **apps/core/** - тесты ядра (100% покрытие)
-   - BaseModel, OwnedModel
-   - BaseService, BaseCRUDService
-   - Миксины (OwnerFilterMixin, LoggingMixin, CacheMixin)
-   - Permissions
+```
+marketplace/
+└── tests.py           # Все тесты marketplace (models, views, forms, signals)
 
-2. **apps/users/** - тесты users (100% покрытие)
-   - Модель User
-   - UserService
-   - Формы, views
+blog/
+└── tests.py           # Все тесты blog (models, views, signals)
 
-3. **apps/mailings/** - тесты mailings (100% покрытие)
-   - Модели (Recipient, Message, Mailing, Attempt)
-   - Сервисы
-   - Команды management
-   - Формы, views
-
-4. **Интеграционные тесты**
-   - Полный цикл рассылки
-   - Проверка прав доступа (User vs Manager)
-
-### 3. Принципы тестирования
-
-#### Изоляция тестов
-
-Каждый тест независим и не влияет на другие:
-
-```python
-@pytest.mark.django_db
-def test_create_recipient():
-    # Arrange
-    data = {"email": "test@example.com", "full_name": "Test User"}
-    
-    # Act
-    recipient = Recipient.objects.create(**data)
-    
-    # Assert
-    assert recipient.email == "test@example.com"
-    # БД автоматически откатывается после теста
+users/
+└── tests.py           # Все тесты users (models, views, forms)
 ```
 
-#### Нет дублей в покрытии
-
-Тесты не должны покрывать код более одного раза:
-
-```python
-# ✅ ПРАВИЛЬНО - тестируем BaseModel один раз
-def test_base_model_soft_delete():
-    obj = SomeModel.objects.create(name="Test")
-    obj.soft_delete()
-    assert obj.is_active == False
-
-# ❌ НЕПРАВИЛЬНО - повторное тестирование того же функционала
-def test_recipient_soft_delete():
-    recipient = Recipient.objects.create(...)
-    recipient.soft_delete()  # Уже протестировано в BaseModel!
-```
-
-#### Моки для внешних сервисов
-
-**ОБЯЗАТЕЛЬНО** мокировать:
-- `send_mail()` - не отправляем реальные письма
-- Внешние API
-- Файловую систему (где возможно)
-
-```python
-@pytest.mark.django_db
-def test_send_mailing(mocker):
-    # Мокируем отправку email
-    mock_send = mocker.patch('django.core.mail.send_mail')
-    
-    # Отправляем рассылку
-    send_mailing(mailing_id=1)
-    
-    # Проверяем что send_mail был вызван
-    assert mock_send.called
-```
-
-#### Параметризация тестов
-
-Используем `@pytest.mark.parametrize` для тестирования множества сценариев:
-
-```python
-@pytest.mark.parametrize("email,valid", [
-    ("test@example.com", True),
-    ("invalid", False),
-    ("@example.com", False),
-    ("test@", False),
-])
-def test_email_validation(email, valid):
-    result = validate_email(email)
-    assert result == valid
-```
-
-#### Фикстуры для переиспользования
-
-```python
-@pytest.fixture
-def user():
-    return User.objects.create_user(
-        email="user@example.com",
-        password="password123"
-    )
-
-@pytest.fixture
-def manager():
-    user = User.objects.create_user(
-        email="manager@example.com",
-        password="password123"
-    )
-    user.is_staff = True
-    user.save()
-    return user
-
-def test_user_permissions(user, manager):
-    # Используем фикстуры
-    pass
-```
-
-### 4. Структура тестов
+**Рекомендуемая структура** (для роста проекта):
 
 ```
 tests/
-├── core/
-│   ├── test_models.py        # Тесты BaseModel, OwnedModel
-│   ├── test_services.py      # Тесты BaseService, BaseCRUDService
-│   ├── test_mixins.py        # Тесты миксинов
-│   └── test_permissions.py   # Тесты прав доступа
+├── marketplace/
+│   ├── __init__.py
+│   ├── test_models.py       # Тесты Category, Product моделей
+│   ├── test_views.py        # Тесты ProductsListView, ProductCreateView
+│   ├── test_forms.py        # Тесты ProductForm валидации
+│   └── test_signals.py      # Тесты удаления фото
+├── blog/
+│   ├── test_models.py       # Тесты BlogPost
+│   ├── test_views.py        # Тесты BlogPostListView
+│   └── test_signals.py      # Тесты удаления preview
 ├── users/
-│   ├── test_models.py        # Тесты User модели
-│   ├── test_services.py      # Тесты UserService
-│   └── test_views.py         # Тесты views
-├── mailings/
-│   ├── test_models.py
-│   ├── test_services.py
-│   ├── test_views.py
-│   └── test_commands.py      # Тесты management команд
-└── integration/
-    └── test_mailing_flow.py  # Интеграционные тесты
+│   ├── test_models.py       # Тесты User модели
+│   ├── test_views.py        # Тесты регистрации, логина
+│   └── test_forms.py        # Тесты форм авторизации
+└── conftest.py              # Общие фикстуры
 ```
 
-### 5. Целевое покрытие
+### Примеры тестов
 
-**100% покрытие функционального кода** без избыточных проверок!
+#### Тесты моделей
+
+```python
+import pytest
+from marketplace.models import Category, Product
+
+@pytest.mark.django_db
+def test_product_creation():
+    """Тест создания продукта"""
+    category = Category.objects.create(
+        name="Электроника",
+        description="Электронные товары"
+    )
+    product = Product.objects.create(
+        name="Смартфон",
+        description="Новый смартфон",
+        price=50000,
+        category=category
+    )
+    
+    assert product.name == "Смартфон"
+    assert product.price == 50000
+    assert product.category == category
+    assert str(product) == "Смартфон"
+
+@pytest.mark.django_db
+def test_product_str_method():
+    """Тест строкового представления"""
+    category = Category.objects.create(name="Тест")
+    product = Product.objects.create(
+        name="Тестовый товар",
+        category=category,
+        price=100
+    )
+    assert str(product) == "Тестовый товар"
+```
+
+#### Тесты форм
+
+```python
+import pytest
+from marketplace.forms import ProductForm
+from marketplace.models import Category
+
+@pytest.mark.django_db
+def test_product_form_valid():
+    """Тест валидной формы продукта"""
+    category = Category.objects.create(name="Электроника")
+    form_data = {
+        "name": "Ноутбук",
+        "description": "Мощный ноутбук",
+        "price": 75000,
+        "category": category.id
+    }
+    form = ProductForm(data=form_data)
+    assert form.is_valid()
+
+@pytest.mark.django_db
+@pytest.mark.parametrize("forbidden_word", [
+    "казино", "криптовалюта", "крипта", "биржа",
+    "дешево", "бесплатно", "обман", "полиция", "радар"
+])
+def test_product_form_forbidden_words(forbidden_word):
+    """Тест валидации запрещенных слов"""
+    category = Category.objects.create(name="Тест")
+    form_data = {
+        "name": f"Товар {forbidden_word} онлайн",  # Запрещенное слово
+        "description": "Описание",
+        "price": 1000,
+        "category": category.id
+    }
+    form = ProductForm(data=form_data)
+    assert not form.is_valid()
+    assert forbidden_word in str(form.errors).lower()
+
+@pytest.mark.django_db
+def test_product_form_negative_price():
+    """Тест валидации отрицательной цены"""
+    category = Category.objects.create(name="Тест")
+    form_data = {
+        "name": "Товар",
+        "description": "Описание",
+        "price": -100,  # Отрицательная цена
+        "category": category.id
+    }
+    form = ProductForm(data=form_data)
+    assert not form.is_valid()
+    assert "price" in form.errors
+```
+
+#### Тесты views
+
+```python
+import pytest
+from django.urls import reverse
+from django.test import Client
+from users.models import User
+
+@pytest.fixture
+def client():
+    return Client()
+
+@pytest.fixture
+def user():
+    return User.objects.create_user(
+        email="test@example.com",
+        password="testpass123"
+    )
+
+@pytest.mark.django_db
+def test_products_list_view_public(client):
+    """Тест публичного доступа к списку продуктов"""
+    url = reverse("marketplace:products_list")
+    response = client.get(url)
+    assert response.status_code == 200
+    assert "products" in response.context
+
+@pytest.mark.django_db
+def test_product_create_requires_login(client):
+    """Тест защиты страницы создания продукта"""
+    url = reverse("marketplace:product_create")
+    response = client.get(url)
+    # Должен редиректить на главную с параметром модалки
+    assert response.status_code == 302
+    assert "show_login_modal" in response.url
+
+@pytest.mark.django_db
+def test_product_create_authenticated(client, user):
+    """Тест создания продукта авторизованным пользователем"""
+    client.force_login(user)
+    url = reverse("marketplace:product_create")
+    response = client.get(url)
+    assert response.status_code == 200
+```
+
+#### Тесты signals
+
+```python
+import pytest
+from unittest.mock import Mock, patch
+from marketplace.models import Product, Category
+
+@pytest.mark.django_db
+def test_product_photo_deleted_on_product_delete():
+    """Тест удаления фото при удалении продукта"""
+    category = Category.objects.create(name="Тест")
+    product = Product.objects.create(
+        name="Товар",
+        category=category,
+        price=1000
+    )
+    
+    # Мокируем фото
+    mock_photo = Mock()
+    product.photo = mock_photo
+    
+    # Удаляем продукт
+    product.delete()
+    
+    # Проверяем что photo.delete() был вызван
+    mock_photo.delete.assert_called_once_with(save=False)
+```
+
+### Фикстуры для переиспользования
+
+```python
+# tests/conftest.py
+import pytest
+from users.models import User
+from marketplace.models import Category
+
+@pytest.fixture
+def user():
+    """Обычный пользователь"""
+    return User.objects.create_user(
+        email="user@example.com",
+        password="userpass123"
+    )
+
+@pytest.fixture
+def admin_user():
+    """Администратор"""
+    return User.objects.create_superuser(
+        email="admin@example.com",
+        password="adminpass123"
+    )
+
+@pytest.fixture
+def category():
+    """Тестовая категория"""
+    return Category.objects.create(
+        name="Электроника",
+        description="Электронные товары"
+    )
+```
+
+### Покрытие кода
+
+**Целевое покрытие**: 80%+ для критического функционала
 
 ```bash
-# Проверка покрытия
-pytest --cov=apps --cov-report=term-missing
+# Генерация HTML отчета
+poetry run pytest --cov=marketplace --cov=blog --cov=users \
+    --cov-report=html \
+    --cov-report=term-missing
 
-# HTML отчет
-pytest --cov=apps --cov-report=html
-# Открыть htmlcov/index.html
+# Открыть отчет
+open htmlcov/index.html
 ```
 
 ---
 
 ## Инструменты качества кода
 
-### 1. Установленные инструменты
+### Установленные инструменты
 
-- **flake8** - проверка стиля кода
+- **mypy** - проверка типов (django-stubs plugin)
+- **ruff** - быстрый линтер (заменяет flake8)
 - **black** - автоформатирование
 - **isort** - сортировка импортов
-- **pre-commit** - автоматические проверки перед коммитом
-- **pytest-django** - тестирование
-- **pytest-cov** - покрытие кода
+- **pytest** - тестирование
 
-### 2. Конфигурационные файлы
+### Конфигурация
 
-#### `.editorconfig`
-
-Настройки редактора (автоматически):
-- UTF-8 encoding
-- Удаление trailing whitespace
-- Пустая строка в конце файла
-- 4 пробела для отступов в Python
-
-#### `.flake8`
-
-```ini
-[flake8]
-max-line-length = 119
-max-complexity = 10
-ignore = E203, W503, E501
-```
-
-#### `pyproject.toml`
-
-Настройки black, isort, pytest:
+#### pyproject.toml
 
 ```toml
+[tool.ruff]
+line-length = 119
+preview = true
+exclude = [
+    ".venv",
+    "venv",
+    ".local",
+    "migrations",
+    "__pycache__",
+    ".git",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "C90", "UP", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
 [tool.black]
 line-length = 119
 
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings"
-addopts = ["-v", "--reuse-db", "--cov=apps"]
+[tool.isort]
+line_length = 119
+profile = "black"
 ```
 
-### 3. Команды
+### Команды проверки
 
 ```bash
+# Проверка типов
+poetry run mypy . --config-file=mypy.ini
+
+# Линтер
+poetry run ruff check .
+
 # Автоформатирование
-poetry run black apps/ config/
+poetry run black .
 
 # Сортировка импортов
-poetry run isort apps/ config/
+poetry run isort .
 
-# Проверка стиля
-poetry run flake8 apps/ config/
-
-# Проверка типизации (ОБЯЗАТЕЛЬНО перед коммитом!)
-poetry run mypy .
-
-# Запуск всех проверок
-poetry run pre-commit run --all-files
-
-# Тесты
-poetry run pytest
-
-# Тесты с покрытием
-poetry run pytest --cov=apps --cov-report=html
+# Все проверки разом
+poetry run mypy . && poetry run ruff check . && poetry run pytest
 ```
-
----
-
-## Валидация данных
-
-### 1. Django Forms (основной инструмент)
-
-**Используйте Django Forms/ModelForms для:**
-- Валидации форм пользователя
-- Проверки данных моделей
-- Автоматической генерации HTML форм
-- Обработки GET/POST запросов
-
-#### Пример Django Form
-
-```python
-from django import forms
-from .models import Recipient
-
-class RecipientForm(forms.ModelForm):
-    """Форма создания получателя"""
-    
-    class Meta:
-        model = Recipient
-        fields = ['email', 'full_name', 'comment']
-    
-    def clean_full_name(self):
-        """Кастомная валидация имени"""
-        full_name = self.cleaned_data.get('full_name')
-        if not full_name or not full_name.strip():
-            raise forms.ValidationError("Имя не может быть пустым")
-        return full_name.strip()
-
-# Использование в view
-def create_recipient(request):
-    if request.method == 'POST':
-        form = RecipientForm(request.POST)
-        if form.is_valid():
-            recipient = form.save(commit=False)
-            recipient.owner = request.user
-            recipient.save()
-            return redirect('success')
-    else:
-        form = RecipientForm()
-    return render(request, 'form.html', {'form': form})
-```
-
-### 2. Pydantic (для сложных случаев)
-
-**Используйте Pydantic, когда Django Forms недостаточно:**
-- Сложная кросс-полевая валидация
-- Интеграция с внешними API
-- Валидация настроек (.env файлов) через pydantic-settings
-- Сериализация/десериализация сложных структур данных
-
-#### Пример Pydantic валидатора
-
-```python
-from pydantic import BaseModel, field_validator, model_validator
-
-class ComplexValidator(BaseModel):
-    """Пример сложной валидации с Pydantic"""
-    
-    email: str
-    password: str
-    password_confirm: str
-    
-    @field_validator('email')
-    @classmethod
-    def validate_email_domain(cls, v: str) -> str:
-        """Проверка домена через внешний API"""
-        # Ваша сложная логика с внешним API
-        if not is_valid_domain(v.split('@')[1]):
-            raise ValueError('Недопустимый email домен')
-        return v
-    
-    @model_validator(mode='after')
-    def validate_passwords_match(self):
-        """Кросс-полевая валидация"""
-        if self.password != self.password_confirm:
-            raise ValueError('Пароли не совпадают')
-        return self
-
-# Использование
-try:
-    validator = ComplexValidator(**data)
-    validated_data = validator.model_dump()
-except ValidationError as e:
-    errors = e.errors()
-```
-
-### 3. Когда что использовать?
-
-| Задача | Инструмент | Причина |
-|--------|-----------|---------|
-| Формы пользователя | Django Forms | Встроенная интеграция с Django |
-| CRUD операции | ModelForms | Автоматическая связь с моделями |
-| Валидация .env | Pydantic Settings | Специализированный инструмент |
-| Сложная бизнес-логика | Pydantic | Мощные возможности валидации |
-| API запросы/ответы | Django Forms или Pydantic | В зависимости от сложности |
 
 ---
 
 ## Workflow разработки
 
-### 1. Создание новой фичи
+### Процесс добавления новой функции
 
 ```bash
-# 1. Создаем новую ветку (если используется Git)
+# 1. Создать ветку
 git checkout -b feature/new-feature
 
-# 2. Пишем код
-# ... редактируем файлы ...
+# 2. Написать тесты (TDD подход)
+# tests/marketplace/test_new_feature.py
 
-# 3. Автоформатирование
-poetry run black apps/ config/
-poetry run isort apps/ config/
+# 3. Запустить тесты (они должны упасть - RED)
+poetry run pytest tests/marketplace/test_new_feature.py
 
-# 4. Проверка стиля
-poetry run flake8 apps/ config/
+# 4. Написать код для прохождения тестов (GREEN)
+# marketplace/views.py или models.py
 
-# 5. Запуск тестов
+# 5. Запустить тесты снова (они должны пройти)
+poetry run pytest tests/marketplace/test_new_feature.py
+
+# 6. Рефакторинг кода (REFACTOR)
+poetry run black .
+poetry run isort .
+
+# 7. Финальная проверка
+poetry run mypy .
+poetry run ruff check .
 poetry run pytest
 
-# 6. Проверка покрытия
-poetry run pytest --cov=apps --cov-report=term-missing
-
-# 7. Коммит (pre-commit hooks запустятся автоматически)
+# 8. Коммит и push
 git add .
-git commit -m "Добавлена новая фича"
+git commit -m "feat: add new feature"
+git push origin feature/new-feature
 ```
 
-### 2. Перед коммитом
+### Checklist перед коммитом
 
-Pre-commit hooks **автоматически** выполнят:
-1. Удаление trailing whitespace
-2. Проверка YAML/TOML файлов
-3. Black форматирование
-4. isort сортировка импортов
-5. flake8 проверка стиля
+- [ ] Все тесты проходят: `poetry run pytest`
+- [ ] mypy без ошибок: `poetry run mypy .`
+- [ ] ruff без ошибок: `poetry run ruff check .`
+- [ ] Код отформатирован: `poetry run black .`
+- [ ] Импорты отсортированы: `poetry run isort .`
+- [ ] Миграции созданы (если изменялись модели)
+- [ ] Документация обновлена (если нужно)
 
-Если проверка не пройдена - коммит будет отклонен!
+### Pull Request
 
-### 3. Запуск тестов
+**Структура PR**:
+
+```markdown
+## Описание
+Краткое описание изменений
+
+## Тип изменений
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Breaking change
+- [ ] Documentation update
+
+## Проверка
+- [ ] Тесты проходят
+- [ ] mypy 0 ошибок
+- [ ] ruff 0 ошибок
+- [ ] Документация обновлена
+
+## Скриншоты (если UI изменения)
+```
+
+---
+
+## Дополнительные материалы
+
+### Полезные команды Django
 
 ```bash
-# Все тесты
-pytest
+# Создание миграций
+poetry run python manage.py makemigrations
 
-# Только тесты core
-pytest tests/core/
+# Применение миграций
+poetry run python manage.py migrate
 
-# Конкретный файл
-pytest tests/core/test_models.py
+# Создание суперпользователя
+poetry run python manage.py createsuperuser
 
-# Конкретный тест
-pytest tests/core/test_models.py::test_base_model_soft_delete
+# Запуск сервера разработки
+poetry run python manage.py runserver 0.0.0.0:5000
 
-# Параллельно (быстрее)
-pytest -n auto
+# Django shell
+poetry run python manage.py shell
 
-# С переиспользованием БД (еще быстрее)
-pytest --reuse-db -n auto
+# Проверка проекта
+poetry run python manage.py check
+```
 
-# С покрытием
-pytest --cov=apps --cov-report=html
+### Управление зависимостями
+
+```bash
+# Добавить зависимость
+poetry add package-name
+
+# Добавить dev зависимость
+poetry add --group lint package-name
+
+# Обновить зависимости
+poetry update
+
+# Показать установленные пакеты
+poetry show
 ```
 
 ---
 
-## Примеры использования
+## Заключение
 
-### Пример 1: Создание нового сервиса
+Следование этому руководству обеспечивает:
+- ✅ Высокое качество кода (mypy, ruff, black)
+- ✅ Надежность (покрытие тестами)
+- ✅ Безопасность (валидация, CSRF, safe redirects)
+- ✅ Поддерживаемость (типизация, документация)
+- ✅ Консистентность (CBV, signals, DRY)
 
-```python
-# apps/mailings/services.py
-from apps.core.services import BaseCRUDService
-from apps.core.mixins import LoggingMixin, CacheMixin
-from apps.mailings.models import Recipient
-
-class RecipientService(BaseCRUDService, LoggingMixin, CacheMixin):
-    """Сервис для управления получателями рассылок"""
-    
-    def __init__(self):
-        super().__init__(Recipient)
-    
-    def validate(self, data: dict) -> bool:
-        """Кастомная валидация получателя"""
-        if not super().validate(data):
-            return False
-            
-        # Дополнительные проверки
-        if not data.get('email'):
-            self.add_error("Email обязателен")
-            return False
-            
-        return True
-```
-
-### Пример 2: Использование сервиса во view
-
-```python
-# apps/mailings/views.py
-from django.views.generic import CreateView
-from apps.mailings.services import RecipientService
-
-class RecipientCreateView(CreateView):
-    def form_valid(self, form):
-        service = RecipientService()
-        
-        data = form.cleaned_data
-        recipient = service.create(data, owner=self.request.user)
-        
-        if recipient:
-            return redirect('success')
-        else:
-            # Показываем ошибки
-            for error in service.get_errors():
-                form.add_error(None, error)
-            return self.form_invalid(form)
-```
-
-### Пример 3: Тестирование сервиса
-
-```python
-# tests/mailings/test_services.py
-import pytest
-from apps.mailings.services import RecipientService
-from apps.users.models import User
-
-@pytest.fixture
-def user(db):
-    return User.objects.create_user(email="test@example.com")
-
-@pytest.fixture
-def service():
-    return RecipientService()
-
-@pytest.mark.django_db
-class TestRecipientService:
-    def test_create_recipient(self, service, user):
-        # Arrange
-        data = {
-            "email": "recipient@example.com",
-            "full_name": "Test Recipient"
-        }
-        
-        # Act
-        recipient = service.create(data, owner=user)
-        
-        # Assert
-        assert recipient is not None
-        assert recipient.email == "recipient@example.com"
-        assert recipient.owner == user
-    
-    def test_create_without_email_fails(self, service, user):
-        # Arrange
-        data = {"full_name": "Test"}
-        
-        # Act
-        recipient = service.create(data, owner=user)
-        
-        # Assert
-        assert recipient is None
-        assert service.has_errors()
-        assert "Email обязателен" in service.get_errors()
-```
-
----
-
-## Чек-лист перед коммитом
-
-- [ ] Код отформатирован (black, isort)
-- [ ] Нет ошибок flake8
-- [ ] Все новые функции/классы задокументированы
-- [ ] Написаны тесты для нового кода
-- [ ] Все тесты проходят (`pytest`)
-- [ ] Покрытие кода не уменьшилось
-- [ ] Pre-commit hooks проходят успешно
-
----
-
-## Полезные ссылки
-
-- [pytest-django документация](https://pytest-django.readthedocs.io/)
-- [Pydantic документация](https://docs.pydantic.dev/)
-- [Black документация](https://black.readthedocs.io/)
-- [flake8 правила](https://flake8.pycqa.org/en/latest/user/error-codes.html)
+**Главное правило**: Код без тестов и типизации не мерджится!
