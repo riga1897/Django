@@ -141,7 +141,7 @@ Preferred communication style: Simple, everyday language.
 ### Permissions and Moderation Framework
 - **Models**: Added ownership and publication control
   - `Product`: Added `owner` (ForeignKey to User) and `is_published` (BooleanField, default=False)
-  - `BlogPost`: Added `owner` (ForeignKey to User)
+  - `BlogPost`: Added `owner` (ForeignKey to User) and `is_published` (BooleanField, default=False)
   - Custom permissions: `can_unpublish_product` and `can_unpublish_post`
   
 - **Permission Groups** (via fixtures):
