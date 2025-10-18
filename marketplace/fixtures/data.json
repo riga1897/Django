@@ -1,10 +1,52 @@
 [
 {
     "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$impossiblepasswordhash$NeverUsedForLoginSystemUserOnly",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "Удалённый",
+        "last_name": "Пользователь",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-01-01T00:00:00Z",
+        "username": "deleted@system.user",
+        "email": "deleted@system.user",
+        "avatar": "",
+        "phone": null,
+        "country": null,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1000000$tDzZzNTfoYdvOaSNS0al0V$YahUwSSC/3kh7WYoMm6uG7c8YP20OJ7uZzbwW57h4p4=",
+        "last_login": "2025-10-18T21:32:26.337Z",
+        "is_superuser": true,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-10-18T21:22:26.694Z",
+        "username": "admin@example.com",
+        "email": "admin@example.com",
+        "avatar": "",
+        "phone": "+1234567890",
+        "country": "US",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
     "pk": 3,
     "fields": {
         "password": "pbkdf2_sha256$1000000$dVMWoAytxRepcTES7Ifxjv$aOspE05Z/99M4sAclEGj9x+VWmNgrQlkQ4ZCIKYx48c=",
-        "last_login": null,
+        "last_login": "2025-10-18T21:40:02.922Z",
         "is_superuser": false,
         "first_name": "Иван",
         "last_name": "Петров",
@@ -25,7 +67,7 @@
     "pk": 4,
     "fields": {
         "password": "pbkdf2_sha256$1000000$VVuKIvYv0cX5P2RS2MUX2L$d04xDxGimDKYna/hZvpHgeBqHVPZdCGbSqoBRSZ9RNE=",
-        "last_login": null,
+        "last_login": "2025-10-18T21:57:38.340Z",
         "is_superuser": false,
         "first_name": "Мария",
         "last_name": "Сидорова",
@@ -48,7 +90,7 @@
     "pk": 5,
     "fields": {
         "password": "pbkdf2_sha256$1000000$HlC8VVeFzdOWit7y613dR4$+hHO7YsBxmZNew6yKth5op7YoH4GFDJPMiMcGNtkGZg=",
-        "last_login": null,
+        "last_login": "2025-10-18T21:58:57.694Z",
         "is_superuser": false,
         "first_name": "Алексей",
         "last_name": "Смирнов",
@@ -74,138 +116,152 @@
         "description": "Электронные устройства и аксессуары"
     }
 },
-    {
-        "model": "marketplace.category",
-        "pk": 2,
-        "fields": {
-            "name": "Телевизоры",
-            "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником"
-        }
-    },
-    {
-        "model": "marketplace.category",
-        "pk": 3,
-        "fields": {
-            "name": "Наушники",
-            "description": "Наушники, устройство для персонального прослушивания аудио."
-        }
-    },
-    {
-        "model": "marketplace.product",
-        "pk": 1,
-        "fields": {
-            "name": "Iphone 15",
-            "description": "512GB, Gray space",
-            "photo": "products/photos/iphone15gray.jpg",
-            "category": 1,
-            "price": "21000.00",
-            "owner": 1,
-            "is_published": true,
-            "created_at": "2025-09-22T13:27:05.301Z",
-            "updated_at": "2025-10-18T15:56:57.791Z"
-        }
-    },
-    {
-        "model": "marketplace.product",
-        "pk": 2,
-        "fields": {
-            "name": "55\" QLED 4K",
-            "description": "Фоновая подсветка",
-            "photo": "products/photos/55QLed.jpg",
-            "category": 2,
-            "price": "123000.00",
-            "owner": 1,
-            "is_published": true,
-            "created_at": "2025-09-22T13:27:29.770Z",
-            "updated_at": "2025-10-18T15:02:20.990Z"
-        }
-    },
-    {
-        "model": "marketplace.product",
-        "pk": 3,
-        "fields": {
-            "name": "Huawei Mate XT",
-            "description": "16GB+1TB, Dual Card, красный",
-            "photo": "products/photos/Hw_Mate_XT_red.jpg",
-            "category": 1,
-            "price": "237168.00",
-            "owner": 1,
-            "is_published": true,
-            "created_at": "2025-09-28T17:27:33.381Z",
-            "updated_at": "2025-10-18T15:47:11.722Z"
-        }
-    },
-    {
-        "model": "marketplace.product",
-        "pk": 4,
-        "fields": {
-            "name": "Hisense 55E7Q PRO 55\"",
-            "description": "черный",
-            "photo": "products/photos/HisenseE7QPRO_55.jpg",
-            "category": 2,
-            "price": "41636.00",
-            "owner": 1,
-            "is_published": false,
-            "created_at": "2025-09-28T17:31:29.741Z",
-            "updated_at": "2025-10-18T15:47:38.982Z"
-        }
-    },
-    {
-        "model": "marketplace.product",
-        "pk": 5,
-        "fields": {
-            "name": "Смартфон Apple iPhone 17 Pro Max",
-            "description": "1 ТБ, eSIM, Синий (без RuStore)",
-            "photo": "products/photos/smartfon-apple-iphone-17-pro.jpg",
-            "category": 1,
-            "price": "194895.00",
-            "owner": 2,
-            "is_published": false,
-            "created_at": "2025-10-18T16:13:17.731Z",
-            "updated_at": "2025-10-18T16:55:32.761Z"
-        }
-    },
-    {
-        "model": "marketplace.product",
-        "pk": 6,
-        "fields": {
-            "name": "blog",
-            "description": "blog",
-            "photo": "",
-            "category": 3,
-            "price": "1.00",
-            "owner": 5,
-            "is_published": true,
-            "created_at": "2025-10-18T18:55:34.583Z",
-            "updated_at": "2025-10-18T18:59:04.147Z"
-        }
-    },
-    {
-        "model": "blog.blogpost",
-        "pk": 17,
-        "fields": {
-            "title": "Черновик",
-            "content": "Описание черновика",
-            "preview": "",
-            "owner": 5,
-            "created_at": "2025-10-03T01:51:54.089Z",
-            "updated_at": "2025-10-18T18:20:31.495Z",
-            "is_published": false,
-            "views_count": 14
-        }
-    },
-    {
-        "model": "blog.blogpost",
-        "pk": 18,
-        "fields": {
-            "title": "Опубликованная запись",
-            "content": "Это тестовая запись блога с интересным содержанием. Здесь можно писать длинные тексты, делиться мыслями и идеями!",
-            "preview": "blogs/previews/oklik-hs-l700g.jpg",
-            "owner": 1,
-            "created_at": "2025-10-03T02:36:27.838Z",
-            "updated_at": "2025-10-18T15:57:25.513Z",
-            "is_published": true,
-            "views_count": 31
-        }
+{
+    "model": "marketplace.category",
+    "pk": 2,
+    "fields": {
+        "name": "Телевизоры",
+        "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником"
     }
+},
+{
+    "model": "marketplace.category",
+    "pk": 3,
+    "fields": {
+        "name": "Наушники",
+        "description": "Наушники, устройство для персонального прослушивания аудио."
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 1,
+    "fields": {
+        "name": "Iphone 15",
+        "description": "512GB, Gray space",
+        "photo": "products/photos/iphone15gray.jpg",
+        "category": 1,
+        "price": "21000.00",
+        "owner": 3,
+        "is_published": false,
+        "created_at": "2025-09-22T13:27:05.301Z",
+        "updated_at": "2025-10-18T21:46:36.215Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 2,
+    "fields": {
+        "name": "55\" QLED 4K",
+        "description": "Фоновая подсветка",
+        "photo": "products/photos/55QLed.jpg",
+        "category": 2,
+        "price": "123000.00",
+        "owner": 4,
+        "is_published": true,
+        "created_at": "2025-09-22T13:27:29.770Z",
+        "updated_at": "2025-10-18T21:52:30.750Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 3,
+    "fields": {
+        "name": "Huawei Mate XT",
+        "description": "16GB+1TB, Dual Card, красный",
+        "photo": "products/photos/Hw_Mate_XT_red.jpg",
+        "category": 1,
+        "price": "237168.00",
+        "owner": 3,
+        "is_published": false,
+        "created_at": "2025-09-28T17:27:33.381Z",
+        "updated_at": "2025-10-18T21:53:43.626Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 4,
+    "fields": {
+        "name": "Hisense 55E7Q PRO 55\"",
+        "description": "черный",
+        "photo": "products/photos/HisenseE7QPRO_55.jpg",
+        "category": 2,
+        "price": "41636.00",
+        "owner": 4,
+        "is_published": false,
+        "created_at": "2025-09-28T17:31:29.741Z",
+        "updated_at": "2025-10-18T21:35:55.421Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 5,
+    "fields": {
+        "name": "Смартфон Apple iPhone 17 Pro Max",
+        "description": "1 ТБ, eSIM, Синий (без RuStore)",
+        "photo": "products/photos/smartfon-apple-iphone-17-pro.jpg",
+        "category": 1,
+        "price": "194895.00",
+        "owner": 5,
+        "is_published": false,
+        "created_at": "2025-10-18T16:13:17.731Z",
+        "updated_at": "2025-10-18T21:57:14.306Z"
+    }
+},
+{
+    "model": "marketplace.product",
+    "pk": 6,
+    "fields": {
+        "name": "blog",
+        "description": "blog",
+        "photo": "",
+        "category": 3,
+        "price": "1.00",
+        "owner": 5,
+        "is_published": false,
+        "created_at": "2025-10-18T18:55:34.583Z",
+        "updated_at": "2025-10-18T21:57:11.878Z"
+    }
+},
+{
+    "model": "blog.blogpost",
+    "pk": 17,
+    "fields": {
+        "title": "Черновик",
+        "content": "Описание черновика",
+        "preview": "",
+        "owner": 3,
+        "created_at": "2025-10-03T01:51:54.089Z",
+        "updated_at": "2025-10-18T21:38:54.062Z",
+        "is_published": false,
+        "views_count": 16
+    }
+},
+{
+    "model": "blog.blogpost",
+    "pk": 18,
+    "fields": {
+        "title": "Опубликованная запись",
+        "content": "Это тестовая запись блога с интересным содержанием. Здесь можно писать длинные тексты, делиться мыслями и идеями!",
+        "preview": "blogs/previews/oklik-hs-l700g.jpg",
+        "owner": 5,
+        "created_at": "2025-10-03T02:36:27.838Z",
+        "updated_at": "2025-10-18T21:38:35.577Z",
+        "is_published": true,
+        "views_count": 35
+    }
+},
+{
+    "model": "blog.blogpost",
+    "pk": 19,
+    "fields": {
+        "title": "Черновик",
+        "content": "Проверка",
+        "preview": "",
+        "owner": 4,
+        "created_at": "2025-10-18T21:38:04.377Z",
+        "updated_at": "2025-10-18T21:39:31.053Z",
+        "is_published": false,
+        "views_count": 4
+    }
+}
 ]

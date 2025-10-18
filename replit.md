@@ -100,8 +100,8 @@ Loads test data for development and testing from `marketplace/fixtures/data.json
   - test1@example.com - Ivan Petrov (regular user)
   - test2@example.com - Maria Sidorova (product moderator)
   - test3@example.com - Alexey Smirnov (content manager)
-- 3 categories (Electronics, Clothing, Books)
-- 4 products
+- 3 categories (Electronics, TVs, Headphones)
+- 6 products
 - 3 blog posts
 
 ⚠️ **Important**: Run this command only after `setup`, as test data depends on the system user and permission groups.
@@ -149,7 +149,7 @@ python -Xutf8 manage.py dumpdata users.User marketplace.Category marketplace.Pro
 ### Third Test User Added
 - Created third test user (test3@example.com - content manager)
 - Updated `data.json` fixture with 3 test users (regular, product moderator, content manager)
-- Fixture contains 4 products and 3 blog posts from different owners
+- Fixture contains 6 products and 3 blog posts from different owners
 - Updated `load_data_from_fixture` command with correct output
 
 ### CSS Centralization and Code Quality
@@ -175,7 +175,7 @@ python -Xutf8 manage.py dumpdata users.User marketplace.Category marketplace.Pro
 ### Fixtures
 - `users/fixtures/system_user.json` - system user deleted@system.user
 - `marketplace/fixtures/groups_and_permissions.json` - permission groups
-- `marketplace/fixtures/data.json` - test data (3 users, 3 categories, 4 products, 3 posts)
+- `marketplace/fixtures/data.json` - test data (3 users, 3 categories, 6 products, 3 posts)
 
 ### Three-Tiered Form Access System
 - Moderator-owner sees all fields (owner + is_published + content)

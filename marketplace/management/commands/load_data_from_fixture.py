@@ -9,6 +9,10 @@ class Command(BaseCommand):
 
     def handle(self, *args: Any, **kwargs: Any) -> None:
         self.stdout.write("Загрузка тестовых данных...")  # type: ignore[attr-defined]
+        self.stdout.write("  - 3 тестовых пользователя")  # type: ignore[attr-defined]
+        self.stdout.write("  - 3 категории (Электроника, Телевизоры, Наушники)")  # type: ignore[attr-defined]
+        self.stdout.write("  - 6 товаров")  # type: ignore[attr-defined]
+        self.stdout.write("  - 3 блог-поста")  # type: ignore[attr-defined]
         self.stdout.write("")  # type: ignore[attr-defined]
 
         call_command("loaddata", "marketplace/fixtures/data.json")
