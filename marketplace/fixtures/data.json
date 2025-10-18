@@ -1,48 +1,6 @@
 [
 {
     "model": "users.user",
-    "pk": 1,
-    "fields": {
-        "password": "pbkdf2_sha256$870000$impossiblepasswordhash$NeverUsedForLoginSystemUserOnly",
-        "last_login": null,
-        "is_superuser": false,
-        "first_name": "Удалённый",
-        "last_name": "Пользователь",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2025-01-01T00:00:00Z",
-        "username": "deleted@system.user",
-        "email": "deleted@system.user",
-        "avatar": "",
-        "phone": null,
-        "country": null,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 2,
-    "fields": {
-        "password": "pbkdf2_sha256$1000000$tDzZzNTfoYdvOaSNS0al0V$YahUwSSC/3kh7WYoMm6uG7c8YP20OJ7uZzbwW57h4p4=",
-        "last_login": "2025-10-18T21:32:26.337Z",
-        "is_superuser": true,
-        "first_name": "",
-        "last_name": "",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2025-10-18T21:22:26.694Z",
-        "username": "admin@example.com",
-        "email": "admin@example.com",
-        "avatar": "",
-        "phone": "+1234567890",
-        "country": "US",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
     "pk": 3,
     "fields": {
         "password": "pbkdf2_sha256$1000000$dVMWoAytxRepcTES7Ifxjv$aOspE05Z/99M4sAclEGj9x+VWmNgrQlkQ4ZCIKYx48c=",
