@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.core.management.base import BaseCommand
 from django.db import connection
 
@@ -7,17 +9,17 @@ from marketplace.models import Category, Product
 class Command(BaseCommand):
     help = "Add test students to the database"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: Any, **kwargs: Any) -> None:
         # Удаляем существующие записи
-        Product.objects.all().delete()
-        Category.objects.all().delete()
+        Product.objects.all().delete()  # type: ignore[attr-defined]
+        Category.objects.all().delete()  # type: ignore[attr-defined]
 
         # Сбрасываем счетчики инкрементов
         with connection.cursor() as cursor:
             cursor.execute("ALTER SEQUENCE marketplace_product_id_seq RESTART WITH 1;")
             cursor.execute("ALTER SEQUENCE marketplace_category_id_seq RESTART WITH 1;")
 
-        category, _ = Category.objects.get_or_create(
+        category, _ = Category.objects.get_or_create(  # type: ignore[attr-defined]
             name="Смартфоны",
             description=(
                 "Смартфоны, как средство не только коммуникации,"
@@ -35,7 +37,7 @@ class Command(BaseCommand):
             }
         ]
 
-        category, _ = Category.objects.get_or_create(
+        category, _ = Category.objects.get_or_create(  # type: ignore[attr-defined]
             name="Телевизоры",
             description=(
                 "Современный телевизор, который позволяет наслаждаться просмотром,"
@@ -53,9 +55,9 @@ class Command(BaseCommand):
             }
         ]
 
-        for product in products:
-            product, created = Product.objects.get_or_create(**product)
+        for product_data in products:
+            product_obj, created = Product.objects.get_or_create(**product_data)  # type: ignore[attr-defined,arg-type]
             if created:
-                self.stdout.write(self.style.SUCCESS(f"Successfully added product: {product.name}"))
+                self.stdout.write(self.style.SUCCESS(f"Successfully added product: {product_obj.name}"))  # type: ignore[attr-defined]
             else:
-                self.stdout.write(self.style.WARNING(f"Product already exists: {product.name}"))
+                self.stdout.write(self.style.WARNING(f"Product already exists: {product_obj.name}"))  # type: ignore[attr-defined]

@@ -63,7 +63,8 @@
                         <span class="badge badge-green text-white">{{ product.category.name }}</span>
                     </div>
 
-                    <!-- Владелец -->
+                    <!-- Владелец (только для авторизованных) -->
+                    {% if user.is_authenticated %}
                     <div class="mb-3 d-flex align-items-center">
                         <svg class="me-2 icon-green-dark" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -76,6 +77,7 @@
                             <span class="fw-semibold">{{ product.owner.email }}</span>
                         {% endif %}
                     </div>
+                    {% endif %}
 
                     <!-- Цена -->
                     <div class="mb-4 info-box-green d-flex align-items-center">
