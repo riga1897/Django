@@ -1,143 +1,44 @@
 [
 {
-  "model": "users.user",
-  "pk": 3,
-  "fields": {
-    "password": "pbkdf2_sha256$1000000$VZNKdHxj4PPM7Up2CJXvih$cA2GN8q36qh77TI+ZyVeIiq5VDjPQKkDeA99xQitarY=",
-    "last_login": null,
-    "is_superuser": false,
-    "first_name": "Иван",
-    "last_name": "Петров",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2025-10-18T20:47:04.762Z",
-    "username": "test1@example.com",
-    "email": "test1@example.com",
-    "avatar": "",
-    "phone": "+79991234567",
-    "country": "RU",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$impossiblepasswordhash$NeverUsedForLoginSystemUserOnly",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "Удалённый",
+        "last_name": "Пользователь",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-01-01T00:00:00Z",
+        "username": "deleted@system.user",
+        "email": "deleted@system.user",
+        "avatar": "",
+        "phone": null,
+        "country": null,
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "users.user",
-  "pk": 4,
-  "fields": {
-    "password": "pbkdf2_sha256$1000000$1u9On2P0Jx7rWRzQ8WmSox$ZjC2r8zeD7TMShpQpDPsS4UZOzoRtv+FVyBvc1h3b+I=",
-    "last_login": null,
-    "is_superuser": false,
-    "first_name": "Мария",
-    "last_name": "Сидорова",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2025-10-18T20:47:09.161Z",
-    "username": "test2@example.com",
-    "email": "test2@example.com",
-    "avatar": "",
-    "phone": "+79997654321",
-    "country": "RU",
-    "groups": [
-      1
-    ],
-    "user_permissions": []
-  }
-},
-{
-  "model": "marketplace.category",
-  "pk": 1,
-  "fields": {
-    "name": "Электроника",
-    "description": "Электронные устройства и аксессуары"
-  }
-},
-{
-  "model": "marketplace.category",
-  "pk": 2,
-  "fields": {
-    "name": "Одежда",
-    "description": "Модная одежда и обувь"
-  }
-},
-{
-  "model": "marketplace.category",
-  "pk": 3,
-  "fields": {
-    "name": "Книги",
-    "description": "Художественная и техническая литература"
-  }
-},
-{
-  "model": "marketplace.product",
-  "pk": 1,
-  "fields": {
-    "name": "Смартфон XYZ",
-    "description": "Современный смартфон с отличной камерой",
-    "photo": "",
-    "category": 1,
-    "price": "29999.99",
-    "owner": 3,
-    "is_published": false,
-    "created_at": "2025-10-18T20:47:11.233Z",
-    "updated_at": "2025-10-18T20:47:11.233Z"
-  }
-},
-{
-  "model": "marketplace.product",
-  "pk": 2,
-  "fields": {
-    "name": "Наушники Premium",
-    "description": "Беспроводные наушники с шумоподавлением",
-    "photo": "",
-    "category": 1,
-    "price": "5999.00",
-    "owner": 3,
-    "is_published": true,
-    "created_at": "2025-10-18T20:47:11.477Z",
-    "updated_at": "2025-10-18T20:47:11.477Z"
-  }
-},
-{
-  "model": "marketplace.product",
-  "pk": 3,
-  "fields": {
-    "name": "Футболка Cotton",
-    "description": "100% хлопок, различные цвета",
-    "photo": "",
-    "category": 2,
-    "price": "1299.50",
-    "owner": 4,
-    "is_published": true,
-    "created_at": "2025-10-18T20:47:11.710Z",
-    "updated_at": "2025-10-18T20:47:11.710Z"
-  }
-},
-{
-  "model": "blog.blogpost",
-  "pk": 1,
-  "fields": {
-    "title": "Как выбрать смартфон в 2025",
-    "content": "Подробное руководство по выбору смартфона для различных потребностей и бюджетов. Рассматриваем ключевые характеристики: процессор, камеру, батарею и дисплей.",
-    "preview": "",
-    "owner": 3,
-    "is_published": true,
-    "created_at": "2025-10-18T20:47:12.002Z",
-    "updated_at": "2025-10-18T20:47:12.002Z",
-    "views_count": 0
-  }
-},
-{
-  "model": "blog.blogpost",
-  "pk": 2,
-  "fields": {
-    "title": "Тренды моды этого сезона",
-    "content": "Обзор модных тенденций текущего сезона. Какие цвета, фасоны и стили будут популярны. Советы по созданию стильных образов на каждый день.",
-    "preview": "",
-    "owner": 4,
-    "is_published": false,
-    "created_at": "2025-10-18T20:47:12.233Z",
-    "updated_at": "2025-10-18T20:47:12.233Z",
-    "views_count": 0
-  }
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1000000$vK5oNkW2iLvjPVlgqNYAE8$r5el1HlFktDe8RJRVSdMRUtDxSO8WZf0O7x/nwyaKmc=",
+        "last_login": null,
+        "is_superuser": true,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-10-18T20:51:05.269Z",
+        "username": "admin@example.com",
+        "email": "admin@example.com",
+        "avatar": "",
+        "phone": "+1234567890",
+        "country": "US",
+        "groups": [],
+        "user_permissions": []
+    }
 }
 ]
