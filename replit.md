@@ -137,6 +137,40 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes
 
 ## October 18, 2025
+
+### Permissions and Moderation Framework
+- **Models**: Added ownership and publication control
+  - `Product`: Added `owner` (ForeignKey to User) and `is_published` (BooleanField, default=False)
+  - `BlogPost`: Added `owner` (ForeignKey to User)
+  - Custom permissions: `can_unpublish_product` and `can_unpublish_post`
+  
+- **Permission Groups** (via fixtures):
+  - **Модератор продуктов** (Product Moderators): can_unpublish_product, delete_product
+  - **Контент-менеджер** (Content Managers): can_unpublish_post, delete_blogpost
+  
+- **Access Control Logic**:
+  - **Create**: Automatically assigns current user as owner
+  - **Update**: Only owner can edit their content
+  - **Delete**: Owner OR moderator (group-based) can delete
+  - **Toggle Publication**: Only moderators can toggle is_published via Bootstrap Switch
+  - **View Filtering**: Regular users see only published content; staff/moderators see all
+  
+- **UI Implementation**:
+  - Bootstrap Switch toggles in product/post lists for moderators
+  - Conditional edit/delete buttons (owner-only)
+  - Blog post badges hidden when toggle is visible
+  - Form-based toggle with auto-submit on change
+  
+- **CSRF Configuration**:
+  - Added CSRF_TRUSTED_ORIGINS for Replit domains
+  - Configured SameSite=None and Secure cookies for iframe compatibility
+  - Full support for Replit development environment
+
+- **Migrations**: Used project-approved `default=1` approach for adding owner to existing records
+  - Documented in `docs/DEVELOPMENT.md` as acceptable practice for this project
+
+### Earlier Changes
+
 - **Documentation**: Fully rewrote `docs/DEVELOPMENT.md` to match current project structure
   - Replaced generic mailings examples with marketplace/blog/users
   - Updated structure to reflect tests.py in each app (not separate tests/ directory)
@@ -144,6 +178,7 @@ Preferred communication style: Simple, everyday language.
   - Added complete FORBIDDEN_WORDS list (9 words)
   - Included real examples from User, Product, BlogPost models
   - Added pytest-django testing guidelines
+  - Added migration best practices section
   
 - **Code Quality**: Configured ruff linter
   - Added exclude list for virtual environments (.venv, .local)

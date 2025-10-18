@@ -26,8 +26,9 @@ if os.getenv("REPLIT_DEV_DOMAIN"):
     CSRF_TRUSTED_ORIGINS.append(f"https://{os.getenv('REPLIT_DEV_DOMAIN')}")
 
 # Для Replit также нужно разрешить домены из REPLIT_DOMAINS
-if os.getenv("REPLIT_DOMAINS"):
-    domains = os.getenv("REPLIT_DOMAINS").split(",")
+replit_domains = os.getenv("REPLIT_DOMAINS")
+if replit_domains:
+    domains = replit_domains.split(",")
     for domain in domains:
         domain = domain.strip()
         if domain and f"https://{domain}" not in CSRF_TRUSTED_ORIGINS:
