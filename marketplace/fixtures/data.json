@@ -44,6 +44,29 @@
     }
 },
 {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$1000000$HlC8VVeFzdOWit7y613dR4$+hHO7YsBxmZNew6yKth5op7YoH4GFDJPMiMcGNtkGZg=",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "Алексей",
+        "last_name": "Смирнов",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-10-18T21:13:07.831Z",
+        "username": "test3@example.com",
+        "email": "test3@example.com",
+        "avatar": "",
+        "phone": "+79995551234",
+        "country": "RU",
+        "groups": [
+            2
+        ],
+        "user_permissions": []
+    }
+},
+{
     "model": "marketplace.category",
     "pk": 1,
     "fields": {
@@ -113,6 +136,21 @@
     }
 },
 {
+    "model": "marketplace.product",
+    "pk": 4,
+    "fields": {
+        "name": "Книга \"Python для начинающих\"",
+        "description": "Полное руководство по изучению Python с нуля",
+        "photo": "",
+        "category": 3,
+        "price": "899.00",
+        "owner": 5,
+        "is_published": true,
+        "created_at": "2025-10-18T21:13:13.452Z",
+        "updated_at": "2025-10-18T21:13:13.452Z"
+    }
+},
+{
     "model": "blog.blogpost",
     "pk": 1,
     "fields": {
@@ -137,6 +175,20 @@
         "created_at": "2025-10-18T21:08:12.934Z",
         "updated_at": "2025-10-18T21:08:12.934Z",
         "is_published": false,
+        "views_count": 0
+    }
+},
+{
+    "model": "blog.blogpost",
+    "pk": 3,
+    "fields": {
+        "title": "Лучшие книги по программированию 2025",
+        "content": "Обзор самых актуальных и полезных книг по программированию. От основ до продвинутых тем. Рекомендации для начинающих и опытных разработчиков.",
+        "preview": "",
+        "owner": 5,
+        "created_at": "2025-10-18T21:13:13.695Z",
+        "updated_at": "2025-10-18T21:13:13.695Z",
+        "is_published": true,
         "views_count": 0
     }
 }

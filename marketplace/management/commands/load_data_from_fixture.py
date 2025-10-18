@@ -9,10 +9,10 @@ class Command(BaseCommand):
 
     def handle(self, *args: Any, **kwargs: Any) -> None:
         self.stdout.write("Загрузка тестовых данных...")  # type: ignore[attr-defined]
-        self.stdout.write("  - 2 тестовых пользователя (test1@example.com, test2@example.com)")  # type: ignore[attr-defined]
+        self.stdout.write("  - 3 тестовых пользователя")  # type: ignore[attr-defined]
         self.stdout.write("  - 3 категории (Электроника, Одежда, Книги)")  # type: ignore[attr-defined]
-        self.stdout.write("  - 3 товара")  # type: ignore[attr-defined]
-        self.stdout.write("  - 2 блог-поста")  # type: ignore[attr-defined]
+        self.stdout.write("  - 4 товара")  # type: ignore[attr-defined]
+        self.stdout.write("  - 3 блог-поста")  # type: ignore[attr-defined]
         self.stdout.write("")  # type: ignore[attr-defined]
 
         call_command("loaddata", "marketplace/fixtures/data.json")
@@ -20,5 +20,6 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("✅ Тестовые данные успешно загружены!"))  # type: ignore[attr-defined]
         self.stdout.write("")  # type: ignore[attr-defined]
         self.stdout.write("Тестовые пользователи:")  # type: ignore[attr-defined]
-        self.stdout.write("  • test1@example.com (пароль: test123)")  # type: ignore[attr-defined]
-        self.stdout.write("  • test2@example.com (пароль: test123, модератор)")  # type: ignore[attr-defined]
+        self.stdout.write("  • test1@example.com (пароль: test123, обычный пользователь)")  # type: ignore[attr-defined]
+        self.stdout.write("  • test2@example.com (пароль: test123, модератор продуктов)")  # type: ignore[attr-defined]
+        self.stdout.write("  • test3@example.com (пароль: test123, контент-менеджер)")  # type: ignore[attr-defined]
