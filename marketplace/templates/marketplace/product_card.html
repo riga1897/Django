@@ -12,8 +12,16 @@
             <h6 class="card-title">{{ product.name }}</h6>
             <p class="card-text text-muted mb-3">{{ product.description|truncatechars:80|default:"Описание не указано" }}</p>
             <div class="d-flex justify-content-between align-items-center mt-auto">
-                <div class="d-flex gap-2 align-items-center">
+                <div>
                     {% if show_detail_button %}<a href="{% url 'marketplace:product_detail' product.pk %}" class="btn btn-outline-primary btn-sm">Подробно</a>{% endif %}
+                </div>
+                <div class="d-flex flex-column align-items-end gap-2">
+                    {% if user.is_authenticated and product.owner == user %}
+                    <div>
+                        <a href="{% url 'marketplace:product_update' product.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
+                        <a href="{% url 'marketplace:product_delete' product.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                    </div>
+                    {% endif %}
                     
                     {% if perms.marketplace.can_unpublish_product %}
                     <!-- Toggle для модераторов -->
@@ -33,14 +41,7 @@
                     </form>
                     {% endif %}
                 </div>
-                <div>
-                    {% if user.is_authenticated and product.owner == user %}
-                        <a href="{% url 'marketplace:product_update' product.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
-                        <a href="{% url 'marketplace:product_delete' product.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
-                    {% endif %}
-                </div>
             </div>
-            {% if show_time %}<small class="text-muted mt-2">9 mins</small>{% endif %}
         </div>
     </div>
 </div>
