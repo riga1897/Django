@@ -33,9 +33,9 @@ class BlogPostListView(ListView):  # type: ignore[type-arg]
             return BlogPost.objects.all().order_by("-created_at")  # type: ignore[attr-defined]
         elif user.is_authenticated:
             # Авторизованные пользователи видят опубликованные ИЛИ свои собственные
-            return BlogPost.objects.filter(Q(is_published=True) | Q(owner=user)).order_by(
-                "-created_at"
-            )  # type: ignore[attr-defined]
+            return BlogPost.objects.filter(  # type: ignore[attr-defined]
+                Q(is_published=True) | Q(owner=user)
+            ).order_by("-created_at")
         else:
             # Неавторизованные видят только опубликованные
             return BlogPost.objects.filter(is_published=True).order_by("-created_at")  # type: ignore[attr-defined]
