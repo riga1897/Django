@@ -48,6 +48,16 @@ class BlogPostDetailView(DetailView):
         BlogPost.objects.filter(pk=obj.pk).update(views_count=F("views_count") + 1)  # type: ignore[attr-defined]
         return super().get(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_authenticated:
+            # Проверяем, является ли пользователь контент-менеджером
+            context["is_manager"] = user.is_staff or user.groups.filter(name="Контент-менеджер").exists()  # type: ignore[attr-defined]
+        else:
+            context["is_manager"] = False
+        return context
+
 
 class BlogPostCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[type-arg]
     model = BlogPost
@@ -77,12 +87,21 @@ class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[t
     template_name = "blog/blogpost_form.html"
 
     def get_form(self, form_class: Any = None) -> Any:
-        """Скрыть поле owner от обычных пользователей"""
+        """Владелец видит все поля кроме owner, контент-менеджер - только owner"""
         form = super().get_form(form_class)
         user = self.request.user
-        # Только контент-менеджеры могут изменять владельца
-        if not (user.is_staff or user.groups.filter(name="Контент-менеджер").exists()):  # type: ignore[attr-defined]
+        is_owner = self.object.owner == user
+        is_manager = user.is_staff or user.groups.filter(name="Контент-менеджер").exists()  # type: ignore[attr-defined]
+
+        if is_owner:
+            # Владелец может редактировать все поля, кроме owner
             form.fields.pop("owner", None)
+        elif is_manager:
+            # Контент-менеджер может изменять только владельца
+            fields_to_remove = [field for field in form.fields if field != "owner"]
+            for field in fields_to_remove:
+                form.fields.pop(field)
+
         return form
 
     def get_queryset(self) -> QuerySet[BlogPost]:  # type: ignore[override]
