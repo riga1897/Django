@@ -20,6 +20,11 @@ DEBUG = bool(os.getenv("DEBUG") == "True")
 
 ALLOWED_HOSTS = ["*"]
 
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = []
+if os.getenv("REPLIT_DEV_DOMAIN"):
+    CSRF_TRUSTED_ORIGINS.append(f"https://{os.getenv('REPLIT_DEV_DOMAIN')}")
+
 # Application definition
 
 INSTALLED_APPS = [
