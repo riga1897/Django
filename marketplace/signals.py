@@ -12,7 +12,7 @@ def delete_product_photo_on_delete(sender: type[Product], instance: Product, **k
     Удаляет файл изображения через Django storage API при удалении товара
     """
     if instance.photo:
-        instance.photo.delete(save=False)
+        instance.photo.delete(save=False)  # type: ignore[attr-defined]
 
 
 @receiver(pre_save, sender=Product)
@@ -24,9 +24,9 @@ def delete_old_photo_on_update(sender: type[Product], instance: Product, **kwarg
         return
 
     try:
-        old_instance = Product.objects.get(pk=instance.pk)
-    except Product.DoesNotExist:
+        old_instance = Product.objects.get(pk=instance.pk)  # type: ignore[attr-defined]
+    except Product.DoesNotExist:  # type: ignore[attr-defined]
         return
 
     if old_instance.photo and old_instance.photo != instance.photo:
-        old_instance.photo.delete(save=False)
+        old_instance.photo.delete(save=False)  # type: ignore[attr-defined]

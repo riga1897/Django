@@ -128,7 +128,8 @@ Preferred communication style: Simple, everyday language.
 - **Качество кода и линтеры**:
   - Исправлены ошибки ruff: сокращены docstring в marketplace/views.py и blog/views.py
   - Исправлены ошибки isort: отсортированы импорты в файлах миграций
-  - **Все линтеры проходят**: mypy ✅ (53 файла), ruff ✅, black ✅, isort ✅
+  - **Исправлены LSP/mypy ошибки в signals.py**: Добавлены `# type: ignore[attr-defined]` для Django-специфичных атрибутов (ImageField.delete(), Model.objects, Model.DoesNotExist) в marketplace/signals.py и blog/signals.py
+  - **Все линтеры проходят**: mypy ✅ (53 файла), ruff ✅, black ✅, isort ✅, LSP ✅
 
 ### Owner Visibility and Type Safety
 - **Скрыта информация о владельце для неавторизованных пользователей**:

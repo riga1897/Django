@@ -12,7 +12,7 @@ def delete_blogpost_preview_on_delete(sender: type[BlogPost], instance: BlogPost
     Удаляет файл изображения через Django storage API при удалении поста блога
     """
     if instance.preview:
-        instance.preview.delete(save=False)
+        instance.preview.delete(save=False)  # type: ignore[attr-defined]
 
 
 @receiver(pre_save, sender=BlogPost)
@@ -24,9 +24,9 @@ def delete_old_preview_on_update(sender: type[BlogPost], instance: BlogPost, **k
         return
 
     try:
-        old_instance = BlogPost.objects.get(pk=instance.pk)
-    except BlogPost.DoesNotExist:
+        old_instance = BlogPost.objects.get(pk=instance.pk)  # type: ignore[attr-defined]
+    except BlogPost.DoesNotExist:  # type: ignore[attr-defined]
         return
 
     if old_instance.preview and old_instance.preview != instance.preview:
-        old_instance.preview.delete(save=False)
+        old_instance.preview.delete(save=False)  # type: ignore[attr-defined]
