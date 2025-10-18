@@ -80,7 +80,7 @@ class ContactsView(FormView):  # type: ignore[type-arg]
     form_class = ContactForm
     success_url = reverse_lazy("marketplace:contacts")
 
-    def form_valid(self, form: Any) -> HttpResponse:
+    def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
         # Данные из формы
         name = form.cleaned_data["name"]
         email = form.cleaned_data["email"]
@@ -100,8 +100,19 @@ class ProductCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[ty
     template_name = "marketplace/product_form.html"
     success_url = reverse_lazy("marketplace:products_list")
 
-    def form_valid(self, form: Any) -> HttpResponse:
-        form.instance.owner = self.request.user
+    def get_form(self, form_class: Any = None) -> Any:
+        """Скрыть поле owner от обычных пользователей"""
+        form = super().get_form(form_class)
+        user = self.request.user
+        # Только модераторы могут выбирать владельца
+        if not (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):  # type: ignore[attr-defined]
+            form.fields.pop("owner", None)
+        return form
+
+    def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
+        # Если owner не указан (обычный пользователь), назначаем текущего
+        if not form.instance.owner_id:
+            form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
@@ -110,9 +121,24 @@ class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[ty
     form_class = ProductForm
     template_name = "marketplace/product_form.html"
 
+    def get_form(self, form_class: Any = None) -> Any:
+        """Скрыть поле owner от обычных пользователей"""
+        form = super().get_form(form_class)
+        user = self.request.user
+        # Только модераторы могут изменять владельца
+        if not (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):  # type: ignore[attr-defined]
+            form.fields.pop("owner", None)
+        return form
+
     def get_queryset(self) -> Any:
-        """Только владелец может редактировать продукт"""
-        return Product.objects.filter(owner=self.request.user)  # type: ignore[attr-defined,misc]
+        """Владелец может редактировать свой продукт, модератор - любой"""
+        user = self.request.user
+        if user.is_staff or user.groups.filter(name="Модератор продуктов").exists():  # type: ignore[attr-defined]
+            # Модераторы видят все продукты
+            return Product.objects.all()  # type: ignore[attr-defined]
+        else:
+            # Обычный пользователь видит только свои
+            return Product.objects.filter(owner=user)  # type: ignore[attr-defined,misc]
 
     def get_success_url(self) -> str:
         return str(reverse_lazy("marketplace:product_detail", kwargs={"pk": self.object.pk}))

@@ -138,6 +138,32 @@ Preferred communication style: Simple, everyday language.
 
 ## October 18, 2025
 
+### Owner Management and User Deletion Handling
+- **System User for Deleted Owners**: Implemented automatic content preservation when users are deleted
+  - Created system user `deleted@system.user` (fixture in `users/fixtures/system_user.json`)
+  - Helper function `get_deleted_user()` in both `marketplace/models.py` and `blog/models.py`
+  - Uses `on_delete=SET_DEFAULT` with `default=get_deleted_user` for owner ForeignKey fields
+  - When a user is deleted, their products/posts automatically transfer to system user
+  
+- **Owner Reassignment by Moderators**: Moderators can change ownership of products/posts
+  - Added `owner` field to `ProductForm` and created `BlogPostForm` with owner field
+  - Field visible only to moderators ("Модератор продуктов" and "Контент-менеджер" groups)
+  - Ordinary users don't see owner field in forms (auto-assigned to current user on create)
+  - Implemented via `get_form()` override in Create/Update views with conditional field removal
+  
+- **Display Logic for Deleted Owners**:
+  - Templates check if `owner.email == "deleted@system.user"`
+  - Shows "Владелец удалён" (gray, italic) instead of email for deleted owners
+  - Applied to `product_detail.html` and `blogpost_detail.html`
+  
+- **Business Logic**:
+  - Content preservation: Products and blog posts persist even after owner deletion
+  - No data loss on user removal
+  - Moderators can reassign orphaned content to new owners
+  - Owner field remains required ForeignKey (meets project constraints)
+
+## Earlier October 18, 2025
+
 ### Owner Visibility and Publishing Permissions
 - **Enhanced Queryset Filtering**: Owners now see published items OR their own unpublished items in lists
   - `ProductsListView`: Uses Q objects to filter `Q(is_published=True) | Q(owner=user)` for authenticated non-moderators

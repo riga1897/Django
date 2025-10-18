@@ -75,7 +75,11 @@
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                         <span class="text-muted me-2">Владелец:</span>
-                        <span class="fw-semibold">{{ post.owner.email }}</span>
+                        {% if post.owner.email == "deleted@system.user" %}
+                            <span class="fw-semibold text-muted fst-italic">Владелец удалён</span>
+                        {% else %}
+                            <span class="fw-semibold">{{ post.owner.email }}</span>
+                        {% endif %}
                     </div>
 
                     <!-- Даты -->

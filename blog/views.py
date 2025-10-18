@@ -9,6 +9,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 
 from marketplace.views import ModalLoginRequiredMixin
 
+from .forms import BlogPostForm
 from .models import BlogPost
 
 
@@ -44,29 +45,55 @@ class BlogPostDetailView(DetailView):
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         pk = kwargs["pk"]
         obj = get_object_or_404(BlogPost, pk=pk)
-        BlogPost.objects.filter(pk=obj.pk).update(views_count=F("views_count") + 1)
+        BlogPost.objects.filter(pk=obj.pk).update(views_count=F("views_count") + 1)  # type: ignore[attr-defined]
         return super().get(request, *args, **kwargs)
 
 
 class BlogPostCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[type-arg]
     model = BlogPost
+    form_class = BlogPostForm
     template_name = "blog/blogpost_form.html"
-    fields = ["title", "content", "preview", "is_published"]
     success_url = reverse_lazy("blog:post_list")
 
-    def form_valid(self, form: Any) -> HttpResponse:
-        form.instance.owner = self.request.user
+    def get_form(self, form_class: Any = None) -> Any:
+        """Скрыть поле owner от обычных пользователей"""
+        form = super().get_form(form_class)
+        user = self.request.user
+        # Только контент-менеджеры могут выбирать владельца
+        if not (user.is_staff or user.groups.filter(name="Контент-менеджер").exists()):  # type: ignore[attr-defined]
+            form.fields.pop("owner", None)
+        return form
+
+    def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
+        # Если owner не указан (обычный пользователь), назначаем текущего
+        if not form.instance.owner_id:
+            form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
 class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[type-arg]
     model = BlogPost
+    form_class = BlogPostForm
     template_name = "blog/blogpost_form.html"
-    fields = ["title", "content", "preview", "is_published"]
+
+    def get_form(self, form_class: Any = None) -> Any:
+        """Скрыть поле owner от обычных пользователей"""
+        form = super().get_form(form_class)
+        user = self.request.user
+        # Только контент-менеджеры могут изменять владельца
+        if not (user.is_staff or user.groups.filter(name="Контент-менеджер").exists()):  # type: ignore[attr-defined]
+            form.fields.pop("owner", None)
+        return form
 
     def get_queryset(self) -> QuerySet[BlogPost]:  # type: ignore[override]
-        """Только владелец может редактировать пост"""
-        return BlogPost.objects.filter(owner=self.request.user)  # type: ignore[attr-defined,misc]
+        """Владелец может редактировать свой пост, контент-менеджер - любой"""
+        user = self.request.user
+        if user.is_staff or user.groups.filter(name="Контент-менеджер").exists():  # type: ignore[attr-defined]
+            # Контент-менеджеры видят все посты
+            return BlogPost.objects.all()  # type: ignore[attr-defined]
+        else:
+            # Обычный пользователь видит только свои
+            return BlogPost.objects.filter(owner=user)  # type: ignore[attr-defined,misc]
 
     def get_success_url(self) -> str:
         return str(reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk}))
