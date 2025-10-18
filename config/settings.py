@@ -20,10 +20,24 @@ DEBUG = bool(os.getenv("DEBUG") == "True")
 
 ALLOWED_HOSTS = ["*"]
 
-# CSRF settings
+# CSRF settings for Replit
 CSRF_TRUSTED_ORIGINS = []
 if os.getenv("REPLIT_DEV_DOMAIN"):
     CSRF_TRUSTED_ORIGINS.append(f"https://{os.getenv('REPLIT_DEV_DOMAIN')}")
+
+# Для Replit также нужно разрешить домены из REPLIT_DOMAINS
+if os.getenv("REPLIT_DOMAINS"):
+    domains = os.getenv("REPLIT_DOMAINS").split(",")
+    for domain in domains:
+        domain = domain.strip()
+        if domain and f"https://{domain}" not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(f"https://{domain}")
+
+# Дополнительные настройки CSRF для работы в iframe
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "None" 
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 
