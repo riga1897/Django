@@ -1,4 +1,5 @@
 {% load my_tags %}
+{% load l10n %}
 {% with widget_name=field|widget_type %}
 <div class="mb-4">
     <label class="form-label fw-bold text-secondary">
@@ -85,8 +86,8 @@
                id="{{ field.id_for_label }}"
                class="form-control shadow-sm"
                style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
-               value="{{ field.value }}"
-               {% if field.field.widget.input_type == 'number' and field.value is not None %}placeholder="{{ field.value|default_if_none:'' }}"{% endif %}
+               {% if field.field.widget.input_type == 'number' %}value="{{ field.value|unlocalize }}"{% else %}value="{{ field.value }}"{% endif %}
+               {% if field.field.widget.input_type == 'number' and field.value is not None %}placeholder="{{ field.value|unlocalize }}"{% endif %}
                {% if field.field.required %}required{% endif %}
                onfocus="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 0 0 0.25rem rgba(13,110,253,.25)'"
                onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">
