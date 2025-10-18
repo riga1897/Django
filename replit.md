@@ -153,11 +153,11 @@ Preferred communication style: Simple, everyday language.
   - **Update**: Only owner can edit their content
   - **Delete**: Owner OR moderator (group-based) can delete
   - **Toggle Publication**: Only moderators can toggle is_published via Bootstrap Switch
-  - **View Filtering**: All users see all content (both published and unpublished)
+  - **View Filtering**: Unauthenticated users see only published content; authenticated staff/moderators see all
   
 - **UI Implementation**:
   - Bootstrap Switch toggles in product/post card footers for moderators (positioned bottom-right)
-  - Publication status badges (green "Опубл." / yellow "Черн.") shown to non-moderators
+  - Publication status badges (green "Опубл." / yellow "Черн.") shown to authenticated non-moderators only
   - Conditional edit/delete buttons (owner-only, positioned top-right in card footer)
   - Detail buttons ("Подробно"/"Читать") positioned left in card footer
   - All buttons have uniform width (min-width: 85px)
