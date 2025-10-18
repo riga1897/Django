@@ -1,6 +1,6 @@
 # Overview
 
-A Django-based web application providing an e-commerce marketplace, a blog system, and comprehensive user management with email authentication. It utilizes Bootstrap 5 for responsive design and custom CSS for a unique visual style. The project is structured with modular Django applications, emphasizing separation of concerns to create a robust platform for both selling goods and publishing content. It includes an advanced permission and moderation system to manage content ownership and publication status.
+This project is a Django platform featuring three core applications: an e-commerce marketplace, a blog, and a user management system. It supports email-based authentication, a three-tiered access control system, and uses AJAX modals for login/registration. A key feature is the automatic preservation of content upon user deletion. The platform emphasizes code quality with centralized CSS styling, 100% MyPy type coverage, and passes all linting checks (ruff, black, isort). The business vision is to provide a robust, scalable, and maintainable web platform for diverse online functionalities.
 
 # User Preferences
 
@@ -12,37 +12,39 @@ A Django-based web application providing an e-commerce marketplace, a blog syste
 
 **Framework**: Django 5.2.7 with Python 3.x.
 **Structure**: Modular architecture with `marketplace`, `blog`, `users`, and `config` applications.
-**Design Patterns**: Class-Based Views (CBV), Django signals for file cleanup, custom mixins for modal authentication, and custom managers for email-based authentication.
-**Authentication**: Email-based using a custom `User` model. Access control via `LoginRequiredMixin` and role-based permissions (owner, moderator, staff).
-**File Management**: Automatic cleanup of uploaded files (product photos, blog previews) via Django signals.
-**Form Validation**: Custom rules for forbidden words, non-negative prices, file size limits, and unique emails.
-**URL Routing**: Namespaces for each application and an administrative interface.
-**Permissions & Moderation**:
-- `Product` and `BlogPost` models include `owner` and `is_published` fields.
-- Custom permission groups: "Product Moderator" and "Content Manager".
-- Access logic: Owners can edit their content, moderators can reassign ownership and toggle publication. Unauthenticated users see only published content; staff/moderators see all; owners see their unpublished content.
-- Content is preserved upon owner deletion by reassigning to a system user (`deleted@system.user`).
+**Design Patterns**: Utilizes Class-Based Views (CBV), Django signals for file cleanup, custom mixins for modal authentication, and custom managers for email authentication.
+**Authentication**: Email-based with a custom `User` model. Access controlled via `LoginRequiredMixin` and role-based permissions (owner, moderator, staff).
+**Access Control**:
+- Three-tiered system:
+    - **Moderator-owner**: Full control, sees all fields including owner and `is_published`.
+    - **Moderator (other's content)**: Sees only owner and `is_published` (can reassign owner and change publication status).
+    - **Regular owner**: Sees all fields except owner (can edit content and `is_published`, but not owner).
+    - Regular users (not owner, not moderator) do not see the owner of others' records.
+- Content is preserved upon user deletion by reassigning it to a system user (`deleted@system.user`).
+**File Management**: Automatic cleanup of uploaded files (product photos, blog previews) using Django signals.
+**Validation**: Custom rules for forbidden words, non-negative prices, file size limits, and unique emails.
+**URL Routing**: Namespaced URLs for each application and an administrative interface.
 
 ## Data
 
 **Database**: PostgreSQL, configured via environment variables.
-**Core Models**: `Product`, `Category`, `BlogPost`, and a custom `User` model.
-**Relationships**: `Product` to `Category` with `CASCADE` deletion. File cleanup handled by signal processors for `Product.photo` and `BlogPost.preview`.
+**Key Models**: `Product`, `Category`, `BlogPost`, and a custom `User` model.
+**Relationships**: `Product` linked to `Category` with cascade deletion. File cleanup for `Product.photo` and `BlogPost.preview` via signal processors.
 
 ## Frontend
 
-**Templating System**: Django templates with inheritance and custom tags.
-**Static Assets**: Bootstrap 5.3.8 and custom CSS with variables for consistent gradient design.
-**UI/UX**: Modal authentication, responsive design, and gradient color coding. All styling is centralized in `static/css/custom.css`, eliminating inline styles in templates.
+**Templating**: Django templates with inheritance and custom tags.
+**Static Resources**: Bootstrap 5.3.8 and custom CSS with variables for a consistent gradient design.
+**UI/UX**: Features AJAX-powered modal authentication, responsive design, and gradient color coding. All styles are centralized in `static/css/custom.css`, eliminating inline styles.
 
 # External Dependencies
 
 - **Django 5.2.7**: Web framework.
-- **Python 3.x**: Runtime environment.
+- **Python 3.x**: Execution environment.
 - **PostgreSQL**: Primary database.
-- **dj-database-url**: Database URL parsing.
-- **python-dotenv**: Environment variable management.
+- **dj-database-url**: For parsing database URLs.
+- **python-dotenv**: For environment variable management.
 - **Bootstrap 5.3.8**: Frontend CSS framework and JavaScript components.
 - **Django's built-in email backend**: For authentication emails.
-- **Django's built-in static files handling**: For static file management.
+- **Django's built-in static files handling**: For static asset management.
 - **ImageField**: For image uploads.
