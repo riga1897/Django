@@ -91,17 +91,18 @@ class UserRegisterView(CreateView):  # type: ignore[type-arg]
             return next_url
         return str(reverse_lazy("marketplace:products_list"))
 
-    def form_valid(self, form: Any) -> HttpResponse:
+    def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
         """Успешная регистрация - автоматический вход"""
         from django.contrib.auth import login
 
         user = form.save()
         self.send_welcome_email(user.email)
-        login(self.request, user)
+        # Автоматический вход после регистрации
+        login(self.request, user, backend="django.contrib.auth.backends.ModelBackend")
         messages.success(self.request, "Добро пожаловать! Регистрация прошла успешно.")
         return super().form_valid(form)
 
-    def form_invalid(self, form: Any) -> HttpResponse:
+    def form_invalid(self, form: Any) -> HttpResponse:  # type: ignore[override]
         """При ошибке редирект обратно с параметром для открытия модального окна"""
         from django.shortcuts import redirect
 
@@ -159,6 +160,6 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):  # type: ignore[type-ar
     def get_object(self, queryset: Any = None) -> User:
         return self.request.user  # type: ignore[return-value]
 
-    def form_valid(self, form: Any) -> HttpResponse:
+    def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
         messages.success(self.request, "Профиль успешно обновлен!")
         return super().form_valid(form)
