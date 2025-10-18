@@ -21,6 +21,7 @@ class BlogPost(models.Model):
         help_text="Пользователь, создавший запись",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
     is_published = models.BooleanField(default=False, verbose_name="Признак публикации")
     views_count = models.IntegerField(default=0, verbose_name="Количество просмотров")
 

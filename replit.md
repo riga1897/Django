@@ -138,10 +138,22 @@ Preferred communication style: Simple, everyday language.
 
 ## October 18, 2025
 
+### Publication Toggles in Detail Pages
+- **UI Enhancement**: Added publication toggles to detail views
+  - BlogPost detail page: Toggle positioned bottom-right under management buttons
+  - Product detail page: Toggle positioned bottom-right under management buttons
+  - Access: Owner OR moderator can toggle publication status
+  - Removed static publication status badges from all detail views
+  
+- **Bug Fixes**:
+  - Fixed signal handler parameters in `blog/signals.py` (sender instead of _sender)
+  - Fixed form field template to display zero values correctly (default_if_none instead of default)
+  - Added missing `updated_at` field to BlogPost model with auto_now=True
+
 ### Permissions and Moderation Framework
 - **Models**: Added ownership and publication control
   - `Product`: Added `owner` (ForeignKey to User) and `is_published` (BooleanField, default=False)
-  - `BlogPost`: Added `owner` (ForeignKey to User) and `is_published` (BooleanField, default=False)
+  - `BlogPost`: Added `owner` (ForeignKey to User), `is_published` (BooleanField, default=False), and `updated_at` (DateTimeField, auto_now=True)
   - Custom permissions: `can_unpublish_product` and `can_unpublish_post`
   
 - **Permission Groups** (via fixtures):
