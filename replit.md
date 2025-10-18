@@ -1,53 +1,136 @@
-# Overview
+# Обзор
 
-This is a Django-based web application providing an e-commerce marketplace, a blog system, and comprehensive user management with email-based authentication. It leverages Bootstrap 5 for responsive design and custom CSS for a distinct visual identity. The project is structured with modular Django apps, emphasizing separation of concerns to create a robust platform for both product sales and content publishing. It includes a sophisticated permission and moderation framework to manage content ownership and publication status effectively.
+Веб-приложение на Django, предоставляющее маркетплейс электронной коммерции, систему блогов и комплексное управление пользователями с аутентификацией по email. Использует Bootstrap 5 для адаптивного дизайна и собственный CSS для уникального визуального стиля. Проект структурирован с модульными Django-приложениями с акцентом на разделение обязанностей для создания надежной платформы как для продажи товаров, так и для публикации контента. Включает продвинутую систему прав доступа и модерации для управления владением контентом и статусом публикации.
 
-# User Preferences
+# Предпочтения пользователя
 
-Preferred communication style: Simple, everyday language.
+Стиль общения: простой, повседневный язык.
 
-# System Architecture
+# Архитектура системы
 
-## Backend
+## Бэкенд
 
-**Framework**: Django 5.2.7 with Python 3.x.
-**Structure**: Modular design across `marketplace`, `blog`, `users`, and `config` apps.
-**Design Patterns**: Utilizes Class-Based Views (CBVs), Django signals for file cleanup, custom mixins for modal login, and custom managers for email-based user authentication.
-**Authentication**: Email-based using a custom `User` model. Access control is managed via `LoginRequiredMixin` and role-based permissions (owner, moderator, staff).
-**File Management**: Automatic cleanup of uploaded files (product photos, blog post previews) using Django signals.
-**Form Validation**: Custom rules for forbidden words, non-negative prices, file size limits, and email uniqueness.
-**URL Routing**: Namespaced URL patterns per app and an admin interface.
-**Permissions & Moderation**:
-- `Product` and `BlogPost` models include `owner` and `is_published` fields.
-- Custom permission groups: "Модератор продуктов" and "Контент-менеджер" with specific rights.
-- Access Logic:
-    - **Create**: Owner auto-assigned.
-    - **Update**: Owner-only for content, moderators can reassign ownership.
-    - **Delete**: Owner or moderator.
-    - **Toggle Publication**: Owner or moderator.
-    - **View Filtering**: Unauthenticated users see published content only; authenticated staff/moderators see all; owners see their own unpublished content.
-    - **Owner Deletion**: Content is preserved by reassigning to a system user (`deleted@system.user`).
+**Фреймворк**: Django 5.2.7 с Python 3.x.
+**Структура**: Модульная архитектура с приложениями `marketplace`, `blog`, `users` и `config`.
+**Паттерны проектирования**: Используются Class-Based Views (CBV), сигналы Django для очистки файлов, кастомные миксины для модальной авторизации и кастомные менеджеры для аутентификации по email.
+**Аутентификация**: На основе email с использованием кастомной модели `User`. Контроль доступа через `LoginRequiredMixin` и ролевые права (владелец, модератор, персонал).
+**Управление файлами**: Автоматическая очистка загруженных файлов (фото товаров, превью блогов) через сигналы Django.
+**Валидация форм**: Кастомные правила для запрещенных слов, неотрицательных цен, ограничений размера файлов и уникальности email.
+**Маршрутизация URL**: Пространства имен для каждого приложения и административный интерфейс.
+**Права доступа и модерация**:
+- Модели `Product` и `BlogPost` включают поля `owner` и `is_published`.
+- Кастомные группы прав: "Модератор продуктов" и "Контент-менеджер" со специфичными правами.
+- Логика доступа:
+    - **Создание**: Владелец назначается автоматически.
+    - **Обновление**: Владелец редактирует контент, модераторы могут переназначать владельца.
+    - **Удаление**: Владелец или модератор.
+    - **Переключение публикации**: Владелец или модератор.
+    - **Фильтрация просмотра**: Неаутентифицированные пользователи видят только опубликованный контент; персонал/модераторы видят всё; владельцы видят свой неопубликованный контент.
+    - **Удаление владельца**: Контент сохраняется путем переназначения системному пользователю (`deleted@system.user`).
 
-## Data
+## Данные
 
-**Database**: PostgreSQL, configured for environment-based connections.
-**Key Models**: `Product`, `Category`, `BlogPost`, and a custom `User` model.
-**Relationships**: `Product` to `Category` with `CASCADE` delete. File cleanup is managed by signal handlers for `Product.photo` and `BlogPost.preview`.
+**База данных**: PostgreSQL с конфигурацией через переменные окружения.
+**Основные модели**: `Product`, `Category`, `BlogPost` и кастомная модель `User`.
+**Связи**: `Product` к `Category` с удалением `CASCADE`. Очистка файлов управляется обработчиками сигналов для `Product.photo` и `BlogPost.preview`.
 
-## Frontend
+## Фронтенд
 
-**Template System**: Django templates with inheritance and custom tags.
-**Static Assets**: Bootstrap 5.3.8 and custom CSS using variables for a consistent gradient-based design.
-**UI Patterns**: Modal authentication, responsive design, and gradient-based color coding.
+**Система шаблонов**: Шаблоны Django с наследованием и кастомными тегами.
+**Статические ресурсы**: Bootstrap 5.3.8 и собственный CSS с переменными для консистентного градиентного дизайна.
+**UI-паттерны**: Модальная аутентификация, адаптивный дизайн и градиентное цветовое кодирование.
 
-# External Dependencies
+# Внешние зависимости
 
-- **Django 5.2.7**: Web framework.
-- **Python 3.x**: Runtime environment.
-- **PostgreSQL**: Primary database.
-- **dj-database-url**: Database URL parsing.
-- **python-dotenv**: Environment variable management.
-- **Bootstrap 5.3.8**: Frontend CSS framework and JavaScript components.
-- **Django's built-in email backend**: For user authentication emails.
-- **Django's built-in static files handling**: For managing static assets.
-- **ImageField**: For image uploads.
+- **Django 5.2.7**: Веб-фреймворк.
+- **Python 3.x**: Среда выполнения.
+- **PostgreSQL**: Основная база данных.
+- **dj-database-url**: Парсинг URL базы данных.
+- **python-dotenv**: Управление переменными окружения.
+- **Bootstrap 5.3.8**: Frontend CSS-фреймворк и JavaScript-компоненты.
+- **Django's built-in email backend**: Для отправки писем аутентификации.
+- **Django's built-in static files handling**: Для управления статическими файлами.
+- **ImageField**: Для загрузки изображений.
+
+## Инструменты разработки
+- **mypy**: Статическая проверка типов со 100% покрытием.
+- **ruff**: Python линтер.
+- **black**: Форматтер кода.
+- **isort**: Сортировщик импортов.
+- **pytest-django**: Фреймворк для тестирования.
+
+# Команды управления
+
+Проект включает несколько команд управления для настройки и обслуживания базы данных:
+
+## Команды Marketplace
+
+**`load_from_fixture`** - Загрузка тестовых данных из фикстуры
+```bash
+python manage.py load_from_fixture
+```
+Загружает категории, товары и блог-посты из `marketplace/fixtures/data.json`.
+
+**`del_all`** - Удаление всех товаров и категорий
+```bash
+python manage.py del_all
+```
+Удаляет все записи Product и Category и сбрасывает последовательности ID.
+
+## Команды Users
+
+**`createadmin`** - Создание суперпользователя
+```bash
+python manage.py createadmin
+```
+Создает суперпользователя с:
+- Email: `admin@example.com`
+- Пароль: `admin123`
+
+# Фикстуры данных
+
+Проект включает предварительно настроенные фикстуры для быстрой настройки:
+
+- **`users/fixtures/system_user.json`** - Системный пользователь (`deleted@system.user`) для сохранения контента при удалении пользователей
+- **`marketplace/fixtures/groups_and_permissions.json`** - Группы прав ("Модератор продуктов", "Контент-менеджер") с кастомными разрешениями
+- **`marketplace/fixtures/data.json`** - Примеры категорий, товаров и блог-постов для тестирования
+
+# Последние изменения
+
+## 18 октября 2025
+
+### Централизация CSS и качество кода (последнее обновление)
+- **Полная централизация стилей в static/css/custom.css**:
+  - Добавлено 40+ новых CSS-классов для замены всех inline-стилей
+  - Категории классов: изображения, формы, карточки, кнопки, алерты, аватары, утилиты
+  - Все градиенты, границы, переходы теперь в CSS (нет inline styles)
+  
+- **Очистка шаблонов от inline-стилей**:
+  - **Marketplace**: Удалены все `style="..."` из product_card.html, contacts.html, form_field.html, base.html, products_list.html
+  - **Blog**: Удалены все `style="..."` из blogpost_card.html, blogpost_list.html
+  - **Users**: Удалены все `style="..."` из profile.html, profile_edit.html
+  - Удалены inline JavaScript-обработчики (onfocus, onblur) - заменены на CSS :focus
+  - Исправлено позиционирование overlay-текста в product_card.html (перемещен наверх `top-0`)
+
+- **Качество кода и линтеры**:
+  - Исправлены ошибки ruff: сокращены docstring в marketplace/views.py и blog/views.py
+  - Исправлены ошибки isort: отсортированы импорты в файлах миграций
+  - **Исправлены LSP/mypy ошибки в signals.py**: Добавлены `# type: ignore[attr-defined]` для Django-специфичных атрибутов (ImageField.delete(), Model.objects, Model.DoesNotExist)
+  - **Исправлены LSP ошибки в apps.py**: Добавлены `# type: ignore[assignment]` для `default_auto_field` (ложное срабатывание django-stubs)
+  - **Все линтеры проходят**: mypy ✅ (52 файла), ruff ✅, black ✅, isort ✅, LSP ✅
+
+### Трёхуровневая система прав доступа
+- **Модератор-владелец (свой контент)**: полный контроль - видит все поля включая owner и is_published
+- **Модератор чужого контента**: видит только owner и is_published (может переназначить владельца и изменить публикацию)
+- **Обычный владелец**: видит все поля кроме owner (может редактировать контент и is_published, но не может менять владельца)
+- Скрыта информация о владельце для неавторизованных пользователей в деталях товара/поста
+
+### Сохранение контента
+- Автоматическое сохранение контента при удалении пользователя через системного пользователя `deleted@system.user`
+- Модераторы могут переназначать владельцев товаров и постов
+- Владельцы видят свой неопубликованный контент в списках (Q-фильтры: `Q(is_published=True) | Q(owner=user)`)
+
+### Модальная аутентификация
+- AJAX-авторизация через модальные окна без перезагрузки страницы
+- Автоматический логин после регистрации
+- Кастомный миксин `ModalLoginRequiredMixin` для перенаправления на модальное окно
