@@ -18,12 +18,8 @@ class BlogPostListView(ListView):  # type: ignore[type-arg]
     context_object_name = "posts"
 
     def get_queryset(self) -> QuerySet[BlogPost]:
-        show_drafts = self.request.GET.get("show_drafts")
-
-        if show_drafts:
-            return BlogPost.objects.all().order_by("-created_at")
-        else:
-            return BlogPost.objects.filter(is_published=True).order_by("-created_at")
+        """Показываем все посты (как в маркетплейсе)"""
+        return BlogPost.objects.all().order_by("-created_at")
 
 
 class BlogPostDetailView(DetailView):
