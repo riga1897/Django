@@ -36,13 +36,13 @@
                 <div>Просмотров: {{ post.views_count }}</div>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-auto">
+            <div class="d-flex justify-content-between align-items-start mt-auto">
                 <div>
                     <a href="{% url 'blog:post_detail' post.pk %}" class="btn btn-outline-primary btn-sm">Читать</a>
                 </div>
                 <div class="d-flex flex-column align-items-end gap-2">
                     {% if user.is_authenticated and post.owner == user %}
-                    <div class="btn-group" role="group">
+                    <div class="d-flex gap-2">
                         <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
                         <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
                     </div>
@@ -50,7 +50,7 @@
                     
                     {% if perms.blog.can_unpublish_post %}
                     <!-- Toggle для контент-менеджеров -->
-                    <form method="post" action="{% url 'blog:post_toggle_publish' post.pk %}" class="d-inline">
+                    <form method="post" action="{% url 'blog:post_toggle_publish' post.pk %}">
                         {% csrf_token %}
                         <div class="form-check form-switch mb-0">
                             <input class="form-check-input" 
