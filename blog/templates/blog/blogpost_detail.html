@@ -124,15 +124,17 @@
                         <a href="{% url 'blog:post_list' %}" class="btn px-4 py-2 btn-gray">
                             ← Назад ко всем записям
                         </a>
-                        {% if user.is_authenticated and user == post.owner %}
-                        <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-primary px-4 py-2">
-                            Изменить
-                        </a>
-                        {% endif %}
-                        {% if user.is_authenticated and (user == post.owner or perms.blog.delete_blogpost) %}
-                        <a href="{% url 'blog:post_delete' post.pk %}" class="btn px-4 py-2 btn-red">
-                            Удалить
-                        </a>
+                        {% if user.is_authenticated %}
+                            {% if user == post.owner %}
+                            <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-primary px-4 py-2">
+                                Изменить
+                            </a>
+                            {% endif %}
+                            {% if user == post.owner or perms.blog.delete_blogpost %}
+                            <a href="{% url 'blog:post_delete' post.pk %}" class="btn px-4 py-2 btn-red">
+                                Удалить
+                            </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

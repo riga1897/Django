@@ -110,15 +110,17 @@
                         <a href="{% url 'marketplace:products_list' %}" class="btn px-4 py-2 btn-gray">
                             ← Назад к каталогу
                         </a>
-                        {% if user.is_authenticated and user == product.owner %}
-                        <a href="{% url 'marketplace:product_update' product.pk %}" class="btn btn-primary px-4 py-2">
-                            Изменить
-                        </a>
-                        {% endif %}
-                        {% if user.is_authenticated and (user == product.owner or perms.marketplace.delete_product) %}
-                        <a href="{% url 'marketplace:product_delete' product.pk %}" class="btn px-4 py-2 btn-red">
-                            Удалить
-                        </a>
+                        {% if user.is_authenticated %}
+                            {% if user == product.owner %}
+                            <a href="{% url 'marketplace:product_update' product.pk %}" class="btn btn-primary px-4 py-2">
+                                Изменить
+                            </a>
+                            {% endif %}
+                            {% if user == product.owner or perms.marketplace.delete_product %}
+                            <a href="{% url 'marketplace:product_delete' product.pk %}" class="btn px-4 py-2 btn-red">
+                                Удалить
+                            </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
