@@ -91,6 +91,19 @@
     }
 },
 {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+        "action_time": "2025-10-18T20:23:56.205Z",
+        "user": 1,
+        "content_type": 9,
+        "object_id": "8",
+        "object_repr": "test1@1.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -584,6 +597,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "87pbpqneyysi8lr59caor90x53phm7rp",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2pAphRZcuu8ZyAwDUjWQlHZlvLtt0oVu_3vvv4XHbc1-a3HxM4urUOLyuxGGZywH4AeWe5WhlnWZSR6KPGmTU-X4up3u30HGlveaRmutSwOYqAM7BYG7wFphdClpssyAidOwM8PUg4Gxt6CR0CQE7MTnCwUuOOw:1vACTL:1bBRVH37Z8y7AYPnrOEqehkbqVTriQMcBfAIeSylcJg",
+        "expire_date": "2025-11-01T19:20:11.395Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "9h97ep19eoemd8s5022h7g71jiitymj3",
     "fields": {
         "session_data": ".eJxVjMsOwiAQRf-FtSFAebp07zeQGRikaiAp7cr479qkC93ec859sQjbWuM2aIlzZmdm2el3Q0gPajvId2i3zlNv6zIj3xV-0MGvPdPzcrh_BxVG_dbKekgmuCkACk3Ch0kE5ZPWmAyQdK5A8eQLGqOlJCSlVQGDxSeLgOz9AdvwOGw:1vABa9:oyWhRwiqMbVoVC1Or_WzZ2XTh66BPEYyKz5jUc9cB9o",
@@ -596,14 +617,6 @@
     "fields": {
         "session_data": ".eJxVjEEOwiAQRe_C2pAphRZcuu8ZyAwDUjWQlHZlvLtt0oVu_3vvv4XHbc1-a3HxM4urUOLyuxGGZywH4AeWe5WhlnWZSR6KPGmTU-X4up3u30HGlveaRmutSwOYqAM7BYG7wFphdClpssyAidOwM8PUg4Gxt6CR0CQE7MTnCwUuOOw:1vA9XH:lUvkuo2RYKw2p1gmK5WuKOydq-V8pKgkEA5Krgx3OKc",
         "expire_date": "2025-11-01T16:12:03.882Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "ac8xweec39bngv53grhavi0egd3uuy8p",
-    "fields": {
-        "session_data": ".eJxVjDsOwjAQBe_iGln-xR9Kes5grb0LDiBbipMKcXdkKUXSvpl5XxZhW0vcOi1xRnZlkl2OW4L8pjoAvqA-G8-trsuc-FD4Tju_N6TPbXdPBwV6GfUENhDJjIYEaBTJWaE9UCJCjS4bG5QWBix6B4G0ChIxKT9JegTp2O8PBeo4ZA:1vAC9z:CIzgjUzbjzPRydHUIegfqMUgllX7_SUCHpRTF5_qTec",
-        "expire_date": "2025-11-01T19:00:11.035Z"
     }
 },
 {
@@ -889,7 +902,7 @@
         "created_at": "2025-10-03T02:36:27.838Z",
         "updated_at": "2025-10-18T15:57:25.513Z",
         "is_published": true,
-        "views_count": 31
+        "views_count": 32
     }
 },
 {
@@ -897,7 +910,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$1000000$Ua6ROxaMKtK3RzivlMfhcr$aNDktYp8JPZX7gaY4Gw5v0qcmk19n/h6rWJtd04+z6Q=",
-        "last_login": "2025-10-18T19:00:10.571Z",
+        "last_login": "2025-10-18T20:23:07.814Z",
         "is_superuser": true,
         "first_name": "",
         "last_name": "",
@@ -921,7 +934,7 @@
     "pk": 2,
     "fields": {
         "password": "pbkdf2_sha256$1000000$2iJz050fmf3xwPlnLmZteo$616rzP5p0m8yZaRd9jZH8m2AiTmGvWWtS+ySEDy1TWY=",
-        "last_login": "2025-10-18T18:24:20.888Z",
+        "last_login": "2025-10-18T19:20:14.212Z",
         "is_superuser": false,
         "first_name": "",
         "last_name": "",
