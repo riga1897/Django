@@ -103,7 +103,7 @@ class BlogPostUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[t
     template_name = "blog/blogpost_form.html"
 
     def get_form(self, form_class: Any = None) -> Any:
-        """Три сценария: менеджер-владелец (всё), менеджер чужого (owner+is_published), обычный владелец (всё кроме owner)"""
+        """Три сценария прав доступа к форме редактирования поста"""
         form = super().get_form(form_class)
         user = self.request.user
         is_owner = self.object.owner == user

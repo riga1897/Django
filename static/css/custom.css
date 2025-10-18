@@ -289,3 +289,243 @@
     border-radius: 0.375rem;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
+
+/* ===== ИЗОБРАЖЕНИЯ ===== */
+
+/* Изображение карточки продукта */
+.product-card-img {
+    height: 250px;
+    object-fit: contain;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 10px;
+}
+
+/* Контейнер для изображения карточки */
+.card-img-container {
+    height: 250px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 10px;
+    position: relative;
+}
+
+/* Изображение на всю высоту контейнера */
+.img-full-height {
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+}
+
+/* Абсолютное позиционирование на весь контейнер */
+.position-absolute-full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Превью изображения */
+.image-preview {
+    max-height: 200px;
+    object-fit: contain;
+}
+
+/* Изображение детальной страницы */
+.image-detail {
+    border-radius: 1rem;
+}
+
+/* Placeholder для изображений */
+.image-placeholder {
+    height: 300px;
+}
+
+/* ===== ФОРМЫ ===== */
+
+/* Стандартный инпут с границей */
+.form-input-custom {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-input-custom:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+/* Textarea с зеленым фокусом */
+textarea.form-input-custom:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25);
+}
+
+/* File input с dashed border */
+.file-input-wrapper {
+    border: 2px dashed #e9ecef;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+/* Input group с градиентом */
+.input-group-gradient {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border: none;
+}
+
+/* ===== КАРТОЧКИ (ДОПОЛНИТЕЛЬНЫЕ) ===== */
+
+/* Карточка без границы с тенью */
+.card-no-border {
+    border: none;
+    border-radius: 15px;
+}
+
+/* Карточка с обводкой */
+.card-bordered {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+}
+
+/* Карточка с hover эффектом */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок карточки с градиентом и закругленными углами */
+.card-header-gradient {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    border-radius: 10px 10px 0 0;
+}
+
+/* ===== АЛЕРТЫ (ДОПОЛНИТЕЛЬНЫЕ) ===== */
+
+/* Success alert с зеленой границей слева */
+.alert-success-left-border {
+    border-left: 4px solid #10b981;
+}
+
+/* Danger alert с округлением */
+.alert-danger-rounded {
+    border-radius: 8px;
+}
+
+/* ===== КНОПКИ (ДОПОЛНИТЕЛЬНЫЕ) ===== */
+
+/* Большая кнопка с градиентом */
+.btn-gradient-large {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient-large:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(52, 211, 153, 0.4);
+    color: white;
+}
+
+/* ===== INFO BOXES (ДОПОЛНИТЕЛЬНЫЕ) ===== */
+
+/* Info box с серым градиентом */
+.info-box-gray {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    transition: all 0.3s ease;
+}
+
+/* ===== УТИЛИТЫ (ДОПОЛНИТЕЛЬНЫЕ) ===== */
+
+/* Иконка с отступом сверху */
+.icon-mt-2 {
+    margin-top: 0.125rem;
+}
+
+/* Цвет иконки для серых элементов */
+.icon-color-green {
+    color: #10b981;
+}
+
+/* Z-index для позиционирования */
+.z-index-2 {
+    z-index: 2;
+}
+
+/* Overflow hidden */
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/* Border radius utilities */
+.rounded-15 {
+    border-radius: 15px;
+}
+
+.rounded-12 {
+    border-radius: 12px;
+}
+
+.rounded-10 {
+    border-radius: 10px;
+}
+
+.rounded-8 {
+    border-radius: 8px;
+}
+
+/* ===== CURSOR UTILITIES ===== */
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* ===== AVATAR UTILITIES ===== */
+
+.avatar-large {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    width: 150px;
+    height: 150px;
+}
+
+.avatar-thumbnail {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+}
+
+/* ===== CHECKBOX CUSTOM ===== */
+
+.checkbox-custom {
+    width: 3em;
+    height: 1.5em;
+}
+
+/* ===== SIDEBAR LOGO ===== */
+
+.sidebar-logo-circle {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+}
+
+/* ===== ALERT INFO SUBTLE ===== */
+
+.alert-info-subtle {
+    background: linear-gradient(135deg, #34d39915 0%, #10b98115 100%);
+}

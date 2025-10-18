@@ -2,16 +2,14 @@
 {% load my_tags %}
 <div class="col-md-6 col-lg-4 mb-4">
     <div class="card h-100">
-        <div style="height: 250px; overflow: hidden; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 10px; position: relative;">
+        <div class="card-img-container">
             {% if post.preview %}
                 <img src="{{ post.preview.url }}"
-                     class="card-img-top"
-                     style="height: 100%; object-fit: contain; width: 100%;"
+                     class="card-img-top img-full-height"
                      alt="{{ post.title }}"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             {% endif %}
-            <div class="d-flex align-items-center justify-content-center h-100 {% if post.preview %}d-none{% endif %}"
-                 style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
+            <div class="d-flex align-items-center justify-content-center h-100 position-absolute-full {% if post.preview %}d-none{% endif %}">
                 <span class="text-muted">Изображение отсутствует</span>
             </div>
         </div>
@@ -49,12 +47,11 @@
                     <form method="post" action="{% url 'blog:post_toggle_publish' post.pk %}">
                         {% csrf_token %}
                         <div class="form-check form-switch mb-0">
-                            <input class="form-check-input" 
+                            <input class="form-check-input cursor-pointer" 
                                    type="checkbox" 
                                    id="toggle_{{ post.pk }}" 
                                    {% if post.is_published %}checked{% endif %}
-                                   onchange="this.form.submit()"
-                                   style="cursor: pointer;">
+                                   onchange="this.form.submit()">
                             <label class="form-check-label text-muted small" for="toggle_{{ post.pk }}">
                                 Опубл.
                             </label>

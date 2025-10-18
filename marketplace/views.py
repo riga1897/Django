@@ -148,7 +148,7 @@ class ProductUpdateView(ModalLoginRequiredMixin, UpdateView):  # type: ignore[ty
     template_name = "marketplace/product_form.html"
 
     def get_form(self, form_class: Any = None) -> Any:
-        """Три сценария: модератор-владелец (всё), модератор чужого (owner+is_published), обычный владелец (всё кроме owner)"""
+        """Три сценария прав доступа к форме редактирования продукта"""
         form = super().get_form(form_class)
         user = self.request.user
         is_owner = self.object.owner == user

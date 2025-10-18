@@ -35,35 +35,28 @@
     {% if 'Textarea' in widget_name %}
         <textarea name="{{ field.name }}" 
                   id="{{ field.id_for_label }}"
-                  class="form-control shadow-sm"
-                  style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
+                  class="form-control shadow-sm form-input-custom"
                   rows="4"
-                  {% if field.field.required %}required{% endif %}
-                  onfocus="this.style.borderColor='#10b981'; this.style.boxShadow='0 0 0 0.25rem rgba(16,185,129,.25)'"
-                  onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">{{ field.value|default:'' }}</textarea>
+                  {% if field.field.required %}required{% endif %}>{{ field.value|default:'' }}</textarea>
     {% elif 'CheckboxInput' in widget_name %}
         <div class="form-check form-switch">
             <input type="checkbox" 
                    name="{{ field.name }}"
                    id="{{ field.id_for_label }}"
-                   class="form-check-input shadow-sm"
-                   style="cursor: pointer; width: 3em; height: 1.5em;"
+                   class="form-check-input shadow-sm cursor-pointer checkbox-custom"
                    {% if field.value %}checked{% endif %}>
         </div>
     {% elif 'Select' in widget_name %}
         <select name="{{ field.name }}"
                 id="{{ field.id_for_label }}"
-                class="form-select shadow-sm"
-                style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
-                {% if field.field.required %}required{% endif %}
-                onfocus="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 0 0 0.25rem rgba(13,110,253,.25)'"
-                onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">
+                class="form-select shadow-sm form-input-custom"
+                {% if field.field.required %}required{% endif %}>
             {% for value, label in field.field.choices %}
                 <option value="{{ value }}" {% if field.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
         </select>
     {% elif 'FileInput' in widget_name or 'ClearableFileInput' in widget_name %}
-        <div class="card shadow-sm" style="border: 2px dashed #e9ecef; border-radius: 8px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+        <div class="card shadow-sm file-input-wrapper">
             <div class="card-body text-center p-4">
                 <input type="file" 
                        name="{{ field.name }}"
@@ -74,7 +67,7 @@
                        {% if field.field.required %}required{% endif %}>
                 <div id="{{ field.id_for_label }}_preview" class="mt-3">
                     {% if field.value %}
-                        <img src="{{ field.value.url }}" class="img-thumbnail" style="max-height: 200px; object-fit: contain;" alt="Preview">
+                        <img src="{{ field.value.url }}" class="img-thumbnail image-preview" alt="Preview">
                     {% endif %}
                 </div>
                 <small class="text-muted d-block mt-2">Загрузите изображение (JPG, PNG)</small>
@@ -84,13 +77,10 @@
         <input type="{{ field.field.widget.input_type }}" 
                name="{{ field.name }}"
                id="{{ field.id_for_label }}"
-               class="form-control shadow-sm"
-               style="border: 2px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;"
+               class="form-control shadow-sm form-input-custom"
                {% if field.field.widget.input_type == 'number' %}value="{{ field.value|default_if_none:''|unlocalize }}"{% else %}value="{{ field.value|default_if_none:'' }}"{% endif %}
                {% if field.field.widget.input_type == 'number' and field.value is not None %}placeholder="{{ field.value|unlocalize }}"{% endif %}
-               {% if field.field.required %}required{% endif %}
-               onfocus="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 0 0 0.25rem rgba(13,110,253,.25)'"
-               onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">
+               {% if field.field.required %}required{% endif %}>
     {% endif %}
     
     {% if field.help_text %}
@@ -104,7 +94,7 @@
     {% endif %}
     
     {% if field.errors %}
-        <div class="alert alert-danger mt-2 py-2 px-3" style="border-radius: 8px;">
+        <div class="alert alert-danger mt-2 py-2 px-3 alert-danger-rounded">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="me-1">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
@@ -121,7 +111,7 @@ function previewImage(input, previewId) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            preview.innerHTML = '<img src="' + e.target.result + '" class="img-thumbnail shadow" style="max-height: 200px; object-fit: contain; border-radius: 8px;" alt="Preview">';
+            preview.innerHTML = '<img src="' + e.target.result + '" class="img-thumbnail shadow image-preview rounded-8" alt="Preview">';
         };
         reader.readAsDataURL(input.files[0]);
     }
