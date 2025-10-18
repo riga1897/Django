@@ -74,122 +74,138 @@
         "description": "Электронные устройства и аксессуары"
     }
 },
-{
-    "model": "marketplace.category",
-    "pk": 2,
-    "fields": {
-        "name": "Одежда",
-        "description": "Модная одежда и обувь"
+    {
+        "model": "marketplace.category",
+        "pk": 2,
+        "fields": {
+            "name": "Телевизоры",
+            "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником"
+        }
+    },
+    {
+        "model": "marketplace.category",
+        "pk": 3,
+        "fields": {
+            "name": "Наушники",
+            "description": "Наушники, устройство для персонального прослушивания аудио."
+        }
+    },
+    {
+        "model": "marketplace.product",
+        "pk": 1,
+        "fields": {
+            "name": "Iphone 15",
+            "description": "512GB, Gray space",
+            "photo": "products/photos/iphone15gray.jpg",
+            "category": 1,
+            "price": "21000.00",
+            "owner": 1,
+            "is_published": true,
+            "created_at": "2025-09-22T13:27:05.301Z",
+            "updated_at": "2025-10-18T15:56:57.791Z"
+        }
+    },
+    {
+        "model": "marketplace.product",
+        "pk": 2,
+        "fields": {
+            "name": "55\" QLED 4K",
+            "description": "Фоновая подсветка",
+            "photo": "products/photos/55QLed.jpg",
+            "category": 2,
+            "price": "123000.00",
+            "owner": 1,
+            "is_published": true,
+            "created_at": "2025-09-22T13:27:29.770Z",
+            "updated_at": "2025-10-18T15:02:20.990Z"
+        }
+    },
+    {
+        "model": "marketplace.product",
+        "pk": 3,
+        "fields": {
+            "name": "Huawei Mate XT",
+            "description": "16GB+1TB, Dual Card, красный",
+            "photo": "products/photos/Hw_Mate_XT_red.jpg",
+            "category": 1,
+            "price": "237168.00",
+            "owner": 1,
+            "is_published": true,
+            "created_at": "2025-09-28T17:27:33.381Z",
+            "updated_at": "2025-10-18T15:47:11.722Z"
+        }
+    },
+    {
+        "model": "marketplace.product",
+        "pk": 4,
+        "fields": {
+            "name": "Hisense 55E7Q PRO 55\"",
+            "description": "черный",
+            "photo": "products/photos/HisenseE7QPRO_55.jpg",
+            "category": 2,
+            "price": "41636.00",
+            "owner": 1,
+            "is_published": false,
+            "created_at": "2025-09-28T17:31:29.741Z",
+            "updated_at": "2025-10-18T15:47:38.982Z"
+        }
+    },
+    {
+        "model": "marketplace.product",
+        "pk": 5,
+        "fields": {
+            "name": "Смартфон Apple iPhone 17 Pro Max",
+            "description": "1 ТБ, eSIM, Синий (без RuStore)",
+            "photo": "products/photos/smartfon-apple-iphone-17-pro.jpg",
+            "category": 1,
+            "price": "194895.00",
+            "owner": 2,
+            "is_published": false,
+            "created_at": "2025-10-18T16:13:17.731Z",
+            "updated_at": "2025-10-18T16:55:32.761Z"
+        }
+    },
+    {
+        "model": "marketplace.product",
+        "pk": 6,
+        "fields": {
+            "name": "blog",
+            "description": "blog",
+            "photo": "",
+            "category": 3,
+            "price": "1.00",
+            "owner": 5,
+            "is_published": true,
+            "created_at": "2025-10-18T18:55:34.583Z",
+            "updated_at": "2025-10-18T18:59:04.147Z"
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 17,
+        "fields": {
+            "title": "Черновик",
+            "content": "Описание черновика",
+            "preview": "",
+            "owner": 5,
+            "created_at": "2025-10-03T01:51:54.089Z",
+            "updated_at": "2025-10-18T18:20:31.495Z",
+            "is_published": false,
+            "views_count": 14
+        }
+    },
+    {
+        "model": "blog.blogpost",
+        "pk": 18,
+        "fields": {
+            "title": "Опубликованная запись",
+            "content": "Это тестовая запись блога с интересным содержанием. Здесь можно писать длинные тексты, делиться мыслями и идеями!",
+            "preview": "blogs/previews/oklik-hs-l700g.jpg",
+            "owner": 1,
+            "created_at": "2025-10-03T02:36:27.838Z",
+            "updated_at": "2025-10-18T15:57:25.513Z",
+            "is_published": true,
+            "views_count": 31
+        }
     }
-},
-{
-    "model": "marketplace.category",
-    "pk": 3,
-    "fields": {
-        "name": "Книги",
-        "description": "Художественная и техническая литература"
-    }
-},
-{
-    "model": "marketplace.product",
-    "pk": 1,
-    "fields": {
-        "name": "Смартфон XYZ",
-        "description": "Современный смартфон с отличной камерой",
-        "photo": "",
-        "category": 1,
-        "price": "29999.99",
-        "owner": 3,
-        "is_published": false,
-        "created_at": "2025-10-18T21:08:12.002Z",
-        "updated_at": "2025-10-18T21:08:12.002Z"
-    }
-},
-{
-    "model": "marketplace.product",
-    "pk": 2,
-    "fields": {
-        "name": "Наушники Premium",
-        "description": "Беспроводные наушники с шумоподавлением",
-        "photo": "",
-        "category": 1,
-        "price": "5999.00",
-        "owner": 3,
-        "is_published": true,
-        "created_at": "2025-10-18T21:08:12.235Z",
-        "updated_at": "2025-10-18T21:08:12.235Z"
-    }
-},
-{
-    "model": "marketplace.product",
-    "pk": 3,
-    "fields": {
-        "name": "Футболка Cotton",
-        "description": "100% хлопок, различные цвета",
-        "photo": "",
-        "category": 2,
-        "price": "1299.50",
-        "owner": 4,
-        "is_published": true,
-        "created_at": "2025-10-18T21:08:12.469Z",
-        "updated_at": "2025-10-18T21:08:12.469Z"
-    }
-},
-{
-    "model": "marketplace.product",
-    "pk": 4,
-    "fields": {
-        "name": "Книга \"Python для начинающих\"",
-        "description": "Полное руководство по изучению Python с нуля",
-        "photo": "",
-        "category": 3,
-        "price": "899.00",
-        "owner": 5,
-        "is_published": true,
-        "created_at": "2025-10-18T21:13:13.452Z",
-        "updated_at": "2025-10-18T21:13:13.452Z"
-    }
-},
-{
-    "model": "blog.blogpost",
-    "pk": 1,
-    "fields": {
-        "title": "Как выбрать смартфон в 2025",
-        "content": "Подробное руководство по выбору смартфона для различных потребностей и бюджетов. Рассматриваем ключевые характеристики: процессор, камеру, батарею и дисплей.",
-        "preview": "",
-        "owner": 3,
-        "created_at": "2025-10-18T21:08:12.701Z",
-        "updated_at": "2025-10-18T21:08:12.701Z",
-        "is_published": true,
-        "views_count": 0
-    }
-},
-{
-    "model": "blog.blogpost",
-    "pk": 2,
-    "fields": {
-        "title": "Тренды моды этого сезона",
-        "content": "Обзор модных тенденций текущего сезона. Какие цвета, фасоны и стили будут популярны. Советы по созданию стильных образов на каждый день.",
-        "preview": "",
-        "owner": 4,
-        "created_at": "2025-10-18T21:08:12.934Z",
-        "updated_at": "2025-10-18T21:08:12.934Z",
-        "is_published": false,
-        "views_count": 0
-    }
-},
-{
-    "model": "blog.blogpost",
-    "pk": 3,
-    "fields": {
-        "title": "Лучшие книги по программированию 2025",
-        "content": "Обзор самых актуальных и полезных книг по программированию. От основ до продвинутых тем. Рекомендации для начинающих и опытных разработчиков.",
-        "preview": "",
-        "owner": 5,
-        "created_at": "2025-10-18T21:13:13.695Z",
-        "updated_at": "2025-10-18T21:13:13.695Z",
-        "is_published": true,
-        "views_count": 0
-    }
-}
 ]

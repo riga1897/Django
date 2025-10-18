@@ -63,20 +63,22 @@
                         <span class="badge badge-green text-white">{{ product.category.name }}</span>
                     </div>
 
-                    <!-- Владелец (только для авторизованных) -->
+                    <!-- Владелец (только для владельца и модераторов) -->
                     {% if user.is_authenticated %}
-                    <div class="mb-3 d-flex align-items-center">
-                        <svg class="me-2 icon-green-dark" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        <span class="text-muted me-2">Владелец:</span>
-                        {% if product.owner.email == "deleted@system.user" %}
-                            <span class="fw-semibold text-muted fst-italic">Владелец удалён</span>
-                        {% else %}
-                            <span class="fw-semibold">{{ product.owner.email }}</span>
+                        {% if user == product.owner or is_moderator %}
+                        <div class="mb-3 d-flex align-items-center">
+                            <svg class="me-2 icon-green-dark" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span class="text-muted me-2">Владелец:</span>
+                            {% if product.owner.email == "deleted@system.user" %}
+                                <span class="fw-semibold text-muted fst-italic">Владелец удалён</span>
+                            {% else %}
+                                <span class="fw-semibold">{{ product.owner.email }}</span>
+                            {% endif %}
+                        </div>
                         {% endif %}
-                    </div>
                     {% endif %}
 
                     <!-- Цена -->
