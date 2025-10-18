@@ -91,9 +91,9 @@ Deletes all data from the database in the correct order:
 
 ## Additional Commands
 
-**`load_data_from_fixture`** - Load Test Data
+**`load_data`** - Load Test Data
 ```bash
-poetry run python manage.py load_data_from_fixture
+poetry run python manage.py load_data
 ```
 Loads test data for development and testing from `marketplace/fixtures/data.json`:
 - 3 test users (password for all: test123):
@@ -122,9 +122,9 @@ poetry run python manage.py setup         # Initialize platform
 
 ### Platform with Test Data
 ```bash
-poetry run python manage.py del_all                 # Clear all data
-poetry run python manage.py setup                   # Initialize platform
-poetry run python manage.py load_data_from_fixture  # Load test data
+poetry run python manage.py del_all      # Clear all data
+poetry run python manage.py setup        # Initialize platform
+poetry run python manage.py load_data    # Load test data
 ```
 
 ## Updating Test Data
@@ -150,7 +150,7 @@ poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category mark
 - Created third test user (test3@example.com - content manager)
 - Updated `data.json` fixture with 3 test users (regular, product moderator, content manager)
 - Fixture contains 6 products and 3 blog posts from different owners
-- Updated `load_data_from_fixture` command with correct output
+- Updated `load_data` command with correct output
 
 ### CSS Centralization and Code Quality
 - **Complete style centralization in static/css/custom.css**:
@@ -167,8 +167,8 @@ poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category mark
 ### Data Management Commands
 - **Created `setup.py` command**: platform initialization (migrations, system user, groups, admin)
 - **Created `del_all.py` command**: complete data cleanup in correct order
-- **Renamed command**: `load_from_fixture.py` → `load_data_from_fixture.py`
-- **Split logic**: setup prepares platform, load_data_from_fixture loads test data
+- **Renamed command**: `load_from_fixture.py` → `load_data.py`
+- **Split logic**: setup prepares platform, load_data loads test data
 - **Created clean fixture**: `data.json` contains only test data (no system users)
 - **Fixed deletion order**: content → products → users → categories (prevents FK violations)
 

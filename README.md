@@ -94,10 +94,10 @@ poetry run python manage.py del_all
 
 ### Дополнительные команды
 
-#### `load_data_from_fixture` - Загрузка тестовых данных
+#### `load_data` - Загрузка тестовых данных
 
 ```bash
-poetry run python manage.py load_data_from_fixture
+poetry run python manage.py load_data
 ```
 
 Загружает тестовые данные для разработки:
@@ -131,9 +131,9 @@ poetry run python manage.py setup         # Инициализировать п�
 ### Платформа с тестовыми данными
 
 ```bash
-poetry run python manage.py del_all                 # Очистить все данные
-poetry run python manage.py setup                   # Инициализировать платформу
-poetry run python manage.py load_data_from_fixture  # Загрузить тестовые данные
+poetry run python manage.py del_all      # Очистить все данные
+poetry run python manage.py setup        # Инициализировать платформу
+poetry run python manage.py load_data    # Загрузить тестовые данные
 ```
 
 ### Запуск сервера
@@ -269,7 +269,7 @@ poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category mark
 #### Команды управления данными
 - Создана команда `setup` для инициализации платформы
 - Создана команда `del_all` для полной очистки данных
-- Переименована команда `load_from_fixture` → `load_data_from_fixture`
+- Переименована команда `load_from_fixture` → `load_data`
 - Создана чистая фикстура с только тестовыми данными
 
 ## 📝 Фикстуры
