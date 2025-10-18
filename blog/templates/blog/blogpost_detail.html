@@ -58,6 +58,7 @@
                     </div>
 
                     <!-- Статус публикации -->
+                    {% if user.is_authenticated %}
                     <div class="mb-3 d-flex align-items-center">
                         <svg class="me-2 icon-green-dark" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             {% if post.is_published %}
@@ -74,6 +75,7 @@
                             {% if post.is_published %}Опубликовано{% else %}Черновик{% endif %}
                         </span>
                     </div>
+                    {% endif %}
 
                     <!-- Просмотры -->
                     <div class="mb-4 info-box-green d-flex align-items-center">
@@ -122,12 +124,16 @@
                         <a href="{% url 'blog:post_list' %}" class="btn px-4 py-2 btn-gray">
                             ← Назад ко всем записям
                         </a>
+                        {% if user.is_authenticated and user == post.owner %}
                         <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-primary px-4 py-2">
                             Изменить
                         </a>
+                        {% endif %}
+                        {% if user.is_authenticated and (user == post.owner or perms.blog.delete_blogpost) %}
                         <a href="{% url 'blog:post_delete' post.pk %}" class="btn px-4 py-2 btn-red">
                             Удалить
                         </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
