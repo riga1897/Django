@@ -139,7 +139,7 @@ poetry run python manage.py load_data    # Загрузить тестовые �
 ### Запуск сервера
 
 ```bash
-poetry run python manage.py runserver 0.0.0.0:5000
+poetry run python manage.py runserver
 ```
 
 ## 🔐 Система прав доступа
