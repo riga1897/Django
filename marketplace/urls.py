@@ -15,4 +15,9 @@ urlpatterns = [
          name="product_toggle_publish"),
     path('category/<int:category_id>/', views.ProductsByCategoryView.as_view(), name='products_by_category'),
     path("contacts/", views.ContactsView.as_view(), name="contacts"),
+    # Управление категориями
+    path("categories/", views.CategoryListView.as_view(), name="category_list"),
+    path("categories/create/", views.CategoryCreateView.as_view(), name="category_create"),
+    path("categories/<int:pk>/update/", views.CategoryUpdateView.as_view(), name="category_update"),
+    path("categories/<int:pk>/delete/", views.CategoryDeleteView.as_view(), name="category_delete"),
 ]

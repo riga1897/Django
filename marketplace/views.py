@@ -14,13 +14,13 @@ from django.views.generic import CreateView, DeleteView, DetailView, FormView, L
 
 from marketplace.models import Product, Category
 
-from .forms import ContactForm, ProductForm
+from .forms import ContactForm, ProductForm, CategoryForm
 from .services import get_products
 
 
 class ProductsByCategoryView(ListView):  # type: ignore[type-arg]
     model = Product
-    template_name = "marketplace/products_list.html"  # Тот же шаблон!
+    template_name = "marketplace/products_by_category.html"
     context_object_name = "products"
 
     def get_queryset(self) -> QuerySet[Product]:  # type: ignore[override]
@@ -37,6 +37,8 @@ class ProductsByCategoryView(ListView):  # type: ignore[type-arg]
             context['current_category'] = Category.objects.get(id=category_id)
         except Category.DoesNotExist:
             context['current_category'] = None
+
+        context['all_categories'] = Category.objects.all()
 
         user = self.request.user
         if user.is_authenticated:
@@ -84,6 +86,7 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        context['all_categories'] = Category.objects.all()
         user = self.request.user
         if user.is_authenticated:
             # Проверяем, является ли пользователь модератором
@@ -243,3 +246,103 @@ class ProductTogglePublishView(LoginRequiredMixin, View):
         product.is_published = not product.is_published
         product.save()
         return redirect("marketplace:products_list")
+
+
+class ModeratorRequiredMixin(LoginRequiredMixin):
+    """Mixin для ограничения доступа только суперюзерам и модераторам продуктов"""
+
+    def dispatch(self, request: Any, *args: Any, **kwargs: Any) -> HttpResponse:
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        
+        # Проверяем, является ли пользователь суперюзером или модератором
+        is_moderator = (
+            request.user.is_superuser 
+            or request.user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
+        )
+        
+        if not is_moderator:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied("У вас нет прав для доступа к этой странице")
+        
+        return super().dispatch(request, *args, **kwargs)
+
+
+class CategoryListView(ListView):  # type: ignore[type-arg]
+    """Список всех категорий с возможностью управления для модераторов"""
+    model = Category
+    template_name = "marketplace/category_list.html"
+    context_object_name = "categories"
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        
+        # Проверяем права для управления категориями
+        if user.is_authenticated:
+            context["can_manage"] = (
+                user.is_superuser 
+                or user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
+            )
+        else:
+            context["can_manage"] = False
+        
+        # Добавляем количество товаров для каждой категории
+        for category in context["categories"]:
+            category.product_count = category.product_set.count()  # type: ignore[attr-defined]
+        
+        return context
+
+
+class CategoryCreateView(ModeratorRequiredMixin, CreateView):  # type: ignore[type-arg]
+    """Создание новой категории (только для модераторов)"""
+    model = Category
+    form_class = CategoryForm
+    template_name = "marketplace/category_form.html"
+    success_url = reverse_lazy("marketplace:category_list")
+    
+    def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
+        messages.success(self.request, f'Категория "{form.instance.name}" успешно создана')
+        return super().form_valid(form)
+
+
+class CategoryUpdateView(ModeratorRequiredMixin, UpdateView):  # type: ignore[type-arg]
+    """Редактирование категории (только для модераторов)"""
+    model = Category
+    form_class = CategoryForm
+    template_name = "marketplace/category_form.html"
+    success_url = reverse_lazy("marketplace:category_list")
+    
+    def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
+        messages.success(self.request, f'Категория "{form.instance.name}" успешно обновлена')
+        return super().form_valid(form)
+
+
+class CategoryDeleteView(ModeratorRequiredMixin, DeleteView):  # type: ignore[type-arg]
+    """Удаление категории с защитой от удаления категорий с товарами"""
+    model = Category
+    template_name = "marketplace/category_confirm_delete.html"
+    success_url = reverse_lazy("marketplace:category_list")
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        # Добавляем количество товаров в категории
+        context["product_count"] = self.object.product_set.count()  # type: ignore[attr-defined]
+        return context
+    
+    def post(self, request: Any, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Проверка перед удалением - запрещаем удаление категорий с товарами"""
+        self.object = self.get_object()
+        product_count = self.object.product_set.count()  # type: ignore[attr-defined]
+        
+        if product_count > 0:
+            messages.error(
+                request, 
+                f'Невозможно удалить категорию "{self.object.name}". '
+                f'В ней находится {product_count} товар(ов). '
+                f'Сначала удалите или переместите все товары.'
+            )
+            return redirect("marketplace:category_list")
+        
+        messages.success(request, f'Категория "{self.object.name}" успешно удалена')
+        return super().post(request, *args, **kwargs)
