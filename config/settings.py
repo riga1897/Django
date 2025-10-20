@@ -1,4 +1,5 @@
 import os
+from dis import CACHE
 from pathlib import Path
 
 import dj_database_url
@@ -39,9 +40,6 @@ CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
-
-# Разрешить отображение в iframe для Replit preview
-X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # Application definition
 
