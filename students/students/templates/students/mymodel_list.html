@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма для MyModel</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Список MyModel</h1>
+        <a href="{% url 'students:mymodel_create' %}" class="btn btn-primary">Создать новый MyModel</a>
+        <ul class="list-group">
+            {% for mymodel in mymodels %}
+                <li class="list-group-item">
+                    <a href="{% url 'students:mymodel_detail' mymodel.pk %}">{{ mymodel.name }}</a>
+                    <a href="{% url 'students:mymodel_update' mymodel.pk %}" class="btn btn-secondary">Редактировать</a>
+                    <a href="{% url 'students:mymodel_delete' mymodel.pk %}" class="btn btn-danger">Удалить</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+<!-- Подключение Bootstrap JS -->
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
