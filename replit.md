@@ -1,6 +1,16 @@
 # Overview
 
-This is a Django-based e-commerce platform with three main applications: a marketplace for product listings, a blog for content management, and a user management system. The platform features email-based authentication, a three-tier permission system (owner, moderator, regular user), and AJAX-powered modal windows for login/registration. Content is preserved when owners are deleted through a system user mechanism.
+This is a Django-based e-commerce platform with three main applications: a marketplace for product listings, a blog for content management, and a user management system. The platform features email-based authentication, a three-tier permission system (owner, moderator, regular user), and AJAX-powered modal windows for login/registration. Content is preserved when owners are deleted through a system user mechanism. The marketplace includes category filtering and administrative category management restricted to superusers and product moderators.
+
+## Recent Changes
+
+**October 20, 2025** - Category Management & Filtering Implementation
+- Added category filtering UI to product catalog pages with visual highlighting for active categories
+- Implemented complete CRUD interface for category management (list, create, update, delete)
+- Created `ModeratorRequiredMixin` to restrict category management to superusers and "Модератор продуктов" group members
+- Implemented `CategoryForm` with case-insensitive uniqueness validation
+- Added server-side protection against deleting categories containing products
+- Fixed template routing for `ProductsByCategoryView` to use dedicated category page template
 
 ## User Preferences
 
