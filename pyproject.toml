@@ -34,6 +34,7 @@ wcwidth = "==0.2.14"
 django-stubs = "==5.2.7"
 ruff = "==0.14.1"
 dj-database-url = "^3.0.1"
+redis = "^6.4.0"
 
 
 [tool.poetry.group.lint.dependencies]

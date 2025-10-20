@@ -1,4 +1,5 @@
 import os
+from dis import CACHE
 from pathlib import Path
 
 import dj_database_url
@@ -155,3 +156,12 @@ LOGOUT_REDIRECT_URL = "marketplace:products_list"
 
 # Email configuration (console backend for development)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+CACHE_ENABLED = os.getenv("CACHE_ENABLED")
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/1",
+        }
+    }

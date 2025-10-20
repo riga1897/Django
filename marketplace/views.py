@@ -7,12 +7,15 @@ from django.db.models import Q, QuerySet
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView, View
 
 from marketplace.models import Product
 
 from .forms import ContactForm, ProductForm
+from .services import get_products
 
 
 class ModalLoginRequiredMixin(LoginRequiredMixin):
@@ -46,17 +49,8 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
         - Обычные пользователи: опубликованные ИЛИ свои собственные
         """
         user = self.request.user
-        if user.is_authenticated and (
-            user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
-        ):  # type: ignore[attr-defined]
-            # Staff или модераторы видят все продукты
-            return Product.objects.all()  # type: ignore[attr-defined]
-        elif user.is_authenticated:
-            # Авторизованные пользователи видят опубликованные ИЛИ свои собственные
-            return Product.objects.filter(Q(is_published=True) | Q(owner=user))  # type: ignore[attr-defined]
-        else:
-            # Неавторизованные видят только опубликованные
-            return Product.objects.filter(is_published=True)  # type: ignore[attr-defined]
+        return get_products(user)
+
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -77,6 +71,7 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
 #     return render(request, "marketplace/products_list.html", context)
 
 
+@method_decorator(cache_page(60), name="dispatch")
 class ProductDetailView(DetailView):
     model = Product
     template_name = "marketplace/product_detail.html"
