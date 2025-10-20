@@ -289,7 +289,7 @@ class CategoryListView(ListView):  # type: ignore[type-arg]
         
         # Добавляем количество товаров для каждой категории
         for category in context["categories"]:
-            category.product_count = category.product_set.count()  # type: ignore[attr-defined]
+            category.product_count = category.products.count()  # type: ignore[attr-defined]
         
         return context
 
@@ -327,13 +327,13 @@ class CategoryDeleteView(ModeratorRequiredMixin, DeleteView):  # type: ignore[ty
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         # Добавляем количество товаров в категории
-        context["product_count"] = self.object.product_set.count()  # type: ignore[attr-defined]
+        context["product_count"] = self.object.products.count()  # type: ignore[attr-defined]
         return context
     
     def post(self, request: Any, *args: Any, **kwargs: Any) -> HttpResponse:
         """Проверка перед удалением - запрещаем удаление категорий с товарами"""
         self.object = self.get_object()
-        product_count = self.object.product_set.count()  # type: ignore[attr-defined]
+        product_count = self.object.products.count()  # type: ignore[attr-defined]
         
         if product_count > 0:
             messages.error(
