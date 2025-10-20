@@ -12,11 +12,41 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView, View
 
-from marketplace.models import Product
+from marketplace.models import Product, Category
 
 from .forms import ContactForm, ProductForm
 from .services import get_products
 
+
+class ProductsByCategoryView(ListView):  # type: ignore[type-arg]
+    model = Product
+    template_name = "marketplace/products_list.html"  # Тот же шаблон!
+    context_object_name = "products"
+
+    def get_queryset(self) -> QuerySet[Product]:  # type: ignore[override]
+        """Продукты определенной категории"""
+        category_id = self.kwargs['category_id']
+        user = self.request.user
+        return get_products(user, category_id)  # Используем общую функцию!
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs['category_id']
+
+        try:
+            context['current_category'] = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            context['current_category'] = None
+
+        user = self.request.user
+        if user.is_authenticated:
+            context["is_moderator"] = (
+                    user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
+            )
+        else:
+            context["is_moderator"] = False
+
+        return context
 
 class ModalLoginRequiredMixin(LoginRequiredMixin):
     """Mixin для редиректа на модалку логина вместо отдельной страницы"""
