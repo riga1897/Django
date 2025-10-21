@@ -4,11 +4,15 @@ This is a Django-based e-commerce platform with three main applications: a marke
 
 ## Recent Changes
 
-**October 21, 2025** - UI Improvements for Category System
-- Replaced horizontal category filter buttons with dropdown menu for better scalability
-- Redesigned category card layout with flexbox: "Товары" button pinned to bottom, management buttons (Edit/Delete) positioned below it
-- Added `LoginRequiredMixin` to `CategoryListView` to restrict category viewing to authenticated users only
-- Dropdown menu displays current category and marks active items with visual highlighting
+**October 21, 2025** - Multi-Category Filtering & Caching Improvements
+- Upgraded category filter to support multiple category selection via checkbox grid in dropdown menu
+- Implemented JavaScript-powered dynamic filtering with immediate updates on checkbox click
+- Backend now supports filtering by multiple categories via URL parameters (?categories=1,2,3) using OR logic
+- Improved caching system: now stores evaluated product IDs (5-minute timeout) instead of QuerySet objects for better performance and backend compatibility
+- Added Case/When ordering to preserve product order when restoring from cache
+- Changed `CategoryListView` from LoginRequiredMixin to `ModalLoginRequiredMixin` for consistent UX
+- Extracted category filter JavaScript into reusable `static/js/category-filter.js` file
+- All code validated with ruff and black linters
 
 **October 20, 2025** - Category Management & Filtering Implementation
 - Added category filtering UI to product catalog pages with visual highlighting for active categories
