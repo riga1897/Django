@@ -1,12 +1,15 @@
 # Django E-commerce платформа
 
-Django-платформа с тремя приложениями: маркетплейс (e-commerce), блог и управление пользователями. Включает email-авторизацию, трёхуровневую систему прав доступа, AJAX-модальные окна для входа/регистрации, автоматическое сохранение контента при удалении пользователей.
+Django-платформа с тремя приложениями: маркетплейс (e-commerce), блог и управление пользователями. Включает email-авторизацию, трёхуровневую систему прав доступа, AJAX-модальные окна для входа/регистрации, автоматическое сохранение контента при удалении пользователей, систему категорий с множественной фильтрацией и оптимизированное кэширование.
 
 ## 🎯 Ключевые особенности
 
 - ✅ **Email-авторизация** с кастомной моделью пользователя
 - ✅ **Трёхуровневая система прав доступа** (владелец, модератор, обычный пользователь)
 - ✅ **AJAX-модальные окна** для входа и регистрации без перезагрузки страницы
+- ✅ **Система категорий** с множественной фильтрацией и CRUD управлением
+- ✅ **Динамическая фильтрация** по нескольким категориям одновременно
+- ✅ **Оптимизированное кэширование** с Redis (кэш списков ID продуктов)
 - ✅ **Автоматическое сохранение контента** при удалении владельца
 - ✅ **Централизованные стили** в CSS без inline-стилей
 - ✅ **100% покрытие типами mypy**
@@ -17,6 +20,7 @@ Django-платформа с тремя приложениями: маркетп
 - [Архитектура](#-архитектура-системы)
 - [Команды управления](#-команды-управления)
 - [Быстрый старт](#-быстрый-старт)
+- [Система категорий](#-система-категорий)
 - [Система прав доступа](#-система-прав-доступа)
 - [Модели данных](#-модели-данных)
 - [Последние изменения](#-последние-изменения)
@@ -27,14 +31,16 @@ Django-платформа с тремя приложениями: маркетп
 
 **Фреймворк**: Django 5.2.7 с Python 3.x  
 **Структура**: Модульная архитектура с приложениями `marketplace`, `blog`, `users`, `config`  
-**База данных**: PostgreSQL
+**База данных**: PostgreSQL  
+**Кэширование**: Redis
 
 **Основные компоненты:**
 - **Class-Based Views (CBV)** для всех представлений
 - **Django Signals** для автоматической очистки файлов
-- **Кастомные миксины** для модальной авторизации
+- **Кастомные миксины** для модальной авторизации (`ModalLoginRequiredMixin`, `ModeratorRequiredMixin`)
 - **Кастомные менеджеры** для email-аутентификации
 - **Ролевые права доступа** (владелец, модератор, staff)
+- **Сервисный слой** для кэширования (`marketplace/services.py`)
 
 ### Frontend
 
@@ -42,23 +48,55 @@ Django-платформа с тремя приложениями: маркетп
 - Django Templates с наследованием
 - Bootstrap 5.3.8
 - Кастомный CSS с переменными для градиентов
+- Vanilla JavaScript для динамической фильтрации
 - AJAX для модальных окон
 
 **Особенности UI/UX:**
 - Модальная авторизация
 - Адаптивный дизайн
 - Градиентная цветовая кодировка
+- Dropdown меню с checkbox-сеткой для фильтрации по категориям
+- Динамическое обновление списка товаров при выборе категорий
 - Централизованные стили в `static/css/custom.css`
+
+### Кэширование
+
+**Стратегия кэширования продуктов:**
+- Кэшируются **списки ID продуктов** (вместо QuerySet объектов)
+- Время жизни кэша: **5 минут** (300 секунд)
+- Ключи кэша различаются по уровню прав пользователя и категориям
+- При восстановлении из кэша порядок сохраняется через `Case/When`
+- Поддержка множественной фильтрации по категориям
+
+**Сегментация кэша:**
+- Анонимные пользователи: только опубликованные товары
+- Авторизованные: опубликованные + свои собственные
+- Staff/модераторы: все товары
 
 ## 📦 Внешние зависимости
 
+### Core Framework
 - **Django 5.2.7** - Веб-фреймворк
-- **Python 3.x** - Окружение выполнения
+- **Python 3.11** - Окружение выполнения
 - **PostgreSQL** - Основная база данных
-- **dj-database-url** - Парсинг URL базы данных
-- **python-dotenv** - Управление переменными окружения
-- **Bootstrap 5.3.8** - Frontend CSS фреймворк
-- **ImageField** - Загрузка изображений
+- **Redis** - Кэширование
+
+### Python Packages
+- `dj-database-url` - Парсинг URL базы данных
+- `python-dotenv` - Управление переменными окружения
+- `psycopg2-binary` - PostgreSQL адаптер
+
+### Frontend Libraries
+- **Bootstrap 5.3.8** - CSS framework (self-hosted в `/static/`)
+- Custom CSS в `static/css/custom.css`
+- Custom JavaScript в `static/js/category-filter.js`
+
+### Development Tools
+- **mypy** + **django-stubs** - Type checking
+- **ruff** - Python linter
+- **black** - Code formatter
+- **isort** - Import sorting
+- **pytest** - Testing framework
 
 ## 🚀 Команды управления
 
@@ -67,7 +105,7 @@ Django-платформа с тремя приложениями: маркетп
 #### `setup` - Инициализация платформы
 
 ```bash
-poetry run python manage.py setup
+python manage.py setup
 ```
 
 Выполняет полную инициализацию платформы:
@@ -81,7 +119,7 @@ poetry run python manage.py setup
 #### `del_all` - Полная очистка данных
 
 ```bash
-poetry run python manage.py del_all
+python manage.py del_all
 ```
 
 Удаляет все данные из базы в правильном порядке:
@@ -97,7 +135,7 @@ poetry run python manage.py del_all
 #### `load_data` - Загрузка тестовых данных
 
 ```bash
-poetry run python manage.py load_data
+python manage.py load_data
 ```
 
 Загружает тестовые данные для разработки:
@@ -114,7 +152,7 @@ poetry run python manage.py load_data
 #### `createadmin` - Создание суперпользователя
 
 ```bash
-poetry run python manage.py createadmin
+python manage.py createadmin
 ```
 
 Создаёт суперпользователя с email `admin@example.com` и паролем `admin123`.
@@ -124,22 +162,54 @@ poetry run python manage.py createadmin
 ### Чистая платформа
 
 ```bash
-poetry run python manage.py del_all      # Очистить все данные
-poetry run python manage.py setup         # Инициализировать платформу
+python manage.py del_all      # Очистить все данные
+python manage.py setup         # Инициализировать платформу
 ```
 
 ### Платформа с тестовыми данными
 
 ```bash
-poetry run python manage.py del_all      # Очистить все данные
-poetry run python manage.py setup        # Инициализировать платформу
-poetry run python manage.py load_data    # Загрузить тестовые данные
+python manage.py del_all      # Очистить все данные
+python manage.py setup        # Инициализировать платформу
+python manage.py load_data    # Загрузить тестовые данные
 ```
 
 ### Запуск сервера
 
 ```bash
-poetry run python manage.py runserver
+python manage.py runserver 0.0.0.0:5000
+```
+
+## 📂 Система категорий
+
+### Функциональность
+
+**Просмотр категорий:**
+- Доступно только авторизованным пользователям (`ModalLoginRequiredMixin`)
+- Отображение в виде карточек с flexbox-лэйаутом
+- Минимальная высота карточек для выравнивания кнопок
+
+**Управление категориями (CRUD):**
+- Доступно только superuser и группе "Модератор продуктов" (`ModeratorRequiredMixin`)
+- Создание, редактирование и удаление категорий
+- Защита от удаления категорий с товарами
+- Case-insensitive уникальность названий
+
+**Фильтрация товаров:**
+- Dropdown меню с сеткой checkbox-карточек для множественного выбора
+- Динамическое обновление списка товаров без перезагрузки страницы
+- Фильтрация по нескольким категориям одновременно (логика OR)
+- URL параметр: `?categories=1,2,3`
+- Чекбокс "Все категории" для сброса фильтра
+
+### URL маршруты
+
+```python
+/categories/                  # Список всех категорий
+/categories/<int:pk>/        # Товары конкретной категории
+/categories/create/          # Создание категории (только модераторы)
+/categories/<int:pk>/update/ # Редактирование категории (только модераторы)
+/categories/<int:pk>/delete/ # Удаление категории (только модераторы)
 ```
 
 ## 🔐 Система прав доступа
@@ -167,7 +237,7 @@ poetry run python manage.py runserver
 
 ### Группы прав
 
-- **"Модератор продуктов"** - может модерировать товары в маркетплейсе
+- **"Модератор продуктов"** - может модерировать товары и управлять категориями
 - **"Контент-менеджер"** - может модерировать блог-посты
 
 ### Сохранение контента
@@ -181,10 +251,15 @@ poetry run python manage.py runserver
 - `name` - название товара
 - `description` - описание
 - `price` - цена (с валидацией на неотрицательность)
-- `photo` - фото товара
-- `category` - категория (FK)
-- `owner` - владелец (FK)
+- `photo` - фото товара (до 5MB)
+- `category` - категория (FK, CASCADE)
+- `owner` - владелец (FK, SET_DEFAULT)
 - `is_published` - статус публикации
+
+**Валидация:**
+- Запрещённые слова: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар
+- Цена >= 0
+- Размер файла <= 5MB
 
 ### BlogPost (Блог-пост)
 
@@ -192,18 +267,22 @@ poetry run python manage.py runserver
 - `content` - содержание
 - `preview` - превью изображение
 - `views_count` - счётчик просмотров
-- `owner` - владелец (FK)
+- `owner` - владелец (FK, SET_DEFAULT)
 - `is_published` - статус публикации
+- `created_at`, `updated_at` - временные метки
 
 ### Category (Категория)
 
-- `name` - название
+- `name` - название (уникальное, case-insensitive)
 - `description` - описание
+
+**Связи:**
+- One-to-many с Product (защита от удаления категорий с товарами)
 
 ### User (Пользователь)
 
 Кастомная модель с:
-- `email` - используется вместо username (уникальное поле)
+- `email` - используется вместо username (уникальное поле, USERNAME_FIELD)
 - `first_name`, `last_name` - имя и фамилия
 - `avatar` - аватар
 - `phone` - телефон
@@ -214,7 +293,7 @@ poetry run python manage.py runserver
 Если вы внесли изменения в тестовые данные вручную и хотите обновить фикстуру:
 
 ```bash
-poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category marketplace.Product blog.BlogPost --indent 4 --output marketplace/fixtures/data.json
+python -Xutf8 manage.py dumpdata users.User marketplace.Category marketplace.Product blog.BlogPost --indent 4 --output marketplace/fixtures/data.json
 ```
 
 ⚠️ **Важно**: После экспорта вручную удалите из фикстуры системного пользователя и админа, оставив только тестовых пользователей.
@@ -225,8 +304,10 @@ poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category mark
 .
 ├── marketplace/          # Приложение маркетплейса
 │   ├── models.py        # Модели Product, Category
-│   ├── views.py         # Представления для товаров
-│   ├── forms.py         # Формы с валидацией
+│   ├── views.py         # Представления для товаров и категорий
+│   ├── forms.py         # Формы с валидацией (ProductForm, CategoryForm)
+│   ├── services.py      # Сервисный слой для кэширования
+│   ├── mixins.py        # Кастомные миксины (ModeratorRequiredMixin)
 │   ├── fixtures/        # Фикстуры с данными
 │   └── management/      # Команды управления
 ├── blog/                # Приложение блога
@@ -241,11 +322,47 @@ poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category mark
 │   ├── settings.py      # Основные настройки
 │   └── urls.py          # Корневые URL
 └── static/              # Статические файлы
-    └── css/
-        └── custom.css   # Централизованные стили
+    ├── css/
+    │   └── custom.css   # Централизованные стили
+    └── js/
+        └── category-filter.js  # JavaScript для фильтрации
 ```
 
 ## 🔥 Последние изменения
+
+### 21 октября 2025 - Multi-Category Filtering & Caching Improvements
+
+#### Множественная фильтрация по категориям
+- Заменён одиночный выбор категории на множественный через checkbox сетку
+- Dropdown меню с компактными карточками-чекбоксами
+- JavaScript-powered динамическая фильтрация с мгновенным обновлением
+- Фильтрация по URL параметрам `?categories=1,2,3` (логика OR)
+- Чекбокс "Все категории" для сброса фильтра
+- Визуальное выделение активных категорий
+
+#### Оптимизация кэширования
+- Кэширование списков **ID продуктов** вместо QuerySet объектов
+- Timeout кэша: 5 минут (300 секунд)
+- Использование `Case/When` для сохранения порядка при восстановлении
+- Улучшенная совместимость с разными бэкендами кэширования
+- Поддержка кэширования для множественной фильтрации
+
+#### UX улучшения
+- `CategoryListView` использует `ModalLoginRequiredMixin` для согласованности
+- Вынесен JavaScript в отдельный файл `static/js/category-filter.js`
+- Flexbox-лэйаут для карточек категорий с выравниванием кнопок
+
+#### Качество кода
+- Все проверки линтерами пройдены: ruff ✅, black ✅
+- Добавлен `{% load static %}` в шаблоны
+
+### 20 октября 2025 - Category Management & Filtering
+
+- Добавлена полная CRUD система для категорий
+- Создан `ModeratorRequiredMixin` для ограничения доступа
+- `CategoryForm` с case-insensitive уникальностью
+- Защита от удаления категорий с товарами
+- UI для фильтрации с визуальной подсветкой
 
 ### 18 октября 2025
 
@@ -288,6 +405,12 @@ poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category mark
 - Обработка ошибок валидации в модальных окнах
 - Редирект только при успешной авторизации
 
+### Динамическая фильтрация категорий
+- Checkbox сетка в dropdown меню
+- Мгновенное обновление без AJAX запросов
+- Формирование URL с параметрами выбранных категорий
+- Навигация браузера работает корректно (history API)
+
 ### Адаптивный дизайн
 - Полная поддержка мобильных устройств
 - Bootstrap 5.3.8 для сеточной системы
@@ -308,8 +431,21 @@ poetry run python -Xutf8 manage.py dumpdata users.User marketplace.Category mark
 Django signals автоматически удаляют файлы при:
 - Удалении записи с файлом
 - Обновлении файла на новый
-- Обработка для `Product.photo` и `BlogPost.preview`
+- Обработка для `Product.photo`, `BlogPost.preview`, `User.avatar`
 - Безопасное удаление с проверками существования
+
+## 🌐 Переменные окружения
+
+```bash
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+CACHE_ENABLED=True
+
+# Для Replit
+REPLIT_DEV_DOMAIN=your-repl-name.repl.co
+REPLIT_DOMAINS=your-repl-name.repl.co
+```
 
 ## 📄 Лицензия
 
@@ -317,4 +453,4 @@ Django signals автоматически удаляют файлы при:
 
 ---
 
-**Разработано с ❤️ на Django 5.2.7**
+**Разработано с ❤️ на Django 5.2.7 + PostgreSQL + Redis**
