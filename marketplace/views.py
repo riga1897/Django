@@ -268,7 +268,7 @@ class ModeratorRequiredMixin(LoginRequiredMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class CategoryListView(ListView):  # type: ignore[type-arg]
+class CategoryListView(LoginRequiredMixin, ListView):  # type: ignore[type-arg]
     """Список всех категорий с возможностью управления для модераторов"""
     model = Category
     template_name = "marketplace/category_list.html"

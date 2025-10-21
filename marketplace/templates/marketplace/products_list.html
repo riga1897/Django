@@ -21,17 +21,38 @@
                 </svg>
                 Фильтр по категориям
             </h5>
-            <div class="d-flex flex-wrap gap-2">
-                <a href="{% url 'marketplace:products_list' %}" 
-                   class="btn btn-outline-success btn-sm active">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle w-100" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
+                        <polyline points="2,17 12,22 22,17"></polyline>
+                        <polyline points="2,12 12,17 22,12"></polyline>
+                    </svg>
                     Все товары
-                </a>
-                {% for category in all_categories %}
-                <a href="{% url 'marketplace:products_by_category' category.id %}" 
-                   class="btn btn-outline-success btn-sm">
-                    {{ category.name }}
-                </a>
-                {% endfor %}
+                </button>
+                <ul class="dropdown-menu w-100" aria-labelledby="categoryDropdown">
+                    <li>
+                        <a class="dropdown-item active" href="{% url 'marketplace:products_list' %}">
+                            <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                            Все товары
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    {% for category in all_categories %}
+                    <li>
+                        <a class="dropdown-item" href="{% url 'marketplace:products_by_category' category.id %}">
+                            <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
+                                <polyline points="2,17 12,22 22,17"></polyline>
+                                <polyline points="2,12 12,17 22,12"></polyline>
+                            </svg>
+                            {{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
