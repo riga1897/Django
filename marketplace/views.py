@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q, QuerySet
+from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -12,9 +12,9 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView, View
 
-from marketplace.models import Product, Category
+from marketplace.models import Category, Product
 
-from .forms import ContactForm, ProductForm, CategoryForm
+from .forms import CategoryForm, ContactForm, ProductForm
 from .services import get_products
 
 
@@ -25,30 +25,32 @@ class ProductsByCategoryView(ListView):  # type: ignore[type-arg]
 
     def get_queryset(self) -> QuerySet[Product]:  # type: ignore[override]
         """Продукты определенной категории"""
-        category_id = self.kwargs['category_id']
+        category_id = self.kwargs["category_id"]
         user = self.request.user
         return get_products(user, category_id)  # Используем общую функцию!
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        category_id = self.kwargs['category_id']
+        category_id = self.kwargs["category_id"]
 
         try:
-            context['current_category'] = Category.objects.get(id=category_id)
+            context["current_category"] = Category.objects.get(id=category_id)
+            # Для совместимости с UI - выбранная категория в виде списка
+            context["selected_category_ids"] = [category_id]
         except Category.DoesNotExist:
-            context['current_category'] = None
+            context["current_category"] = None
+            context["selected_category_ids"] = []
 
-        context['all_categories'] = Category.objects.all()
+        context["all_categories"] = Category.objects.all()
 
         user = self.request.user
         if user.is_authenticated:
-            context["is_moderator"] = (
-                    user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
-            )
+            context["is_moderator"] = user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
         else:
             context["is_moderator"] = False
 
         return context
+
 
 class ModalLoginRequiredMixin(LoginRequiredMixin):
     """Mixin для редиректа на модалку логина вместо отдельной страницы"""
@@ -79,20 +81,45 @@ class ProductsListView(ListView):  # type: ignore[type-arg]
         - Неавторизованные: только опубликованные
         - Staff/модераторы: все товары
         - Обычные пользователи: опубликованные ИЛИ свои собственные
+        - Поддержка фильтрации по нескольким категориям через URL параметр ?categories=1,2,3
         """
         user = self.request.user
-        return get_products(user)
 
+        # Парсим URL параметр categories для множественной фильтрации
+        categories_param = self.request.GET.get("categories", "")
+        category_ids = None
+
+        if categories_param:
+            try:
+                # Преобразуем строку "1,2,3" в список целых чисел
+                category_ids = [int(cid.strip()) for cid in categories_param.split(",") if cid.strip().isdigit()]
+                if not category_ids:  # Если список пустой после парсинга
+                    category_ids = None
+            except (ValueError, AttributeError):
+                category_ids = None
+
+        return get_products(user, category_ids=category_ids)
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['all_categories'] = Category.objects.all()
+        context["all_categories"] = Category.objects.all()
+
+        # Передаем выбранные категории в контекст для подсветки в UI
+        categories_param = self.request.GET.get("categories", "")
+        if categories_param:
+            try:
+                context["selected_category_ids"] = [
+                    int(cid.strip()) for cid in categories_param.split(",") if cid.strip().isdigit()
+                ]
+            except (ValueError, AttributeError):
+                context["selected_category_ids"] = []
+        else:
+            context["selected_category_ids"] = []
+
         user = self.request.user
         if user.is_authenticated:
             # Проверяем, является ли пользователь модератором
-            context["is_moderator"] = (
-                user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
-            )  # type: ignore[attr-defined]
+            context["is_moderator"] = user.is_staff or user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
         else:
             context["is_moderator"] = False
         return context
@@ -157,9 +184,7 @@ class ProductCreateView(ModalLoginRequiredMixin, CreateView):  # type: ignore[ty
         form = super().get_form(form_class)
         user = self.request.user
         # Только модераторы могут выбирать владельца
-        if not (
-            user.is_staff or user.groups.filter(name="Модератор продуктов").exists()
-        ):  # type: ignore[attr-defined]
+        if not (user.is_staff or user.groups.filter(name="Модератор продуктов").exists()):  # type: ignore[attr-defined]
             form.fields.pop("owner", None)
         return form
 
@@ -254,53 +279,54 @@ class ModeratorRequiredMixin(LoginRequiredMixin):
     def dispatch(self, request: Any, *args: Any, **kwargs: Any) -> HttpResponse:
         if not request.user.is_authenticated:
             return self.handle_no_permission()
-        
+
         # Проверяем, является ли пользователь суперюзером или модератором
         is_moderator = (
-            request.user.is_superuser 
-            or request.user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
+            request.user.is_superuser or request.user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
         )
-        
+
         if not is_moderator:
             from django.core.exceptions import PermissionDenied
+
             raise PermissionDenied("У вас нет прав для доступа к этой странице")
-        
+
         return super().dispatch(request, *args, **kwargs)
 
 
-class CategoryListView(LoginRequiredMixin, ListView):  # type: ignore[type-arg]
+class CategoryListView(ModalLoginRequiredMixin, ListView):  # type: ignore[type-arg]
     """Список всех категорий с возможностью управления для модераторов"""
+
     model = Category
     template_name = "marketplace/category_list.html"
     context_object_name = "categories"
-    
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        
+
         # Проверяем права для управления категориями
         if user.is_authenticated:
             context["can_manage"] = (
-                user.is_superuser 
-                or user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
+                user.is_superuser or user.groups.filter(name="Модератор продуктов").exists()  # type: ignore[attr-defined]
             )
         else:
             context["can_manage"] = False
-        
+
         # Добавляем количество товаров для каждой категории
         for category in context["categories"]:
             category.product_count = category.products.count()  # type: ignore[attr-defined]
-        
+
         return context
 
 
 class CategoryCreateView(ModeratorRequiredMixin, CreateView):  # type: ignore[type-arg]
     """Создание новой категории (только для модераторов)"""
+
     model = Category
     form_class = CategoryForm
     template_name = "marketplace/category_form.html"
     success_url = reverse_lazy("marketplace:category_list")
-    
+
     def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
         messages.success(self.request, f'Категория "{form.instance.name}" успешно создана')
         return super().form_valid(form)
@@ -308,11 +334,12 @@ class CategoryCreateView(ModeratorRequiredMixin, CreateView):  # type: ignore[ty
 
 class CategoryUpdateView(ModeratorRequiredMixin, UpdateView):  # type: ignore[type-arg]
     """Редактирование категории (только для модераторов)"""
+
     model = Category
     form_class = CategoryForm
     template_name = "marketplace/category_form.html"
     success_url = reverse_lazy("marketplace:category_list")
-    
+
     def form_valid(self, form: Any) -> HttpResponse:  # type: ignore[override]
         messages.success(self.request, f'Категория "{form.instance.name}" успешно обновлена')
         return super().form_valid(form)
@@ -320,29 +347,30 @@ class CategoryUpdateView(ModeratorRequiredMixin, UpdateView):  # type: ignore[ty
 
 class CategoryDeleteView(ModeratorRequiredMixin, DeleteView):  # type: ignore[type-arg]
     """Удаление категории с защитой от удаления категорий с товарами"""
+
     model = Category
     template_name = "marketplace/category_confirm_delete.html"
     success_url = reverse_lazy("marketplace:category_list")
-    
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         # Добавляем количество товаров в категории
         context["product_count"] = self.object.products.count()  # type: ignore[attr-defined]
         return context
-    
+
     def post(self, request: Any, *args: Any, **kwargs: Any) -> HttpResponse:
         """Проверка перед удалением - запрещаем удаление категорий с товарами"""
         self.object = self.get_object()
         product_count = self.object.products.count()  # type: ignore[attr-defined]
-        
+
         if product_count > 0:
             messages.error(
-                request, 
+                request,
                 f'Невозможно удалить категорию "{self.object.name}". '
-                f'В ней находится {product_count} товар(ов). '
-                f'Сначала удалите или переместите все товары.'
+                f"В ней находится {product_count} товар(ов). "
+                f"Сначала удалите или переместите все товары.",
             )
             return redirect("marketplace:category_list")
-        
+
         messages.success(request, f'Категория "{self.object.name}" успешно удалена')
         return super().post(request, *args, **kwargs)

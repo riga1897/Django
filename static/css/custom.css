@@ -529,3 +529,40 @@ textarea.form-input-custom:focus {
 .alert-info-subtle {
     background: linear-gradient(135deg, #34d39915 0%, #10b98115 100%);
 }
+
+/* ===== CATEGORY CARDS ===== */
+
+.category-card-body {
+    min-height: 220px;
+}
+
+.hover-card {
+    transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Карточки фильтра категорий в dropdown */
+.category-filter-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid #e9ecef;
+}
+
+.category-filter-card:hover {
+    border-color: var(--green-main);
+    background-color: #f0fdf4;
+}
+
+.category-filter-card.active {
+    border-color: var(--green-main);
+    background-color: #dcfce7;
+}
+
+.category-filter-card .form-check-label {
+    cursor: pointer;
+    user-select: none;
+}

@@ -3,7 +3,7 @@ from typing import Any
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Product, Category
+from .models import Category, Product
 
 FORBIDDEN_WORDS = ["казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар"]
 
@@ -74,17 +74,17 @@ class CategoryForm(forms.ModelForm):
 
     def clean_name(self) -> str:
         name = self.cleaned_data.get("name", "")
-        
+
         # Проверка уникальности
         queryset = Category.objects.filter(name__iexact=name)
-        
+
         # При редактировании исключаем текущий объект из проверки
         if self.instance.pk:
             queryset = queryset.exclude(pk=self.instance.pk)
-        
+
         if queryset.exists():
             raise ValidationError(f'Категория с названием "{name}" уже существует')
-        
+
         return name
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

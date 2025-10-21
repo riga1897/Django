@@ -1,4 +1,5 @@
 {% extends 'marketplace/base.html' %}
+{% load static %}
 {% block content %}
 <div class="container mt-4">
     <!-- Градиентный заголовок -->
@@ -22,37 +23,48 @@
                 Фильтр по категориям
             </h5>
             <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle w-100" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-success dropdown-toggle w-100" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                     <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
-                        <polyline points="2,17 12,22 22,17"></polyline>
-                        <polyline points="2,12 12,17 22,12"></polyline>
+                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
                     </svg>
-                    Все товары
+                    {% if selected_category_ids %}
+                        Выбрано категорий: {{ selected_category_ids|length }}
+                    {% else %}
+                        Все товары
+                    {% endif %}
                 </button>
-                <ul class="dropdown-menu w-100" aria-labelledby="categoryDropdown">
-                    <li>
-                        <a class="dropdown-item active" href="{% url 'marketplace:products_list' %}">
-                            <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                            </svg>
-                            Все товары
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    {% for category in all_categories %}
-                    <li>
-                        <a class="dropdown-item" href="{% url 'marketplace:products_by_category' category.id %}">
-                            <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
-                                <polyline points="2,17 12,22 22,17"></polyline>
-                                <polyline points="2,12 12,17 22,12"></polyline>
-                            </svg>
-                            {{ category.name }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
+                <div class="dropdown-menu w-100 p-3" aria-labelledby="categoryDropdown" style="min-width: 600px;">
+                    <!-- Общий чекбокс "Все категории" -->
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="form-check">
+                            <input class="form-check-input category-checkbox" type="checkbox" value="all" id="categoryAll" {% if not selected_category_ids %}checked{% endif %}>
+                            <label class="form-check-label fw-bold" for="categoryAll">
+                                <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                                </svg>
+                                Все товары
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Сетка карточек категорий с чекбоксами -->
+                    <div class="row g-2">
+                        {% for category in all_categories %}
+                        <div class="col-md-6">
+                            <div class="card category-filter-card {% if category.id in selected_category_ids %}active{% endif %}" data-category-id="{{ category.id }}">
+                                <div class="card-body p-2 d-flex align-items-center">
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input category-checkbox" type="checkbox" value="{{ category.id }}" id="category{{ category.id }}" {% if category.id in selected_category_ids %}checked{% endif %}>
+                                        <label class="form-check-label" for="category{{ category.id }}">
+                                            <strong>{{ category.name }}</strong>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -77,4 +89,6 @@
         {% endfor %}
     </div>
 </div>
+
+<script src="{% static 'js/category-filter.js' %}"></script>
 {% endblock %}
