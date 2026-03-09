@@ -1,0 +1,21 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "email": "deleted@system.user",
+      "username": "deleted@system.user",
+      "password": "pbkdf2_sha256$870000$impossiblepasswordhash$NeverUsedForLoginSystemUserOnly",
+      "first_name": "Удалённый",
+      "last_name": "Пользователь",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2025-01-01T00:00:00Z",
+      "last_login": null,
+      "avatar": null,
+      "phone": null,
+      "country": null
+    }
+  }
+]
