@@ -1,0 +1,180 @@
+{% extends 'marketplace/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="main-content">
+    <!-- Красивый заголовок с градиентом (светло-зеленый для всех форм) -->
+    <div class="mb-4 p-5 rounded-4 text-white text-center position-relative overflow-hidden gradient-green-contrast page-header-contrast">
+        <div class="position-relative z-index-2">
+            <svg class="mb-3" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <h1 class="display-5 fw-bold text-shadow mb-2">{{ post.title }}</h1>
+            <p class="lead text-shadow mb-0">Подробная информация о записи</p>
+        </div>
+    </div>
+
+    <div class="row g-4 align-items-stretch">
+        <!-- Изображение записи -->
+        <div class="col-12 col-lg-5">
+            <div class="card border-0 shadow-lg h-100 card-rounded d-flex align-items-center justify-content-center">
+                {% if post.preview %}
+                <img src="{{ post.preview.url }}"
+                     class="card-img-top gradient-light hover-lift image-detail"
+                     alt="{{ post.title }}"
+                     data-bs-toggle="modal"
+                     data-bs-target="#imageModal">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center image-placeholder">
+                    <span class="text-muted fs-5">Изображение отсутствует</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Информация о записи -->
+        <div class="col-12 col-lg-7">
+            <div class="card border-0 shadow-lg h-100 card-rounded">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-4 text-green-dark">{{ post.title }}</h2>
+                    
+                    <!-- Контент -->
+                    <div class="mb-4 info-box-light">
+                        <div class="d-flex align-items-start">
+                            <svg class="me-2 flex-shrink-0 icon-green-dark icon-mt-2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" x2="8" y1="13" y2="13"></line>
+                                <line x1="16" x2="8" y1="17" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <div class="flex-1-min-0">
+                                <strong class="text-muted small">СОДЕРЖАНИЕ:</strong>
+                                <div class="mt-1 word-break">{{ post.content|linebreaks }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Просмотры -->
+                    <div class="mb-3 info-box-green d-flex align-items-center">
+                        <svg class="me-2 icon-green-dark" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <div>
+                            <span class="text-muted small d-block">ПРОСМОТРОВ:</span>
+                            <span class="h3 mb-0 fw-bold text-green-dark">{{ post.views_count }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Владелец (только для владельца и модераторов) -->
+                    {% if user.is_authenticated %}
+                        {% if user == post.owner or is_manager %}
+                        <div class="mb-4 d-flex align-items-center">
+                            <svg class="me-2 icon-green-dark" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span class="text-muted me-2">Владелец:</span>
+                            {% if post.owner.email == "deleted@system.user" %}
+                                <span class="fw-semibold text-muted fst-italic">Владелец удалён</span>
+                            {% else %}
+                                <span class="fw-semibold">{{ post.owner.email }}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Даты -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <svg class="me-2 icon-green-dark" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" x2="16" y1="2" y2="6"></line>
+                                    <line x1="8" x2="8" y1="2" y2="6"></line>
+                                    <line x1="3" x2="21" y1="10" y2="10"></line>
+                                </svg>
+                                <div>
+                                    <span class="text-muted small d-block">Создана:</span>
+                                    <span class="small">{{ post.created_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <svg class="me-2 icon-green-dark" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <div>
+                                    <span class="text-muted small d-block">Обновлена:</span>
+                                    <span class="small">{{ post.updated_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кнопки действий -->
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <a href="{% url 'blog:post_list' %}" class="btn px-4 py-2 btn-gray">
+                            ← Назад ко всем записям
+                        </a>
+                        {% if user.is_authenticated %}
+                            {% if user == post.owner or is_manager %}
+                            <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-primary px-4 py-2">
+                                Изменить
+                            </a>
+                            {% endif %}
+                            {% if user == post.owner or perms.blog.delete_blogpost %}
+                            <a href="{% url 'blog:post_delete' post.pk %}" class="btn px-4 py-2 btn-red">
+                                Удалить
+                            </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Переключатель публикации (только для владельца или контент-менеджера) -->
+                    {% if user.is_authenticated %}
+                        {% if user == post.owner or perms.blog.can_unpublish_post %}
+                        <div class="mt-3 d-flex justify-content-end">
+                            <form method="post" action="{% url 'blog:post_toggle_publish' post.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <div class="form-check form-switch d-flex align-items-center">
+                                    <input class="form-check-input me-2" type="checkbox" role="switch" 
+                                           id="publishSwitch{{ post.pk }}" 
+                                           {% if post.is_published %}checked{% endif %}
+                                           onchange="this.form.submit()">
+                                    <label class="form-check-label text-muted small" for="publishSwitch{{ post.pk }}">
+                                        {% if post.is_published %}Опубликовано{% else %}Черновик{% endif %}
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body text-center p-2">
+                {% if post.preview %}
+                <img src="{{ post.preview.url }}"
+                     class="img-fluid rounded image-modal"
+                     alt="{{ post.title }}">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
